@@ -9,4 +9,6 @@
     if ($connection->connect_error) {
         die("Connection failed: " . $connection->connect_error);
     }
+
+    // Para poder utilizar la base de datos en un servidor web se puede realizar desde el CPanel del hosting.
 ?>
