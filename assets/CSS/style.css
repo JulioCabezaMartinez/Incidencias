@@ -1,0 +1,14 @@
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.DonDigitalLogo{
+    max-width: 50%;
+}
+
+.registro_login{
+    width: 80%;
+}
