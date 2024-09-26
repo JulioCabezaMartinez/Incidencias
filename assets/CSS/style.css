@@ -1,14 +1,41 @@
-body{
+body {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.DonDigitalLogo{
+.DonDigitalLogo {
     max-width: 50%;
 }
 
-.registro_login{
-    width: 80%;
+.registro_login {
+
+    border: 2px solid black;
+    border-radius: 5px;
+
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+}
+
+
+.registro_login label{
+    font-size: 130%;
+    font-weight: bold;
+}
+
+
+.registro_login input{
+    min-height: 30px;
+
+    font-size: 120%;
+}
+
+.registro_login .submit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }

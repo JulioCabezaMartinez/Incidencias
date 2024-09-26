@@ -1,14 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../assets/CSS/style.css">
+<?php
+
+require_once "../view/Templates/inicio.inc.php";
+
+?>
     <title>Login</title>
 </head>
 <body>
-    <h1>LOGIN</h1>
+    
     <img class="DonDigitalLogo" src='../../assets/IMG/Imagotipo_Color_Negativo.webp'>
+    <br><br>
+    <label style="font-size: 150%;font-weight: bold;">LOGIN</label>
     <div class="registro_login">
         <form action="./main.php">
             <label for="correo">Correo:</label><br>
@@ -18,8 +19,10 @@
             <input type="password" name="pass" maxlength="60" required>
             <br><br>
             <input type="submit" name="login" value="Iniciar Sesión">
+            <br><br>
+            <a style="font-size: 130%;" href="./login.php">Nuevo Usuario</a>
         </form>
-        <a href="./login.php">Nuevo Usuario</a>
+        
     </div>
 </body>
 </html>
