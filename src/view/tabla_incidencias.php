@@ -9,11 +9,13 @@
     <?php
         $usurioActivo=1; //Prueba de que con la base de datos funcionando el usuario admin seria el unico que pudiera ver.
     
+        //Barra de busqueda para DNI en tiempo real
+
         include_once '../view/Templates/barra_lateral.inc.php';
     ?>
     <div class="d-flex flex-column">
         <h1>Tabla de Incidencias</h1>
-        <table class="table table-striped h-25 w-50 ">
+        <table class="table table-striped h-25 ">
             <thead>
                 <tr>
                 <th scope="col">N°Incidencia</th>
@@ -28,6 +30,7 @@
                     <td>Julio</td>
                     <td>Pendiente</td>
                     <td>
+                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
                         <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
                     </td>
                 </tr>

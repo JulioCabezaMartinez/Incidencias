@@ -24,7 +24,7 @@ require_once "../view/Templates/inicio.inc.php";
             <input type="password" name="pass" maxlength="60" required>
             <br><br>
             <label for="DNI">DNI:</label><br>
-            <input type="text" name="DNI" placeholder="12345678A" maxlength="9" pattern="(\d{8})([A-Z]{1})" required>
+            <input type="text" name="DNI" placeholder="12345678A" maxlength="9" pattern="(\d{8})([A-Z]{1})" required> <!-- Poner para el NIE -->
             <br><br>
             <label for="tipo">Tipo de Empleado:</label><br><br>
             <input type="radio" name="tipo"><label>Empleado</label>

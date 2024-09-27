@@ -20,7 +20,7 @@ require_once "../view/Templates/inicio.inc.php";
             <br><br>
             <input type="submit" name="login" value="Iniciar Sesión">
             <br><br>
-            <a style="font-size: 130%;" href="./login.php">Nuevo Usuario</a>
+            <a style="font-size: 130%;" href="./register.php">Nuevo Usuario</a>
         </form>
         
     </div>

@@ -1,8 +1,7 @@
 <?php
 
 class Incidencias{
-
-    private String $nIncidencia;
+    private String $nIncidencia; //Para el número de incidencia vamos a coger el número de incidencia de la ultima entrada que haya en la BD.
     private String $motivo;
     private String $solucion;
     private int $estado; //1 Trabajando en ello, 2 Pausa, 3 En Seguimiento, 4 Finalizado.
@@ -47,6 +46,16 @@ class Incidencias{
     }
     public function setObservaciones(String $observaciones){
         $this->observaciones=$observaciones;
+    }
+
+    public function recogerTodasIncidencias(mysqli $connection){
+        $result=$connection->query("Select * from incidencias");
+
+        if($result!=false){
+            $object=$result->fetch_object();
+
+            //whi
+        }
     }
 }
 

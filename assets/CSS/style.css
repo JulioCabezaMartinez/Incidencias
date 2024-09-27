@@ -28,12 +28,10 @@ body {
     padding-bottom: 3%;
 }
 
-
 .registro_login label{
     font-size: 130%;
     font-weight: bold;
 }
-
 
 .registro_login input{
     min-height: 30px;
