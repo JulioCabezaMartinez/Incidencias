@@ -1,4 +1,7 @@
 <?php
+
+    //Requiere de utilizar composer para poder utilizar variables de entorno.
+
     $servername = "localhost";
     $username = "root";
     $password = "";
