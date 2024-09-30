@@ -7,11 +7,13 @@
 
     require_once '../view/Templates/inicio.inc.php'
 
+    
 ?>
 <title>Main</title>
 </head>
 <body>
     <?php
+    var_dump($_SESSION);
         include_once '../view/Templates/barra_lateral.inc.php';
     ?>
 

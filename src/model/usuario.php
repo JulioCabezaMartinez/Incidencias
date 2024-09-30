@@ -88,7 +88,7 @@ class Usuario {
         $result=$connection->query('Select nombre from usuarios where correo="'. $correo .'";');
         $result2=$connection->query('Select nombre from usuarios where DNI="'. $DNI .'";');
 
-        if($result){
+        if($result!=false){
             $linea=$result->fetch_object();
             $linea2=$result2->fetch_object();
 
@@ -115,7 +115,7 @@ class Usuario {
                         //El id es el del administrador el cual no va a cambiar. 
     
                         if(!$result){
-                            return mysqli_error($connection);
+                            return mysqli_error($connection); //Lineas de debug.
                         }
                     }
     
@@ -143,6 +143,7 @@ class Usuario {
         if(password_verify($pass, $linea->password)){
             $_SESSION["id"]=$linea->id_usuario;
             $_SESSION["nombre"]=$linea->nombre;
+            $_SESSION["tipo"]=$linea->tipo;
             return true;
         }else return false;
 
@@ -155,6 +156,26 @@ class Usuario {
 
         if (isset($_COOKIE[session_name()])) {
             setcookie(session_name(), '', time()-42000, '/');
+        }
+    }
+
+    public static function verNoEmpleados(mysqli $connection){
+        $lista_empleados=[];
+        $result=$connection->query("Select * from usuarios inner join relacion_empleados on usuarios.id_usuario=relacion_empleados.id_empleado where relacion_empleados.estado=1;");
+
+        if($result!=false){
+            $linea=$result->fetch_object();
+
+            while($linea!=null){
+                $empleado=["id"=>$linea->id_empleado, "nombre"=>$linea->nombre, "apellidos"=>$linea->apellidos, "DNI"=>$linea->DNI];
+                array_push($lista_empleados, $empleado);
+
+                $linea=$result->fetch_object();
+            }
+            
+            return $lista_empleados;
+        }else{
+            return mysqli_error($connection);
         }
     }
 }

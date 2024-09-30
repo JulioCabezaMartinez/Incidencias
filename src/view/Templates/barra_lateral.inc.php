@@ -26,10 +26,10 @@
                             </li>
                         </ul>
                         <?php
-                        if($_SESSION['id']==1){//El estado 1 equivale a ser Admin. ($usurioActivo->estado==1) Este es el if real, lo otro es para pruebas.
+                        if($_SESSION['tipo']==1){//El estado 1 equivale a ser Admin. ($usurioActivo->estado==1) Este es el if real, lo otro es para pruebas.
                         ?>
-                            <li class="nav-item"></li>
-                                <a href="#" class="nav-link align-middle px-0">
+                            <li class="nav-item">
+                                <a href="../../../src/controller/actions_tabla.php?class=em" class="nav-link align-middle px-0">
                                 <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Peticiones de empleados</span>
                                 </a>
                             </li>

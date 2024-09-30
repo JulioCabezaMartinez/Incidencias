@@ -1,5 +1,10 @@
 <?php
     
+    if (empty($_SESSION)){
+        header("Location:login.php");
+        die();
+    }
+
     require_once '../view/Templates/inicio.inc.php';
 
 ?>
