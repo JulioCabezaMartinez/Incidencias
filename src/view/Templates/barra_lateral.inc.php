@@ -19,14 +19,14 @@
                                 <a href="creacion_Incidencia.php" class="nav-link px-0"> <span class="d-none d-sm-inline">Crear Incidencia</span></a>
                             </li>
                             <li class="w-100">
-                                <a href="tabla_incidencias.php" class="nav-link px-0"> <span class="d-none d-sm-inline">Mis Incidencias</span></a>
+                                <a href="../../../src/controller/actions_tabla.php?class=mi" class="nav-link px-0"> <span class="d-none d-sm-inline">Mis Incidencias</span></a>
                             </li>
                             <li>
-                                <a href="tabla_incidencias.php" class="nav-link px-0"> <span class="d-none d-sm-inline">Todas las Incidencias</span></a>
+                                <a href="../../../src/controller/actions_tabla.php?class=all" class="nav-link px-0"> <span class="d-none d-sm-inline">Todas las Incidencias</span></a>
                             </li>
                         </ul>
                         <?php
-                        if($usurioActivo==1){//El estado 1 equivale a ser Admin. ($usurioActivo->estado==1) Este es el if real, lo otro es para pruebas.
+                        if($_SESSION['id']==1){//El estado 1 equivale a ser Admin. ($usurioActivo->estado==1) Este es el if real, lo otro es para pruebas.
                         ?>
                             <li class="nav-item"></li>
                                 <a href="#" class="nav-link align-middle px-0">
@@ -48,11 +48,11 @@
                 <div class="dropdown pb-4">
                     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="../../assets/IMG/images.png" alt="hugenerd" width="30" height="30" class="rounded-circle">
-                        <span class="d-none d-sm-inline mx-1">Usuario</span> <!-- Aqui tendría que coger la info de la sesion iniciada = -->
+                        <span class="d-none d-sm-inline mx-1"><?php echo $_SESSION["nombre"] ?></span> <!-- Aqui tendría que coger la info de la sesion iniciada = -->
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
                         
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        <li><a class="dropdown-item" href="../../../src/controller/actions_usuario.php?action=cerrar">Cerrar Sesion</a></li>
                     </ul>
                 </div>
             </div>

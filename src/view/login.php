@@ -1,17 +1,37 @@
 <?php
 
+    session_start();
+
+    if (!empty($_SESSION)){
+        header("Location:main.php");
+        die();
+    }
+
 require_once "../view/Templates/inicio.inc.php";
 
 ?>
     <title>Login</title>
 </head>
 <body>
-    
+    <?php
+
+        if(isset($_GET['action'])){
+            if($_GET['action']==1){
+                echo "fallo de Sesion";
+            }
+            
+            if($_GET['action']==1){
+                echo "fallo de Sesion";
+            }
+
+        }
+    ?>
+
     <img class="DonDigitalLogo" src='../../assets/IMG/Imagotipo_Color_Negativo.webp'>
     <br><br>
     <label style="font-size: 150%;font-weight: bold;">LOGIN</label>
     <div class="registro_login">
-        <form action="./main.php">
+        <form action="../controller/actions_usuario.php" method="post">
             <label for="correo">Correo:</label><br>
             <input type="email" name="correo" maxlength="60">
             <br><br>

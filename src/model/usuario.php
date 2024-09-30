@@ -83,24 +83,78 @@ class Usuario {
 
     //Funciones de Clase
 
+    //Esta funcion comprueba que no exista ningun usuario con el mismo correo o el mismo DNI dentro de la DB.
+    public static function compruebaCredenciales($correo, $DNI, mysqli $connection){ 
+        $result=$connection->query('Select nombre from usuarios where correo="'. $correo .'";');
+        $result2=$connection->query('Select nombre from usuarios where DNI="'. $DNI .'";');
+
+        if($result){
+            $linea=$result->fetch_object();
+            $linea2=$result2->fetch_object();
+
+            if(is_null($linea) && is_null($linea2)){
+                return true;
+            }else return false;
+        }
+    }
+
     public static function registrarUsuario(String $correo, String $tipo, String $pass, String $confirmPass, String $nombre, String $apellidos, String $DNI, mysqli $connection){
         if(!is_null($correo) && !is_null($tipo) && !is_null($pass) && !is_null($confirmPass) && !is_null($nombre) && !is_null($apellidos) && !is_null($DNI)){ //Doble comprobación para evitar que inyecciones de datos erroneas en la BD
             if($pass===$confirmPass){
+                if(Usuario::compruebaCredenciales($correo, $DNI, $connection)){
 
-                $confirmTipo=match($tipo){ //Este match le da un int para que se inyecte correctamente en la base de datos
-                    "Cliente"=>2,
-                    "Empleado"=>4
-                };
+                    $confirmTipo=match($tipo){ //Este match le da un int para que se inyecte correctamente en la base de datos
+                        "Cliente"=>2,
+                        "Empleado"=>4
+                    };
+    
+                    $usuario=new Usuario($correo, $confirmTipo, password_hash($pass, PASSWORD_DEFAULT), $nombre, $apellidos, $DNI);
+    
+                    if($tipo=="Empleado"){
+                        $result=$connection->query("Insert into relacion_empleados values('66fa89e697c99', '". $usuario->getId() ."', 1)"); // Estado: 1 En espera, 2 Aceptado, 3 Denegado.
+                        //El id es el del administrador el cual no va a cambiar. 
+    
+                        if(!$result){
+                            return mysqli_error($connection);
+                        }
+                    }
+    
+                    $result=$connection->query("Insert into usuarios values('". $usuario->getId() ."', '". $usuario->getCorreo() ."', '". $usuario->getPass() ."', '". $usuario->getDNI()."', ". $usuario->getTipo() .", '". $usuario->getNombre() ."', '". $usuario->getApellidos() ."')");
+    
+                    return $result;
 
-                $usuario=new Usuario($correo, $confirmTipo, password_hash($pass, PASSWORD_DEFAULT), $nombre, $apellidos, $DNI);
-                $result=$connection->query("Insert into usuarios values('". $usuario->getId() ."', '". $usuario->getCorreo() ."', '". $usuario->getPass() ."', '". $usuario->getDNI()."', ". $usuario->getTipo() .", '". $usuario->getNombre() ."', '". $usuario->getApellidos() ."')");
-
-                return $result;
+                }else{
+                    return "Su DNI o correo ya se encuntra registrado";
+                }
             }else{
-                $error="Contraseñas no coinciden";
+                return "Contraseñas no coinciden";
             }
         }else{
-            $error="Faltan datos por rellenar";
+            return "Faltan datos por rellenar";
+        }
+    }
+
+    public static function LogIn($correo, $pass, mysqli $connection){
+
+        $result=$connection->query("Select * from usuarios where correo= '". $correo ."';");
+
+        $linea=$result->fetch_object();
+
+        if(password_verify($pass, $linea->password)){
+            $_SESSION["id"]=$linea->id_usuario;
+            $_SESSION["nombre"]=$linea->nombre;
+            return true;
+        }else return false;
+
+    }
+    public static function logOut(){
+
+        session_unset();
+        unset($_SESSION);
+        session_destroy();
+
+        if (isset($_COOKIE[session_name()])) {
+            setcookie(session_name(), '', time()-42000, '/');
         }
     }
 }

@@ -33,7 +33,13 @@ require_once "../view/Templates/inicio.inc.php";
             <input type="radio" name="tipo" value="Empleado"><label>Empleado</label>
             <input type="radio" name="tipo" value="Cliente" checked><label>Cliente</label>
             <br><br>
-            <div class="submit"><input type="submit" name="register" value="Registrarse"></div>
+            <div class="submit">
+                <input type="submit" name="register" value="Registrarse">
+                <br>
+                <a href="./login.php">Volver</a>
+            </div>
+
+            
             
         </form>
     </div>

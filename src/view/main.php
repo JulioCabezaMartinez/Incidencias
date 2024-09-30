@@ -1,5 +1,10 @@
 <?php
 
+    if (empty($_SESSION)){
+        header("Location:login.php");
+        die();
+    }
+
     require_once '../view/Templates/inicio.inc.php'
 
 ?>
@@ -7,8 +12,6 @@
 </head>
 <body>
     <?php
-        $usurioActivo=1; //Prueba de que con la base de datos funcionando el usuario admin seria el unico que pudiera ver 
-    
         include_once '../view/Templates/barra_lateral.inc.php';
     ?>
 
