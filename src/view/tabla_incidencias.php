@@ -1,5 +1,5 @@
 <?php
-
+    
     require_once '../view/Templates/inicio.inc.php';
 
 ?>
@@ -14,6 +14,15 @@
         include_once '../view/Templates/barra_lateral.inc.php';
     ?>
     <div class="d-flex flex-column">
+
+        <?php
+
+            if(isset($error)){
+                echo '<h1>'.$error.'</h1>';
+            }
+
+        ?>
+
         <h1>Tabla de Incidencias</h1>
         <table class="table table-striped h-25 ">
             <thead>
@@ -25,8 +34,21 @@
                 </tr>
             </thead>
             <tbody>
+                <?php
+
+                    foreach($lista_incidencias as $incidencia){
+                        echo '<td>01-'. $incidencia->getNIncidencia() .'</td>
+                            <td>'. $incidencia->getIdCreador() .'</td>
+                            <td>'. $incidencia->getEstado() .'</td>
+                            <td>
+                                <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
+                                <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
+                            </td>';
+                    }
+
+                ?>
                 <tr>
-                    <td>01-01</td>
+                    <td>01-02</td>
                     <td>Julio</td>
                     <td>Pendiente</td>
                     <td>
@@ -34,198 +56,7 @@
                         <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
                     </td>
                 </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>01-02</td>
-                    <td>Luis</td>
-                    <td>En Seguimiento</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
-                </tr>
+                
             </tbody>
         </table>
     </div>
