@@ -145,6 +145,7 @@ class Usuario {
         if(password_verify($pass, $linea->password)){
             $_SESSION["id"]=$linea->id_usuario;
             $_SESSION["nombre"]=$linea->nombre;
+            $_SESSION["apellidos"]=$linea->apellidos;
             $_SESSION["tipo"]=(int)$linea->tipo;
             return true;
         }else return false;

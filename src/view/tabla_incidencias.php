@@ -13,24 +13,34 @@
 <title>Incidencias</title>
 </head>
 <body>
+    <!-- Modal de confirmación -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" >
+        <div class="modal-dialog modal-dialog-centered" >
+            <div class="modal-content">
+                <div class="modal-header" >
+                    <h5 class="modal-title" id="exampleModalLongTitle">Insercción correcta</h5>
+                </div>
+                <div class="modal-body">
+                    La incidencia se ha creado con éxito.
+                </div>
+                <div class="modal-footer">
+                    <button id="cerrar" type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <?php
-        $usurioActivo=1; //Prueba de que con la base de datos funcionando el usuario admin seria el unico que pudiera ver.
     
         //Barra de busqueda para DNI en tiempo real
 
         include_once '../view/Templates/barra_lateral.inc.php';
+
     ?>
     <div class="d-flex flex-column">
 
-        <?php
-
-            if(isset($error)){
-                echo '<h1>'.$error.'</h1>';
-            }
-
-        ?>
-
-        <h1>Tabla de Incidencias</h1>
+        <h1>Tabla de Incidencias</h1><br>
+        <label for="buscador">Busqueda por DNI:</label>
+        <input type="text" id="busqueda" style="width: 10%;" maxlength="9" placeholder="12345678A">
         <table style="width: 97%;" class="table table-striped h-25 ">
             <thead>
                 <tr>
@@ -65,6 +75,20 @@
     </div>
 </div><!-- Div que cierra la barra lateral para que se mantenga en su lugar -->
     
+    <?php
+
+        if($_GET["add"]=="ok"){
+            echo "<script type='text/javascript'>
+                    $(window).on('load', function() {
+                        $('#exampleModalCenter').modal('show');
+                    });
+                    $('#cerrar').on('click', function() {
+                        $('#exampleModalCenter').modal('hide');
+                    });
+                </script>";
+        }
+    
+    ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

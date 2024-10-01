@@ -37,8 +37,18 @@
                     $lista_empleados=Usuario::verNoEmpleados($connection);
                
                     include "../view/tabla_Empleados.php";
-                    break;
+                    
                 }
+                break;
+
+            case 'reject':
+                if(Usuario::denegarEmpleado($_GET['id'], $connection)){
+                    $lista_empleados=Usuario::verNoEmpleados($connection);
+               
+                    include "../view/tabla_Empleados.php";
+                    
+                }
+                break;
         }
     }
     

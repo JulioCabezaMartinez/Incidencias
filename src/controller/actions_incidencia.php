@@ -22,7 +22,8 @@
         var_dump($resultado);
 
         if($resultado){
-            header("Location: ../../../src/controller/actions_tabla.php?class=mi");
+            
+            header("Location: ../../../src/controller/actions_tabla.php?class=mi&add=ok");
         }else{
             header("Location: ../../../src/view/main.php");
         }
