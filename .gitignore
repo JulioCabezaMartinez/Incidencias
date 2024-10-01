@@ -1,2 +1,4 @@
 #Ignora variables de entorno.
 .env
+#Ignora el txt que indica que son las acciones.
+.txt

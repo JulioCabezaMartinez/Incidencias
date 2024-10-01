@@ -1,4 +1,7 @@
 <?php
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL & ~E_NOTICE);
+
     session_start();
 
     include "../model/BuscadorDB.php";
@@ -15,7 +18,15 @@
     if(isset($_POST['login'])){
        
         if(Usuario::LogIn($_POST['correo'], $_POST['pass'], $connection)){
-            include "../view/main.php";
+            if($_SESSION["tipo"]>=4){
+
+                Usuario::logOut();
+                header("Location: ../view/login.php?action=2");
+
+            }else{
+                include "../view/main.php";
+            } 
+
         }else{
             header("Location: ../view/login.php?action=1");
         }

@@ -1,5 +1,7 @@
 <?php
     
+    session_start();
+
     if (empty($_SESSION)){
         header("Location:login.php");
         die();
@@ -29,39 +31,35 @@
         ?>
 
         <h1>Tabla de Incidencias</h1>
-        <table class="table table-striped h-25 ">
+        <table style="width: 97%;" class="table table-striped h-25 ">
             <thead>
                 <tr>
                 <th scope="col">N°Incidencia</th>
+                <th scope="col">Motivo</th>
                 <th scope="col">Remitente</th>
                 <th scope="col">Estado</th>
                 <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
+                
                 <?php
 
                     foreach($lista_incidencias as $incidencia){
-                        echo '<td>01-'. $incidencia->getNIncidencia() .'</td>
-                            <td>'. $incidencia->getIdCreador() .'</td>
-                            <td>'. $incidencia->getEstado() .'</td>
-                            <td>
-                                <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                                <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                            </td>';
+                        echo '<tr>
+                                <td>01-'. $incidencia->getNIncidencia() .'</td>
+                                <td>'. $incidencia->getMotivo() .'</td>
+                                <td>'. $incidencia->getIdCreador() .'</td>
+                                <td>'. $incidencia->getEstado() .'</td>
+                                <td>
+                                    <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
+                                    <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
+                                </td>
+                            <tr>';
                     }
 
                 ?>
-                <tr>
-                    <td>01-02</td>
-                    <td>Julio</td>
-                    <td>Pendiente</td>
-                    <td>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                        <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                    </td>
                 </tr>
-                
             </tbody>
         </table>
     </div>

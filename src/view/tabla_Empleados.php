@@ -1,5 +1,7 @@
 <?php
     
+    session_start();
+
     if (empty($_SESSION)){
         header("Location:login.php");
         die();
@@ -48,8 +50,8 @@
                             <td>'. $empleado["apellidos"] .'</td>
                             <td>'. $empleado["DNI"] .'</td>
                             <td>
-                                <a href="#" class="btn btn-small btn-success"><i class="fa-regular fa-thumbs-up"></i></a>
-                                <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-xmark"></i></a>
+                                <a href="../../../src/controller/actions_tabla.php?class=ok&id='.$empleado["id"].'" class="btn btn-small btn-success"><i class="fa-regular fa-thumbs-up"></i></a>
+                                <a href="../../../src/controller/actions_tabla.php?class=reject&id='.$empleado["id"].'" class="btn btn-small btn-danger"><i class="fa-solid fa-xmark"></i></a>
                             </td>';
                     }
 

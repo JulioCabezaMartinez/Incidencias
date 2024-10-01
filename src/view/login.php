@@ -20,8 +20,8 @@ require_once "../view/Templates/inicio.inc.php";
                 echo "fallo de Sesion";
             }
             
-            if($_GET['action']==1){
-                echo "fallo de Sesion";
+            if($_GET['action']==2){
+                echo "No tiene permitido el acceso. Contacte al administrador.";
             }
 
         }

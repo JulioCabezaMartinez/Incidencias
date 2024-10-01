@@ -7,7 +7,7 @@
                 </a>
                 <ul class="nav flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li class="nav-item">
-                        <a href="main.php" class="nav-link align-middle px-0">
+                        <a href="../../../src/view/main.php" class="nav-link align-middle px-0">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Home</span>
                         </a>
                     </li>
@@ -16,7 +16,7 @@
                             <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Incidencias</span> </a>
                         <ul class="collapse nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
                             <li>
-                                <a href="creacion_Incidencia.php" class="nav-link px-0"> <span class="d-none d-sm-inline">Crear Incidencia</span></a>
+                                <a href="../../../src/controller/actions_incidencia.php?inci=1" class="nav-link px-0"> <span class="d-none d-sm-inline">Crear Incidencia</span></a>
                             </li>
                             <li class="w-100">
                                 <a href="../../../src/controller/actions_tabla.php?class=mi" class="nav-link px-0"> <span class="d-none d-sm-inline">Mis Incidencias</span></a>
@@ -26,7 +26,7 @@
                             </li>
                         </ul>
                         <?php
-                        if($_SESSION['tipo']==1){//El estado 1 equivale a ser Admin. ($usurioActivo->estado==1) Este es el if real, lo otro es para pruebas.
+                        if($_SESSION['tipo']==1){
                         ?>
                             <li class="nav-item">
                                 <a href="../../../src/controller/actions_tabla.php?class=em" class="nav-link align-middle px-0">

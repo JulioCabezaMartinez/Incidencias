@@ -1,10 +1,10 @@
 <?php
 
 class Incidencias{
-    private int $nIncidencia; //Para el número de incidencia vamos a coger el número de incidencia de la ultima entrada que haya en la BD.
+    private int $nIncidencia;
     private String $motivo;
     private String|null $solucion;
-    private int $estado; //1 Trabajando en ello, 2 Pausa, 3 En Seguimiento, 4 Finalizado, 5 Sin trabajador Asignado.
+    private int $estado; 
     private String $idCreador;
     private String|null $idEmpleado;
     private String|null $observaciones;
@@ -102,6 +102,8 @@ class Incidencias{
         $this->reabierto=$reabierto;
     }
 
+    //Funciones de Clase.
+
     public static function recogerTodasIncidencias(mysqli $connection){
         $incidencias=[];
         $result=$connection->query("Select * from incidencias");
@@ -168,6 +170,16 @@ class Incidencias{
         });
 
         return $listaDNI;
+    }
+
+    public static function creacionIncidencia($motivo, $id_creador, mysqli $connection){
+        $incidencia=new Incidencias(motivo: $motivo, idCreador: $id_creador);
+        
+        $result=$connection->query("INSERT INTO incidencias (motivo, estado, id_creador) VALUES ('". $incidencia->getMotivo() ."', ". $incidencia->getEstado() ." ,'". $incidencia->getIdCreador() ."');");
+
+        if($result!=false){
+            return true;
+        }else return mysqli_error($connection);
     }
 }
 

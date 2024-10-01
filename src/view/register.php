@@ -1,5 +1,7 @@
 <?php
 
+    session_start();
+
 require_once "../view/Templates/inicio.inc.php";
 
 ?>

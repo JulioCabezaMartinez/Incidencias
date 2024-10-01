@@ -2,16 +2,18 @@
 
 
 class Usuario {
-    private String|null $id=null;
+    private String|null $id;
     private String $correo;
-    private int $tipo; //1 Admin, 2 Cliente, 3 Empleado, 4 Empleado en espera, 5 Empleado de baja.
+    private int $tipo;
     private String $pass;
     private String $nombre;
     private String $apellidos;
     private String $DNI;
 
-    public function __construct(String $correo, int $tipo, String $pass, String $nombre, String $apellidos, String $DNI){
-        $this->id=uniqid();
+    public function __construct(String $correo, int $tipo, String $pass, String $nombre, String $apellidos, String $DNI, String $id=null){
+        if(!is_null($id)){
+            $this->id=$id;
+        }else $this->id=uniqid();
         $this->correo=$correo;
         $this->tipo=$tipo;
         $this->pass=$pass;
@@ -143,7 +145,7 @@ class Usuario {
         if(password_verify($pass, $linea->password)){
             $_SESSION["id"]=$linea->id_usuario;
             $_SESSION["nombre"]=$linea->nombre;
-            $_SESSION["tipo"]=$linea->tipo;
+            $_SESSION["tipo"]=(int)$linea->tipo;
             return true;
         }else return false;
 
@@ -177,6 +179,38 @@ class Usuario {
         }else{
             return mysqli_error($connection);
         }
+    }
+
+    public static function aceptarEmpleado($id ,mysqli $connection){
+        $result=$connection->query("UPDATE usuarios SET `tipo` = '3' WHERE id_usuario = '". $id ."';");
+        $result=$connection->query("UPDATE relacion_empleados SET estado = 2 WHERE id_empleado =  '". $id ."';");
+
+        if($result!=false){
+            return true;
+        }else return false;
+    }
+
+    public static function denegarEmpleado($id ,mysqli $connection){
+        $result=$connection->query("UPDATE usuarios SET `tipo` = '5' WHERE id_usuario = '". $id ."';");
+        $result=$connection->query("UPDATE relacion_empleados SET estado = 3 WHERE id_empleado =  '". $id ."';");
+
+        if($result!=false){
+            return true;
+        }else return false;
+    }
+
+    public static function recogerDatosEmpleado($id ,mysqli $connection){
+        $result=$connection->query("Select nombre, apellidos, DNI from usuarios where id_usuario= '". $id ."';");
+
+        $linea=$result->fetch_object();
+
+        if($linea!=null){
+            $datos_usuario=["nombre"=>$linea->nombre, "apellidos"=>$linea->apellidos, "DNI"=>$linea->DNI];
+
+            return $datos_usuario;
+
+        }else return false;
+
     }
 }
 

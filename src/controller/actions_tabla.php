@@ -1,4 +1,7 @@
 <?php
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL & ~E_NOTICE);
+
 
     session_start();
 
@@ -9,33 +12,34 @@
 
     if(isset($_GET['class'])){
 
-        if($_GET['class']=='all'){
+        switch($_GET['class']){
 
-            $lista_incidencias=Incidencias::recogerTodasIncidencias($connection);
+            case 'all':
+                $lista_incidencias=Incidencias::recogerTodasIncidencias($connection);
 
-            include '../view/tabla_incidencias.php';
+                include '../view/tabla_incidencias.php';
+                break;
 
-        }elseif($_GET['class']=='mi'){
-            
-            // $lista_incidencias=Incidencias::recogerTodasIncidenciasUsuario($connection, ); Aqui falta el ID de usuario que se cogerá por sesión.
+            case 'mi':
+                $lista_incidencias=Incidencias::recogerTodasIncidenciasUsuario($connection, $_SESSION["id"]);
 
-            include '../view/tabla_incidencias.php';
+                include '../view/tabla_incidencias.php';
+                break;
 
-        }elseif($_GET['class']=='em'){
-            $lista_empleados=Usuario::verNoEmpleados($connection);
-
-            if(is_string($lista_empleados)){
-
-                var_dump($lista_empleados);    
-
-            }else{
-
+            case 'em':
+                $lista_empleados=Usuario::verNoEmpleados($connection);
+               
                 include "../view/tabla_Empleados.php";
+                break;
 
-            }
-            
-
-
+            case 'ok':
+                if(Usuario::aceptarEmpleado($_GET['id'], $connection)){
+                    $lista_empleados=Usuario::verNoEmpleados($connection);
+               
+                    include "../view/tabla_Empleados.php";
+                    break;
+                }
         }
     }
+    
         
