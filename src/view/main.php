@@ -27,8 +27,7 @@
                 <h1>Bienvenido, <span>Nombre del usuario</span></h1>
                 <h3>Se encuentra en el portal de incidencias de DonDigtal. En caso de que tenga algún problema con alguno de nuestros servicios pulse el siguiente botón para crear una incidencia:</h3>
                 <a href="../../../src/controller/actions_incidencia.php?inci=1" class="btn btn-outline-danger w-50">Crear Incidencia</a>
-            </div>
-            
+            </div>  
     </div>
 </div> <!-- Div que cierra la barra lateral para que se mantenga en su lugar -->
 

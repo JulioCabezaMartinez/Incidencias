@@ -2,10 +2,15 @@
 
     session_start();
 
+    require_once '../model/BuscadorDB.php';
+    require_once '../model/usuario.php';
+
     if (empty($_SESSION)){
         header("Location:login.php");
         die();
     }
+
+    $lista_DNIs=Usuario::recogerDNIsUsuarios($connection);
 
     require_once "../view/Templates/inicio.inc.php";
 
@@ -14,15 +19,15 @@
 </head>
 <body>
 
-    <!-- Modal de confirmación -->
+    <!-- Modal de Registro -->
     <div class="modal fade" id="modal_registro" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
             <div class="modal-content">
                 <div class="modal-header" >
-                    <h5 class="modal-title" id="exampleModalLongTitle">Insercción correcta</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Menu de Registro</h5>
                 </div>
                 <div class="modal-body">
-                    <div class=""> <!-- Falta darle estilos al register (Grid 2 columnas) -->
+                    <div class=" "> <!-- Falta darle estilos al register (Grid 2 columnas) -->
                         <label for="nombre">Nombre:</label><br>
                         <input id="nombre_modal" type="text" name="nombre" placeholder="Nombre" maxlength="45" required >
                         <br><br>
@@ -59,16 +64,31 @@
             </div>
         </div>
     </div>
-
+    <!-- Modal de Confirmación de Registro -->
+    <div class="modal fade" id="confirmacion_registro" tabindex="-1" >
+        <div class="modal-dialog modal-dialog-centered" >
+            <div class="modal-content">
+                <div class="modal-header" >
+                    <h5 id="confirmacion_header" class="modal-title" id="exampleModalLongTitle">Registro correcto</h5>
+                </div>
+                <div class="modal-body">
+                    <label id="confirmacion_body">El usuario se ha registrado con éxito.</label>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_cerrar_confirmacion" type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <?php
         include_once '../view/Templates/barra_lateral.inc.php';
     ?>
 
     <div>
         <h1>Creacion de Incidencias</h1>
-        <form action="../../../src/controller/actions_incidencia.php" method="post">
-            <div class="row w-50 py-3 container-fluid">
-                <div class="col-1 w-50">
+            <div class="row w-75 py-3 container-fluid">
+                <div class="col-1 w-25">
+                <form action='../../src/controller/actions_incidencia.php' method="post">
                     <h2>Usuario Activo</h2>
                     <label for="nombre">Nombre:</label>
                     <input type="text" name="nombre" class="form-control w-100" id="nombre" value="<?php echo $usuario["nombre"] ?>" readonly>
@@ -79,52 +99,68 @@
                     <label for="DNI">DNI:</label>
                     <input type="text" name="DNI" class="form-control w-100" id="DNI" value="<?php echo $usuario["DNI"] ?>" readonly>
                 </div>
-                <div class="col-2 w-50">
+                <div class="col-2 w-25">
                     <h2>Cliente</h2>
                     <label for="nombre">Nombre:</label>
-                    <input type="text" name="nombreCliente" class="form-control w-100" id="nombreCliente" readonly>
+                    <input type="text" name="nombreCliente" class="form-control w-100" id="nombreCliente" required>
                     <br>
                     <label for="apellidos">Apellidos:</label>
-                    <input type="text" name="apellidosCliente" class="form-control w-100" id="apellidosCliente" readonly>
+                    <input type="text" name="apellidosCliente" class="form-control w-100" id="apellidosCliente"  required>
                     <br>
                     <label for="DNI">DNI:</label>
-                    <input type="text" name="DNICliente" class="form-control w-100" id="DNICliente" readonly>
+                    <input type="text" name="DNICliente" class="form-control w-100" id="DNICliente" required>
+                </div>
+                <div class="col-3 w-25">
+                    <h2>Contacto</h2>
+                    <label for="nombre_contacto">Nombre de Contacto:</label>
+                    <input type="text" name="nombre_contacto" class="form-control w-100" id="nombreContacto" required>
                 </div>
             </div>
             <button type="button" id="misma_persona" class="btn btn-secondary mx-4" >Son la misma persona</button>
+            <label>(Utilice este botón para completar los campos de cliente automaticamente)</label><br><br>
             <?php
                 if($_SESSION["tipo"]!=2){ //Los clientes no podrán ver el botón.
             ?>
             <button type="button" id="btn_modal" class="btn btn-outline-primary mx-4" >Registrar nuevo Usuario</button>
-            <?php
-                }
-            ?>
             <div class="mx-4">
                 <br><br>
                 <h2>Busqueda de Cliente por DNI</h2>
-                <label for="DNIBusqueda">DNI:</label><br>
-                <input id="DNIBusqueda" name="DNIBusqueda" list="DNIs" class=" form-control w-25">
-                <datalist id="DNIs">
 
-                </datalist>
-                    
-            </div>
-            
-            <div class="col py-3 mx-4">
-                <div class="mb-3">
-                    <label for="motivo" class="form-label w-50">Motivo de la Incidencia</label>
-                    <input type="text" name="motivo" class="form-control w-50" id="motivoIncidencia" placeholder="Fallo en la instalacion de servicio" required>
+                <label for="DNIBusqueda">DNI:</label><br>
+                <div class="d-flex flex-row">
+                    <input id="DNIBusqueda" name="DNIBusqueda" list="DNIs" class=" form-control w-25 h-25">
+                    <button type="button" id="btn_busqueda_DNI" class="btn btn-outline-primary mx-3" ><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
+                
+                <datalist id="DNIs">
+                    <?php
+                        foreach($lista_DNIs as $DNI){
+                    ?>
+                        <option value="<?php echo $DNI ?>"><?php echo $DNI ?></option>
+                    <?php
+                        }
+                    ?>
+                </datalist>            
             </div>
-            <input class="btn btn-outline-danger mx-4" type="submit" name="crearIncidencia" value="Crear Incidencia">
+            <?php
+                }
+            ?>
+            
+        <div class="col py-3 mx-4">
+            <div class="mb-3">
+                <label for="motivo" class="form-label w-50">Motivo de la Incidencia</label>
+                <input type="text" name="motivo" class="form-control w-50" id="motivoIncidencia" placeholder="Fallo en la instalacion de servicio" required>
+            </div>
+        </div>
+        <input class="btn btn-outline-danger mx-4" type="submit" name="crearIncidencia" value="Crear Incidencia">
         </form>
     </div>
     
 </div> <!-- Div que cierra la barra lateral para que se mantenga en su lugar -->
 
-    <!-- Script que copia los mismos datos de creación en cliente -->
     <script>
         $(document).ready(function(){
+            //Script que copia los mismos datos de creación en cliente
             $("#misma_persona").click(function(){
                 var nombre=$("#nombre").val();
                 var apellidos=$("#apellidos").val();
@@ -133,49 +169,110 @@
                 $("#apellidosCliente").val(apellidos);
                 $("#DNICliente").val(DNI);
             });
+
+            $("#btn_busqueda_DNI").click(function(){
+                var DNI_busqueda_usuario=$("#DNIBusqueda").val();
+                $.ajax({
+                    url: "AJAX.php",
+                    method: "POST",
+                    data:{
+                        mode:"DNI_busqueda_usuario",
+                        DNI: DNI_busqueda_usuario
+                    },
+                    success:function(data){
+                        console.log(data);
+                        datos=JSON.parse(data)
+                    $("#nombreCliente").val(datos.nombre);
+                    $("#apellidosCliente").val(datos.apellidos);
+                    $("#DNICliente").val(datos.DNI);
+                    }
+                })
+            });
         });
     </script>
 
-    <!-- Script modal de Registro -->
     <script type='text/javascript'>
-        $("#btn_modal").on('click', function() {
-            $('#modal_registro').modal('show');
-        });
+        $(document).ready(function(){
 
-        //Conexión con AJAX para registrar cliente.
-        $("#btn_registrar_modal").on("click", function(){
-            var nombre=$("#nombre_modal").val();
-            var apellidos=$("#apellidos_modal").val();
-            var correo=$("#correo_modal").val();
-            var pass=$("#pass_modal").val();
-            var confirm=$("#confirm_modal").val();
-            var DNI=$("#DNI_modal").val();
-            var telefono=$("#telefono_modal").val();
-            var direccion=$("#direccion_modal").val();
-            var tipo=$("input[name='tipo']:checked").val();
-            $.ajax({
-                url: "AJAX.php",
-                method: "POST",
-                data:{
-                    mode: registro,
-                    nombre: nombre,
-                    apellidos: apellidos,
-                    correo: correo,
-                    pass: pass,
-                    confirm: confirm,
-                    DNI: DNI,
-                    telefono: telefono,
-                    direccion: direccion,
-                    tipo: tipo
-                },
-                success: function(data){
-                    $("#DNIs").append(data);
+            //Script modal de Registro
+            $("#btn_modal").on('click', function() {
+                $('#modal_registro').modal('show');
+            });
+
+            //Conexión con AJAX para registrar cliente.
+            $("#btn_registrar_modal").on("click", function(){
+                var nombre=$("#nombre_modal").val();
+                var apellidos=$("#apellidos_modal").val();
+                var correo=$("#correo_modal").val();
+                var pass=$("#pass_modal").val();
+                var confirm=$("#confirm_modal").val();
+                var DNI=$("#DNI_modal").val();
+                var telefono=$("#telefono_modal").val();
+                var direccion=$("#direccion_modal").val();
+                var tipo=$("input[name='tipo']:checked").val();
+                $.ajax({
+                    url: "AJAX.php",
+                    method: "POST",
+                    data:{
+                        mode: "registro",
+                        nombre: nombre,
+                        apellidos: apellidos,
+                        correo: correo,
+                        pass: pass,
+                        confirm: confirm,
+                        DNI: DNI,
+                        telefono: telefono,
+                        direccion: direccion,
+                        tipo: tipo
+                    },
+                    success: function(data){
+
+                        $('#modal_registro').modal('hide');
+
+                        console.log(data);
+
+                        if(data=="Todo correcto"){
+                            $('#confirmacion_registro').modal("show");
+                        }else{
+                            console.log("data");
+                            $('#confirmacion_header').text("Registro Fallido");
+                            $('#confirmacion_body').text(data);
+                            $('#confirmacion_registro').modal("show");
+                        }
+                        
+                    }
+                })
+            });
+
+            $('#DNIBusqueda').keyup(function(){
+                var DNI=$(this).val();
+                var lista_DNIs=$("DNIs").html();
+                if(DNI==""){
+                    $("DNIs").html(lista_DNIs);
+                }else{
+                    $.ajax({
+                        url: "AJAX.php",
+                        method: "POST",
+                        data:{
+                            mode: "busqueda_DNI",
+                            DNI: DNI
+                        },
+                        success:function(data){
+                            $("DNIs").html(data);
+                        }
+                    })
                 }
-            })
-        });
+                
+            });
 
-        $('#btn_cerrar_modal').on('click', function() {
-            $('#modal_registro').modal('hide');
+            //Botón para cerrar los modales.
+            $('#btn_cerrar_modal').on('click', function() {
+                $('#modal_registro').modal('hide');
+            });
+
+            $('#btn_cerrar_confirmacion').on('click', function() {
+                $('#confirmacion_registro').modal('hide');
+            });
         });
     </script>
 

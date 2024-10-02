@@ -6,16 +6,22 @@ class Incidencias{
     private String|null $solucion;
     private int $estado; 
     private String $idCreador;
+    private String $idCliente;
     private String|null $idEmpleado;
+    private String $contacto;
     private String|null $observaciones;
     private bool $reabierto;
 
-    public function __construct(String $motivo, String $idCreador, String|null $observaciones=null, int $nIncidencia=null, String|null $solucion=null, int|null $estado=null, String|null $idEmpleado=null, bool|null $reabierto=null){
+    public function __construct(String $motivo, String $idCreador, String $idCliente, String $contacto, String|null $observaciones=null, int $nIncidencia=null, String|null $solucion=null, int|null $estado=null, String|null $idEmpleado=null, bool|null $reabierto=null){
         $this->motivo=$motivo;
 
         $this->solucion=$solucion;
 
         $this->idCreador=$idCreador;
+
+        $this->idCliente=$idCliente;
+
+        $this->contacto=$contacto;
 
         $this->observaciones=$observaciones;
 
@@ -41,6 +47,8 @@ class Incidencias{
 
     }
 
+    //Getters
+
     public function getNIncidencia(): int{
         return $this->nIncidencia;
     }
@@ -58,8 +66,16 @@ class Incidencias{
         return $this->idCreador;
     }
 
+    public function getIdCliente() {
+        return $this->idCliente;
+    }
+
     public function getIdEmpleado(): String{
         return $this->idEmpleado;
+    }
+
+    public function getContacto() {
+        return $this->contacto;
     }
 
     public function getObservaciones(): String{
@@ -69,6 +85,8 @@ class Incidencias{
     public function getReabierto(): bool{
         return $this->reabierto;
     }
+
+    //Setters
 
     public function setNIncidencia(int $nIncidencia): void{
          $this->nIncidencia=$nIncidencia;
@@ -90,8 +108,16 @@ class Incidencias{
         $this->idCreador=$idCreador;
     }
 
+    public function setIdCliente($idCliente) {
+        $this->idCliente = $idCliente;
+    }
+
     public function setIdEmpleado(String $idEmpleado) {
         $this->idCreador=$idEmpleado;
+    }
+
+    public function setContacto($contacto) {
+        $this->contacto = $contacto;
     }
 
     public function setObservaciones(String $observaciones){
@@ -112,7 +138,7 @@ class Incidencias{
             $linea=$result->fetch_object();
 
             while($linea!=null){
-                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto);
+                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto);
                 array_push($incidencias, $incidencia);
 
                 $linea=$result->fetch_object();
@@ -133,7 +159,7 @@ class Incidencias{
             $linea=$result->fetch_object();
 
             while($linea!=null){
-                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto);
+                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto);
                 array_push($incidencias, $incidencia);
 
                 $linea=$result->fetch_object();
@@ -153,7 +179,7 @@ class Incidencias{
             $linea=$result->fetch_object();
 
             while($linea!=null){
-                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto);
+                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto);
             }
         }else{
             $error="Error de conexion a la BD";
@@ -172,10 +198,10 @@ class Incidencias{
         return $listaDNI;
     }
 
-    public static function creacionIncidencia($motivo, $id_creador, mysqli $connection){
-        $incidencia=new Incidencias(motivo: $motivo, idCreador: $id_creador);
+    public static function creacionIncidencia($motivo, $id_creador, $id_cliente, $contacto, mysqli $connection){
+        $incidencia=new Incidencias($motivo, $id_creador, $id_cliente, $contacto);
         
-        $result=$connection->query("INSERT INTO incidencias (motivo, estado, id_creador) VALUES ('". $incidencia->getMotivo() ."', ". $incidencia->getEstado() ." ,'". $incidencia->getIdCreador() ."');");
+        $result=$connection->query("INSERT INTO incidencias (motivo, estado, id_creador, id_cliente, persona_contacto) VALUES ('". $incidencia->getMotivo() ."', ". $incidencia->getEstado() ." ,'". $incidencia->getIdCreador() ."', '".$incidencia->getIdCliente()."', '".$incidencia->getContacto()."');");
 
         if($result!=false){
             return true;

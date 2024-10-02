@@ -17,7 +17,8 @@
     }
 
     if(isset($_POST["crearIncidencia"])){
-        $resultado=Incidencias::creacionIncidencia($_POST["motivo"], $_SESSION["id"], $connection);
+        $id_cliente=Usuario::recogerIDUsuarioDNI($_POST["DNICliente"], $connection);
+        $resultado=Incidencias::creacionIncidencia($_POST["motivo"], $_SESSION["id"], $id_cliente, $_POST["nombre_contacto"], $connection);
 
         var_dump($resultado);
 

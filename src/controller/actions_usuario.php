@@ -24,6 +24,7 @@
                 header("Location: ../view/login.php?action=2");
 
             }else{
+
                 include "../view/main.php";
             } 
 

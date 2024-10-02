@@ -234,6 +234,62 @@ class Usuario {
         }else return false;
 
     }
+
+    public static function recogerDNIsUsuarios(mysqli $connection){
+        $listaDNIs=[];
+
+        $result=$connection->query("Select DNI from usuarios;");
+
+        $linea=$result->fetch_object();
+
+        while($linea!=null){
+            array_push($listaDNIs, $linea->DNI);
+
+            $linea=$result->fetch_object();
+        }
+
+        return $listaDNIs;
+    }
+
+    public static function busquedaDNI( $DNI ,mysqli $connection){
+        $busqueda_DNI=[];
+        $result=$connection->query("Select DNI from usuarios where DNI LIKE '$DNI%';");
+
+        $linea=$result->fetch_object();
+        while($linea!=null){
+            array_push($busqueda_DNI, $linea->DNI);
+
+            $linea=$result->fetch_object();
+        }
+
+        return $busqueda_DNI;
+    }
+
+    public static function recogerUsuarioDNI($DNI, $connection){
+        $result=$connection->query("Select nombre, apellidos, DNI from usuarios where DNI= '". $DNI ."';");
+
+        $linea=$result->fetch_object();
+
+        if($linea!=null){
+            $datos_usuario=["nombre"=>$linea->nombre, "apellidos"=>$linea->apellidos, "DNI"=>$linea->DNI];
+
+            return $datos_usuario;
+
+        }else return false;
+    }
+
+    public static function recogerIDUsuarioDNI($DNI, $connection){
+        $result=$connection->query("Select id_usuario from usuarios where DNI= '". $DNI ."';");
+
+        $linea=$result->fetch_object();
+
+        if($linea!=null){
+            $id=$linea->id_usuario;
+
+            return $id;
+
+        }else return false;
+    }
 }
 
 ?>
