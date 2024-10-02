@@ -31,6 +31,12 @@ require_once "../view/Templates/inicio.inc.php";
             <label for="DNI">DNI:</label><br>
             <input type="text" name="DNI" placeholder="12345678A" maxlength="9" pattern="(\d{8})([A-Z]{1})" required> <!-- Poner para el NIE -->
             <br><br>
+            <label for="telefono">Telefono:</label><br>
+            <input type="text" name="telefono" required> <!-- Poner para el NIE -->
+            <br><br>
+            <label for="direccion">Dirección:</label><br>
+            <input type="text" name="direccion" required> <!-- Poner para el NIE -->
+            <br><br>
             <label for="tipo">Tipo de Empleado:</label><br><br>
             <input type="radio" name="tipo" value="Empleado"><label>Empleado</label>
             <input type="radio" name="tipo" value="Cliente" checked><label>Cliente</label>

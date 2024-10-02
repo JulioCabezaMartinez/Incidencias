@@ -9,8 +9,10 @@ class Usuario {
     private String $nombre;
     private String $apellidos;
     private String $DNI;
+    private String $telefono;
+    private String $direccion;
 
-    public function __construct(String $correo, int $tipo, String $pass, String $nombre, String $apellidos, String $DNI, String $id=null){
+    public function __construct(String $correo, int $tipo, String $pass, String $nombre, String $apellidos, String $DNI, String $telefono, String $direccion, String $id=null){
         if(!is_null($id)){
             $this->id=$id;
         }else $this->id=uniqid();
@@ -20,6 +22,8 @@ class Usuario {
         $this->nombre=$nombre;
         $this->apellidos=$apellidos;
         $this->DNI=$DNI;
+        $this->telefono=$telefono;
+        $this->direccion=$direccion;
     }
 
     //Gettter
@@ -52,6 +56,14 @@ class Usuario {
         return $this->DNI;
     }
 
+    public function getTelefono(): string {
+        return $this->telefono;
+    }
+
+    public function getDireccion(): string {
+        return $this->direccion;
+    }
+
     //Setters
 
     public function setId(String $id)  {
@@ -82,6 +94,13 @@ class Usuario {
         $this->DNI = $DNI;
     }
 
+    public function setTelefono(string $telefono): void {
+        $this->telefono = $telefono;
+    }
+
+    public function setDireccion(string $direccion): void {
+        $this->direccion = $direccion;
+    }
 
     //Funciones de Clase
 
@@ -100,8 +119,8 @@ class Usuario {
         }
     }
 
-    public static function registrarUsuario(String $correo, String $tipo, String $pass, String $confirmPass, String $nombre, String $apellidos, String $DNI, mysqli $connection){
-        if(!is_null($correo) && !is_null($tipo) && !is_null($pass) && !is_null($confirmPass) && !is_null($nombre) && !is_null($apellidos) && !is_null($DNI)){ //Doble comprobación para evitar que inyecciones de datos erroneas en la BD
+    public static function registrarUsuario(String $correo, String $tipo, String $pass, String $confirmPass, String $nombre, String $apellidos, String $DNI, String $telefono, String $direccion, mysqli $connection){
+        if(!is_null($correo) && !is_null($tipo) && !is_null($pass) && !is_null($confirmPass) && !is_null($nombre) && !is_null($apellidos) && !is_null($DNI) && !is_null($telefono) && !is_null($direccion)){ //Doble comprobación para evitar que inyecciones de datos erroneas en la BD
             if($pass===$confirmPass){
                 if(Usuario::compruebaCredenciales($correo, $DNI, $connection)){
 
@@ -110,7 +129,7 @@ class Usuario {
                         "Empleado"=>4
                     };
     
-                    $usuario=new Usuario($correo, $confirmTipo, password_hash($pass, PASSWORD_DEFAULT), $nombre, $apellidos, $DNI);
+                    $usuario=new Usuario($correo, $confirmTipo, password_hash($pass, PASSWORD_DEFAULT), $nombre, $apellidos, $DNI, $telefono, $direccion);
     
                     if($tipo=="Empleado"){
                         $result=$connection->query("Insert into relacion_empleados values('66fa89e697c99', '". $usuario->getId() ."', 1)"); // Estado: 1 En espera, 2 Aceptado, 3 Denegado.
@@ -121,9 +140,11 @@ class Usuario {
                         }
                     }
     
-                    $result=$connection->query("Insert into usuarios values('". $usuario->getId() ."', '". $usuario->getCorreo() ."', '". $usuario->getPass() ."', '". $usuario->getDNI()."', ". $usuario->getTipo() .", '". $usuario->getNombre() ."', '". $usuario->getApellidos() ."')");
+                    $result=$connection->query("Insert into usuarios values('". $usuario->getId() ."', '". $usuario->getCorreo() ."',". $usuario->getTipo() .", '". $usuario->getPass() ."', '". $usuario->getTelefono() ."', '". $usuario->getDireccion() ."', '". $usuario->getNombre() ."', '". $usuario->getApellidos() ."', '". $usuario->getDNI()."', null, null, null, null, null)");
     
-                    return $result;
+                    if(!$result){
+                        return mysqli_error($connection); //Lineas de debug.
+                    }
 
                 }else{
                     return "Su DNI o correo ya se encuntra registrado";

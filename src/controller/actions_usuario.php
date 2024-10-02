@@ -10,7 +10,7 @@
 
     if(isset($_POST["register"])){ //En este caso falta comprobar correo y/o DNI para evitar la duplicidad de contenido.
         $resultado=Usuario::registrarUsuario($_POST["correo"], $_POST["tipo"], $_POST["pass"], $_POST["confirm_pass"],
-         $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $connection);
+         $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $connection);
 
         header("Location: ../view/login.php?action=register");
     }

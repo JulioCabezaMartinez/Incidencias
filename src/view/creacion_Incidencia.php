@@ -24,22 +24,28 @@
                 <div class="modal-body">
                     <div class=""> <!-- Falta darle estilos al register (Grid 2 columnas) -->
                         <label for="nombre">Nombre:</label><br>
-                        <input type="text" name="nombre" placeholder="Nombre" maxlength="45" required >
+                        <input id="nombre_modal" type="text" name="nombre" placeholder="Nombre" maxlength="45" required >
                         <br><br>
                         <label for="apellidos">Apellidos:</label><br>
-                        <input type="text" name="apellidos" placeholder="Apellidos" maxlength="60" required>
+                        <input id="apellidos_modal" type="text" name="apellidos" placeholder="Apellidos" maxlength="60" required>
                         <br><br>
                         <label for="correo">Correo:</label><br>
-                        <input type="email" name="correo" maxlength="60" required>
+                        <input id="correo_modal" type="email" name="correo" maxlength="60" required>
                         <br><br>
                         <label for="pass">Contraseña:</label><br>
-                        <input type="password" name="pass" maxlength="60" required>
+                        <input id="pass_modal" type="password" name="pass" maxlength="60" required>
                         <br><br>
                         <label for="confirm_pass">Confirmar Contraseña:</label><br>
-                        <input type="password" name="confirm_pass" maxlength="60" required>
+                        <input id="confirm_modal" type="password" name="confirm_pass" maxlength="60" required>
                         <br><br>
                         <label for="DNI">DNI:</label><br>
-                        <input type="text" name="DNI" placeholder="12345678A" maxlength="9" pattern="(\d{8})([A-Z]{1})" required> <!-- Poner para el NIE -->
+                        <input id="DNI_modal" type="text" name="DNI" placeholder="12345678A" maxlength="9" pattern="(\d{8})([A-Z]{1})" required> <!-- Poner para el NIE -->
+                        <br><br>
+                        <label for="telefono">Telefono:</label><br>
+                        <input id="telefono_modal" type="text" name="telefono" required> <!-- Poner para el NIE -->
+                        <br><br>
+                        <label for="direccion">Dirección:</label><br>
+                        <input id="direccion_modal" type="text" name="direccion" required> <!-- Poner para el NIE -->
                         <br><br>
                         <label for="tipo">Tipo de Empleado:</label><br><br>
                         <input type="radio" name="tipo" value="Empleado"><label>Empleado</label>
@@ -86,7 +92,13 @@
                 </div>
             </div>
             <button type="button" id="misma_persona" class="btn btn-secondary mx-4" >Son la misma persona</button>
+            <?php
+                if($_SESSION["tipo"]!=2){ //Los clientes no podrán ver el botón.
+            ?>
             <button type="button" id="btn_modal" class="btn btn-outline-primary mx-4" >Registrar nuevo Usuario</button>
+            <?php
+                }
+            ?>
             <div class="mx-4">
                 <br><br>
                 <h2>Busqueda de Cliente por DNI</h2>
@@ -130,7 +142,37 @@
             $('#modal_registro').modal('show');
         });
 
-        
+        //Conexión con AJAX para registrar cliente.
+        $("#btn_registrar_modal").on("click", function(){
+            var nombre=$("#nombre_modal").val();
+            var apellidos=$("#apellidos_modal").val();
+            var correo=$("#correo_modal").val();
+            var pass=$("#pass_modal").val();
+            var confirm=$("#confirm_modal").val();
+            var DNI=$("#DNI_modal").val();
+            var telefono=$("#telefono_modal").val();
+            var direccion=$("#direccion_modal").val();
+            var tipo=$("input[name='tipo']:checked").val();
+            $.ajax({
+                url: "AJAX.php",
+                method: "POST",
+                data:{
+                    mode: registro,
+                    nombre: nombre,
+                    apellidos: apellidos,
+                    correo: correo,
+                    pass: pass,
+                    confirm: confirm,
+                    DNI: DNI,
+                    telefono: telefono,
+                    direccion: direccion,
+                    tipo: tipo
+                },
+                success: function(data){
+                    $("#DNIs").append(data);
+                }
+            })
+        });
 
         $('#btn_cerrar_modal').on('click', function() {
             $('#modal_registro').modal('hide');
