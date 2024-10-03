@@ -11,6 +11,7 @@
 
 ?>
 <title>Incidencias</title>
+
 </head>
 <body>
     <!-- Modal de confirmación -->
@@ -40,36 +41,38 @@
 
         <h1>Tabla de Incidencias</h1><br>
         <label for="buscador">Busqueda por DNI:</label>
-        <input type="text" id="busqueda" style="width: 10%;" maxlength="9" placeholder="12345678A">
-        <table style="width: 97%;" class="table table-striped h-25 ">
+        <input type="text" id="busqueda_DNI_incidencia" style="width: 10%;" maxlength="9" placeholder="12345678A">
+        <table style="width: 85%;" class="table table-striped">
             <thead>
                 <tr>
                 <th scope="col">N°Incidencia</th>
                 <th scope="col">Motivo</th>
-                <th scope="col">Remitente</th>
+                <th scope="col">DNI-Cliente</th>
+                <th scope="col">Nombre-Cliente</th>
                 <th scope="col">Estado</th>
                 <th scope="col"></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="all_incidencias">
                 
                 <?php
-
                     foreach($lista_incidencias as $incidencia){
-                        echo '<tr>
-                                <td>01-'. $incidencia->getNIncidencia() .'</td>
-                                <td>'. $incidencia->getMotivo() .'</td>
-                                <td>'. $incidencia->getIdCreador() .'</td>
-                                <td>'. $incidencia->getEstado() .'</td>
-                                <td>
-                                    <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                                    <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                                </td>
-                            <tr>';
-                    }
-
+                        $usuario=Usuario::recogerUsuarioId($incidencia->getIdCliente(), $connection);
                 ?>
-                </tr>
+                    <tr>
+                            <td>01-<?php echo $incidencia->getNIncidencia()?></td>
+                            <td><?php echo $incidencia->getMotivo() ?></td>
+                            <td><?php echo $usuario["DNI"] ?></td>
+                            <td><?php echo $usuario["nombre"]. " " .$usuario["apellidos"] ?></td>
+                            <td><?php echo $incidencia->getEstado() ?></td>
+                            <td>
+                                <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
+                                <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
+                            </td>
+                        </tr>
+                <?php
+                }
+                ?>
             </tbody>
         </table>
     </div>
@@ -89,6 +92,34 @@
         }
     
     ?>
+    
+    <script>
+        //Script de busqueda por DNI de AJAX
+        $(document).ready(function(){
+            $('#busqueda_DNI_incidencia').keyup(function(){
+                var DNI=$(this).val();
+                var lista_incidencias=$("#all_incidencias").html();
+                if(DNI==""){
+                    $("#all_incidencias").html(lista_incidencias);
+                }else{
+                    $.ajax({
+                        url: "AJAX.php",
+                        method: "POST",
+                        data:{
+                            mode: "busqueda_DNI_incidencias",
+                            DNI: DNI
+                        },
+                        success:function(data){
+                            
+                            $("#all_incidencias").html(data);
+                        }
+                    })
+                }
+                
+            });
+        });
+        
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -7,7 +7,7 @@
         die();
     }
 
-require_once "../view/Templates/inicio.inc.php";
+    require_once "../view/Templates/inicio.inc.php";
 
 ?>
     <title>Login</title>

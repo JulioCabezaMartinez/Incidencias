@@ -246,9 +246,9 @@
 
             $('#DNIBusqueda').keyup(function(){
                 var DNI=$(this).val();
-                var lista_DNIs=$("DNIs").html();
+                var lista_DNIs=$("#DNIs").html();
                 if(DNI==""){
-                    $("DNIs").html(lista_DNIs);
+                    $("#DNIs").html(lista_DNIs);
                 }else{
                     $.ajax({
                         url: "AJAX.php",
@@ -258,7 +258,7 @@
                             DNI: DNI
                         },
                         success:function(data){
-                            $("DNIs").html(data);
+                            $("#DNIs").html(data);
                         }
                     })
                 }

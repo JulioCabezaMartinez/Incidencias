@@ -222,12 +222,12 @@ class Usuario {
     }
 
     public static function recogerDatosEmpleado($id ,mysqli $connection){
-        $result=$connection->query("Select nombre, apellidos, DNI from usuarios where id_usuario= '". $id ."';");
+        $result=$connection->query("Select nombre, apellidos, DNI, telefono from usuarios where id_usuario= '". $id ."';");
 
         $linea=$result->fetch_object();
 
         if($linea!=null){
-            $datos_usuario=["nombre"=>$linea->nombre, "apellidos"=>$linea->apellidos, "DNI"=>$linea->DNI];
+            $datos_usuario=["nombre"=>$linea->nombre, "apellidos"=>$linea->apellidos, "DNI"=>$linea->DNI, "telefono"=>$linea->telefono];
 
             return $datos_usuario;
 
@@ -253,11 +253,12 @@ class Usuario {
 
     public static function busquedaDNI( $DNI ,mysqli $connection){
         $busqueda_DNI=[];
-        $result=$connection->query("Select DNI from usuarios where DNI LIKE '$DNI%';");
+        $result=$connection->query("Select DNI, nombre, apellidos,telefono, id_usuario from usuarios where DNI LIKE '$DNI%';");
 
         $linea=$result->fetch_object();
         while($linea!=null){
-            array_push($busqueda_DNI, $linea->DNI);
+            $datos=["DNI"=>$linea->DNI, "nombre"=>$linea->nombre, "apellidos"=>$linea->apellidos, "telefono"=>$linea->apellidos, "id"=>$linea->id_usuario];
+            array_push($busqueda_DNI, $datos);
 
             $linea=$result->fetch_object();
         }
@@ -266,12 +267,25 @@ class Usuario {
     }
 
     public static function recogerUsuarioDNI($DNI, $connection){
-        $result=$connection->query("Select nombre, apellidos, DNI from usuarios where DNI= '". $DNI ."';");
+        $result=$connection->query("Select nombre, apellidos, DNI, telefono, id_usuario from usuarios where DNI= '". $DNI ."';");
 
         $linea=$result->fetch_object();
 
         if($linea!=null){
-            $datos_usuario=["nombre"=>$linea->nombre, "apellidos"=>$linea->apellidos, "DNI"=>$linea->DNI];
+            $datos_usuario=["nombre"=>$linea->nombre, "apellidos"=>$linea->apellidos, "DNI"=>$linea->DNI, "telefono"=>$linea->telefono, "id"=>$linea->id_usuario];
+
+            return $datos_usuario;
+
+        };
+    }
+
+    public static function recogerUsuarioID($id, $connection){
+        $result=$connection->query("Select nombre, apellidos, DNI, telefono, id_usuario from usuarios where id_usuario= '". $id ."';");
+
+        $linea=$result->fetch_object();
+
+        if($linea!=null){
+            $datos_usuario=["nombre"=>$linea->nombre, "apellidos"=>$linea->apellidos, "DNI"=>$linea->DNI, "telefono"=>$linea->telefono, "id"=>$linea->id_usuario];
 
             return $datos_usuario;
 

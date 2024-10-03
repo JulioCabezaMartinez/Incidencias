@@ -189,13 +189,28 @@ class Incidencias{
         return $incidencia;
     }
 
-    public static function recogerIncidenciasDNI(array $lista_incidencias, String $DNI){//Esto no tiene que llamar a la base de datos sino al array ya creado.
-        $id_Usuario=''; // Aqui es necesario utilizar una función no implementada de Usuarios.
-        $listaDNI=array_filter($lista_incidencias, function($incidencia) use($id_Usuario){
-            return $incidencia->getIdCreador()==$id_Usuario;
-        });
+    public static function recogerIncidenciasDNI(String $DNI, mysqli $connection){
+        $lista_incidencias=[];
+        $usuarios=Usuario::busquedaDNI($DNI, $connection);
+        
+        foreach($usuarios as $usuario){
 
-        return $listaDNI;
+            $id_cliente=$usuario["id"];
+
+            $result=$connection->query("Select * from incidencias where id_cliente= '".$id_cliente."';");
+    
+            $linea=$result->fetch_object();
+            
+            while($linea!=null){
+                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto);
+                
+                array_push($lista_incidencias, $incidencia);
+                $linea=$result->fetch_object();
+            }
+        }
+
+        return $lista_incidencias;
+       
     }
 
     public static function creacionIncidencia($motivo, $id_creador, $id_cliente, $contacto, mysqli $connection){

@@ -22,7 +22,7 @@
                                 <a href="../../../src/controller/actions_tabla.php?class=mi" class="nav-link px-0"> <span class="d-none d-sm-inline">Mis Incidencias</span></a>
                             </li>
                             <?php
-                            if(!$_SESSION['tipo']==2){ //Cliente no puede ver esto
+                            if($_SESSION['tipo']!=2){ //Cliente no puede ver esto
                             ?>
                             <li>
                                 <a href="../../../src/controller/actions_tabla.php?class=all" class="nav-link px-0"> <span class="d-none d-sm-inline">Todas las Incidencias</span></a>
