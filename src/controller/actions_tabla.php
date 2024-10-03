@@ -20,7 +20,7 @@
                 include '../view/tabla_incidencias.php';
                 break;
 
-            case 'mi':
+            case 'cliente':
                 $lista_incidencias=Incidencias::recogerTodasIncidenciasUsuario($connection, $_SESSION["id"]);
 
                 include '../view/tabla_incidencias.php';
@@ -58,6 +58,23 @@
                 }else{
                     echo mysqli_error($connection);
                 }
+                break;
+
+            case 'del_empleado':
+                if(Incidencias::eliminarEmpleado($_SESSION['id'], $_POST["nIncidencia"], $connection)){
+                    $lista_incidencias=Incidencias::recogerTodasIncidenciasAsignadasUsuario($connection, $_SESSION["id"]);
+    
+                    include '../../src/view/tabla_incidencias_asignadas.php';
+
+                }else{
+                    echo mysqli_error($connection);
+                }
+                break;
+
+            case 'empleados':
+                $lista_incidencias=Incidencias::recogerTodasIncidenciasAsignadasUsuario($connection, $_SESSION["id"]);
+    
+                include '../../src/view/tabla_incidencias_asignadas.php';
                 break;
         }
     }

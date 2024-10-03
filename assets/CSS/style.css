@@ -47,3 +47,15 @@ body {
     align-items: center;
     justify-content: center;
 }
+
+.circulo_barraLateral{
+    display: inline-block;
+    width: 15%;
+    margin-left: 5%;
+    border-radius: 50%;
+
+    background-color: red;
+    color: aliceblue;
+    font-size: 80%;
+    text-align: center;
+}

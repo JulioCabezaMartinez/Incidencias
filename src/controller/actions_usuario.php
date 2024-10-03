@@ -6,6 +6,7 @@
 
     include "../model/BuscadorDB.php";
     include "../model/usuario.php";
+    include "../model/incidencias.php";
 
 
     if(isset($_POST["register"])){ //En este caso falta comprobar correo y/o DNI para evitar la duplicidad de contenido.
@@ -38,6 +39,10 @@
             Usuario::logOut();
     
             header("Location: ../view/login.php");
+        }
+
+        if($_GET['action']==0){
+            include "../view/main.php";
         }
     }
    

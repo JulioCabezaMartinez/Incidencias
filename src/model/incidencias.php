@@ -281,6 +281,20 @@ class Incidencias{
             return true;
         }else return false;
     }
+
+    public static function contarIncidenciasPendientes($id_empleado, mysqli $connection){
+        $result=$connection->query("Select count(*) as total from incidencias where estado<4 and id_empleado='". $id_empleado ."';");
+
+        $linea=$result->fetch_object();
+
+        if($result!=false){
+            
+            return $linea->total;
+
+        }else{
+            return false;
+        }
+    } 
 }
 
 ?>

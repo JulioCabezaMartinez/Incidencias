@@ -17,7 +17,12 @@
     }
 
     if(isset($_POST["crearIncidencia"])){
-        $id_cliente=Usuario::recogerIDUsuarioDNI($_POST["DNICliente"], $connection);
+        if($_SESSION["tipo"]==2){
+            $id_cliente=$_SESSION["id"];
+        }else{
+            $id_cliente=Usuario::recogerIDUsuarioDNI($_POST["DNICliente"], $connection);
+        }
+
         $resultado=Incidencias::creacionIncidencia($_POST["motivo"], $_SESSION["id"], $id_cliente, $_POST["nombre_contacto"], $connection);
 
         var_dump($resultado);
@@ -25,8 +30,6 @@
         if($resultado){
             
             header("Location: ../../../src/controller/actions_tabla.php?class=mi&add=ok");
-        }else{
-            header("Location: ../../../src/view/main.php");
         }
     }
     

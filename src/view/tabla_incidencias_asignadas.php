@@ -59,18 +59,25 @@
                 <?php
                     foreach($lista_incidencias as $incidencia){
                         $usuario=Usuario::recogerUsuarioId($incidencia->getIdCliente(), $connection);
+                        $estado=match($incidencia->getEstado()){
+                            1=>"Trabajando en ello",
+                            2=>"Pausa",
+                            3=>"En Seguimiento",
+                            4=>"Finalizado",
+                            5=>"Sin trabajador Asignado"
+                        }
                 ?>
                     <tr>
                             <td>01-<?php echo $incidencia->getNIncidencia()?></td>
                             <td><?php echo $incidencia->getMotivo() ?></td>
                             <td><?php echo $usuario["DNI"] ?></td>
                             <td><?php echo $usuario["nombre"]. " " .$usuario["apellidos"] ?></td>
-                            <td><?php echo $incidencia->getEstado() ?></td>
+                            <td><?php echo $estado ?></td>
                             <td>
                             <?php
                                 if(!is_null($incidencia->getIdEmpleado()) && $_SESSION["tipo"]==1){
                                 ?>
-                                <form action="../../src/controller/actions_tabla.php?class=add_Empleado" method="post">
+                                <form action="../../src/controller/actions_tabla.php?class=del_Empleado" method="post">
                                     <input type="hidden" name="nIncidencia" value="<?php echo $incidencia->getNIncidencia()?>">
                                     <input type="submit" name="nIncidencia_submit"><i class="fa-solid fa-user-minus"></i>
                                 </form>
@@ -78,7 +85,7 @@
                                 <?php
                                 }
                                 ?>
-                                <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
+                                <a href="#" class="btn btn-small btn-primary"><i class="fa-solid fa-envelope-open-text"></i></a>
                             </td>
                         </tr>
                 <?php

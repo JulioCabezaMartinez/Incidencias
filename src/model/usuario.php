@@ -304,6 +304,20 @@ class Usuario {
 
         }else return false;
     }
+
+    public static function contarEmpleadosPendientes(mysqli $connection){
+        $result=$connection->query("Select count(*) as total from usuarios where tipo=4;");
+
+        $linea=$result->fetch_object();
+
+        if($result!=false){
+            
+            return $linea->total;
+
+        }else{
+            return false;
+        }
+    } 
 }
 
 ?>

@@ -7,19 +7,39 @@
                 </a>
                 <ul class="nav flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li class="nav-item">
-                        <a href="../../../src/view/main.php" class="nav-link align-middle px-0">
+                        <a href="../../../src/controller/actions_usuario.php?action=0" class="nav-link align-middle px-0">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Home</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Incidencias</span> </a>
-                        <ul class="collapse nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+                        
+                        <ul class="nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
                             <li>
                                 <a href="../../../src/controller/actions_incidencia.php?inci=1" class="nav-link px-0"> <span class="d-none d-sm-inline">Crear Incidencia</span></a>
                             </li>
                             <li class="w-100">
-                                <a href="../../../src/controller/actions_tabla.php?class=mi" class="nav-link px-0"> <span class="d-none d-sm-inline">Mis Incidencias</span></a>
+                                <?php
+                                if($_SESSION==2){
+                                ?>
+                                    <a href="../../../src/controller/actions_tabla.php?class=mi" class="nav-link px-0"> <span class="d-none d-sm-inline">Mis Incidencias</span></a>
+                                <?php
+                                }else{
+                                    $incidencias_pendientes=Incidencias::contarIncidenciasPendientes($_SESSION["id"], $connection);
+                                ?>
+                                    <a href="../../../src/controller/actions_tabla.php?class=empleados" class="nav-link px-0"> 
+                                        <span class="d-none d-sm-inline">Mis Incidencias
+                                            <span class="circulo_barraLateral">
+                                            <?php
+                                            if($incidencias_pendientes>=1){
+                                                echo "+".$incidencias_pendientes;
+                                            }
+                                            ?>
+                                            </span>
+                                        </span></a>
+                                <?php
+                                }
+                                ?>
+                                
                             </li>
                             <?php
                             if($_SESSION['tipo']!=2){ //Cliente no puede ver esto
@@ -36,8 +56,22 @@
                         if($_SESSION['tipo']==1){
                         ?>
                             <li class="nav-item">
+
+                                <?php
+                                    $empleados_enEspera=Usuario::contarEmpleadosPendientes($connection);
+                                ?>
+
                                 <a href="../../../src/controller/actions_tabla.php?class=em" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Peticiones de empleados</span>
+                                <i class="fs-4 bi-house"></i>
+                                    <span class="ms-1 d-none d-sm-inline">Peticiones de empleados 
+                                        <span class="circulo_barraLateral">
+                                        <?php
+                                        if($empleados_enEspera>=1){
+                                            echo "+".$empleados_enEspera;
+                                        }
+                                        ?>
+                                        </span>
+                                    </span>
                                 </a>
                             </li>
                             <li>

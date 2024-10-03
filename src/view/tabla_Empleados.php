@@ -40,17 +40,20 @@
                 </tr>
             </thead>
             <tbody>
+
                 <?php
 
                     foreach($lista_empleados as $empleado){
-                        echo '<td>'. $empleado["id"] .'</td>
+                        echo '<tr>
+                        <td>'. $empleado["id"] .'</td>
                             <td>'. $empleado["nombre"] .'</td>
                             <td>'. $empleado["apellidos"] .'</td>
                             <td>'. $empleado["DNI"] .'</td>
                             <td>
                                 <a href="../../../src/controller/actions_tabla.php?class=ok&id='.$empleado["id"].'" class="btn btn-small btn-success"><i class="fa-regular fa-thumbs-up"></i></a>
                                 <a href="../../../src/controller/actions_tabla.php?class=reject&id='.$empleado["id"].'" class="btn btn-small btn-danger"><i class="fa-solid fa-xmark"></i></a>
-                            </td>';
+                            </td>
+                            </tr>';
                     }
 
                 ?>

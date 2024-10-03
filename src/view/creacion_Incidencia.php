@@ -99,6 +99,9 @@
                     <label for="DNI">DNI:</label>
                     <input type="text" name="DNI" class="form-control w-100" id="DNI" value="<?php echo $usuario["DNI"] ?>" readonly>
                 </div>
+                <?php
+                if($_SESSION["tipo"]!=2){
+                    ?>
                 <div class="col-2 w-25">
                     <h2>Cliente</h2>
                     <label for="nombre">Nombre:</label>
@@ -110,14 +113,12 @@
                     <label for="DNI">DNI:</label>
                     <input type="text" name="DNICliente" class="form-control w-100" id="DNICliente" required>
                 </div>
-                <div class="col-3 w-25">
-                    <h2>Contacto</h2>
-                    <label for="nombre_contacto">Nombre de Contacto:</label>
-                    <input type="text" name="nombre_contacto" class="form-control w-100" id="nombreContacto" required>
-                </div>
+                <?php
+                }
+                ?>
             </div>
-            <button type="button" id="misma_persona" class="btn btn-secondary mx-4" >Son la misma persona</button>
-            <label>(Utilice este botón para completar los campos de cliente automaticamente)</label><br><br>
+            <!-- <button type="button" id="misma_persona" class="btn btn-secondary mx-4" >Son la misma persona</button>
+            <label>(Utilice este botón para completar los campos de cliente automaticamente)</label><br><br> -->
             <?php
                 if($_SESSION["tipo"]!=2){ //Los clientes no podrán ver el botón.
             ?>
@@ -146,14 +147,20 @@
                 }
             ?>
             
-        <div class="col py-3 mx-4">
-            <div class="mb-3">
-                <label for="motivo" class="form-label w-50">Motivo de la Incidencia</label>
-                <input type="text" name="motivo" class="form-control w-50" id="motivoIncidencia" placeholder="Fallo en la instalacion de servicio" required>
+            <div class="col-3 w-25 mx-4">
+                <h2>Contacto</h2>
+                <label for="nombre_contacto">Nombre de Contacto:</label>
+                <input type="text" name="nombre_contacto" class="form-control w-100" id="nombreContacto" required>
             </div>
-        </div>
-        <input class="btn btn-outline-danger mx-4" type="submit" name="crearIncidencia" value="Crear Incidencia">
-        </form>
+
+            <div class="col py-3 mx-4">
+                <div class="mb-3">
+                    <label for="motivo" class="form-label w-50">Motivo de la Incidencia</label>
+                    <input type="text" name="motivo" class="form-control w-50" id="motivoIncidencia" placeholder="Fallo en la instalacion de servicio" required>
+                </div>
+            </div>
+            <input class="btn btn-outline-danger mx-4" type="submit" name="crearIncidencia" value="Crear Incidencia">
+            </form>
     </div>
     
 </div> <!-- Div que cierra la barra lateral para que se mantenga en su lugar -->
@@ -161,14 +168,14 @@
     <script>
         $(document).ready(function(){
             //Script que copia los mismos datos de creación en cliente
-            $("#misma_persona").click(function(){
-                var nombre=$("#nombre").val();
-                var apellidos=$("#apellidos").val();
-                var DNI=$("#DNI").val();
-                $("#nombreCliente").val(nombre);
-                $("#apellidosCliente").val(apellidos);
-                $("#DNICliente").val(DNI);
-            });
+            // $("#misma_persona").click(function(){
+            //     var nombre=$("#nombre").val();
+            //     var apellidos=$("#apellidos").val();
+            //     var DNI=$("#DNI").val();
+            //     $("#nombreCliente").val(nombre);
+            //     $("#apellidosCliente").val(apellidos);
+            //     $("#DNICliente").val(DNI);
+            // });
 
             $("#btn_busqueda_DNI").click(function(){
                 var DNI_busqueda_usuario=$("#DNIBusqueda").val();
