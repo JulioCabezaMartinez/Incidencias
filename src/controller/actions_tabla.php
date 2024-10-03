@@ -49,6 +49,16 @@
                     
                 }
                 break;
+            case 'add_empleado':
+                if(Incidencias::asignarEmpleado($_SESSION['id'], $_POST["nIncidencia"], $connection)){
+                    $lista_incidencias=Incidencias::recogerTodasIncidenciasAsignadasUsuario($connection, $_SESSION["id"]);
+    
+                    include '../../src/view/tabla_incidencias_asignadas.php';
+
+                }else{
+                    echo mysqli_error($connection);
+                }
+                break;
         }
     }
     

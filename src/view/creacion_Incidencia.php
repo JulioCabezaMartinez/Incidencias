@@ -248,7 +248,7 @@
                 var DNI=$(this).val();
                 var lista_DNIs=$("#DNIs").html();
                 if(DNI==""){
-                    $("#DNIs").html(lista_DNIs);
+
                 }else{
                     $.ajax({
                         url: "AJAX.php",

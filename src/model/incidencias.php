@@ -1,16 +1,16 @@
 <?php
 
 class Incidencias{
-    private int $nIncidencia;
+    private int|null $nIncidencia=null;
     private String $motivo;
-    private String|null $solucion;
-    private int $estado; 
+    private String|null $solucion=null;
+    private int $estado=5; 
     private String $idCreador;
     private String $idCliente;
-    private String|null $idEmpleado;
+    private String|null $idEmpleado=null;
     private String $contacto;
-    private String|null $observaciones;
-    private bool $reabierto;
+    private String|null $observaciones=null;
+    private bool $reabierto=false;
 
     public function __construct(String $motivo, String $idCreador, String $idCliente, String $contacto, String|null $observaciones=null, int $nIncidencia=null, String|null $solucion=null, int|null $estado=null, String|null $idEmpleado=null, bool|null $reabierto=null){
         $this->motivo=$motivo;
@@ -35,7 +35,7 @@ class Incidencias{
 
         if(!is_null($estado)){
             $this->estado=$estado;
-        }else $this->estado=5;
+        }
 
         if(!is_null($idEmpleado)){
             $this->idEmpleado=$idEmpleado;
@@ -43,20 +43,20 @@ class Incidencias{
 
         if(!is_null($reabierto)){
             $this->reabierto=$reabierto;
-        }else $this->reabierto=false;
+        }
 
     }
 
     //Getters
 
-    public function getNIncidencia(): int{
+    public function getNIncidencia(): int|null{
         return $this->nIncidencia;
     }
 
     public function getMotivo(): String{
         return $this->motivo;
     }
-    public function getSolucion(): String{
+    public function getSolucion(): String|null{
         return $this->solucion;
     }
     public function getEstado(): int{
@@ -66,19 +66,19 @@ class Incidencias{
         return $this->idCreador;
     }
 
-    public function getIdCliente() {
+    public function getIdCliente(): string {
         return $this->idCliente;
     }
 
-    public function getIdEmpleado(): String{
+    public function getIdEmpleado(): String|null{
         return $this->idEmpleado;
     }
 
-    public function getContacto() {
+    public function getContacto(): string {
         return $this->contacto;
     }
 
-    public function getObservaciones(): String{
+    public function getObservaciones(): String|null{
         return $this->observaciones;
     }
 
@@ -88,7 +88,7 @@ class Incidencias{
 
     //Setters
 
-    public function setNIncidencia(int $nIncidencia): void{
+    public function setNIncidencia(int|null $nIncidencia): void{
          $this->nIncidencia=$nIncidencia;
     }
 
@@ -96,7 +96,7 @@ class Incidencias{
         $this->motivo=$motivo;
     }
 
-    public function setSolucion(String $solucion) {
+    public function setSolucion(String|null $solucion) {
         $this->solucion=$solucion;
     }
 
@@ -112,7 +112,7 @@ class Incidencias{
         $this->idCliente = $idCliente;
     }
 
-    public function setIdEmpleado(String $idEmpleado) {
+    public function setIdEmpleado(String|null $idEmpleado) {
         $this->idCreador=$idEmpleado;
     }
 
@@ -120,7 +120,7 @@ class Incidencias{
         $this->contacto = $contacto;
     }
 
-    public function setObservaciones(String $observaciones){
+    public function setObservaciones(String|null $observaciones){
         $this->observaciones=$observaciones;
     }
 
@@ -154,6 +154,49 @@ class Incidencias{
     public static function recogerTodasIncidenciasUsuario(mysqli $connection, String $id_User){
         $incidencias=[];
         $result=$connection->query("Select * from incidencias where id_creador='". $id_User ."'");
+
+        if($result!=false){
+            $linea=$result->fetch_object();
+
+            while($linea!=null){
+                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto);
+                array_push($incidencias, $incidencia);
+
+                $linea=$result->fetch_object();
+            }
+        }else{ //Linea escrita para Debug.
+            $error="Error de conexion a la BD";
+            return $error;
+        }
+
+        return $incidencias;
+    }
+
+    public static function recogerTodasIncidenciasAsignadas(mysqli $connection){
+        $incidencias=[];
+        $result=$connection->query("Select * from incidencias where estado=1");
+
+        if($result!=false){
+            $linea=$result->fetch_object();
+
+            while($linea!=null){
+                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto);
+                array_push($incidencias, $incidencia);
+
+                $linea=$result->fetch_object();
+            }
+        }else{ //Linea escrita para Debug.
+            $error="Error de conexion a la BD";
+            return $error;
+        }
+
+        return $incidencias;
+    }
+
+
+    public static function recogerTodasIncidenciasAsignadasUsuario(mysqli $connection, String $id_User){
+        $incidencias=[];
+        $result=$connection->query("Select * from incidencias where id_empleado='". $id_User ."' and estado=1");
 
         if($result!=false){
             $linea=$result->fetch_object();
@@ -221,6 +264,22 @@ class Incidencias{
         if($result!=false){
             return true;
         }else return mysqli_error($connection);
+    }
+
+    public static function asignarEmpleado($id_Empleado, $numero_incidencia, $connection){
+        $result=$connection->query("UPDATE incidencias SET id_empleado = '". $id_Empleado ."', estado=1 WHERE (`numero_incidencia` = '". $numero_incidencia ."');");
+
+        if($result!=false){
+            return true;
+        }else return false;
+    }
+
+    public static function eliminarEmpleado($id_Empleado, $numero_incidencia, $connection){
+        $result=$connection->query("UPDATE incidencias SET id_empleado = '". $id_Empleado ."', estado=1 WHERE (`numero_incidencia` = '". $numero_incidencia ."');");
+
+        if($result!=false){
+            return true;
+        }else return false;
     }
 }
 

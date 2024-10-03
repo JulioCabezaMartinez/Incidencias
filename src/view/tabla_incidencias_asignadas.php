@@ -19,10 +19,10 @@
         <div class="modal-dialog modal-dialog-centered" >
             <div class="modal-content">
                 <div class="modal-header" >
-                    <h5 class="modal-title" id="exampleModalLongTitle">Insercción correcta</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Asignación correcta</h5>
                 </div>
                 <div class="modal-body">
-                    La incidencia se ha creado con éxito.
+                    Empleado asociado con éxito.
                 </div>
                 <div class="modal-footer">
                     <button id="cerrar" type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
@@ -30,6 +30,7 @@
             </div>
         </div>
     </div>
+   
     <?php
     
         //Barra de busqueda para DNI en tiempo real
@@ -39,7 +40,7 @@
     ?>
     <div class="d-flex flex-column">
 
-        <h1>Tabla de Incidencias</h1><br>
+        <h1>Tabla de Incidencias Asignadas</h1><br>
         <label for="buscador">Busqueda por DNI:</label>
         <input type="text" id="busqueda_DNI_incidencia" style="width: 10%;" maxlength="9" placeholder="12345678A">
         <table style="width: 85%;" class="table table-striped">
@@ -67,16 +68,17 @@
                             <td><?php echo $incidencia->getEstado() ?></td>
                             <td>
                             <?php
-                                if(is_null($incidencia->getIdEmpleado()) && $_SESSION["tipo"]!=2){
+                                if(!is_null($incidencia->getIdEmpleado()) && $_SESSION["tipo"]==1){
                                 ?>
-                                <form action="../../src/controller/actions_tabla.php?class=del_empleado" method="post">
+                                <form action="../../src/controller/actions_tabla.php?class=add_Empleado" method="post">
                                     <input type="hidden" name="nIncidencia" value="<?php echo $incidencia->getNIncidencia()?>">
-                                    <button type="submit" name="nIncidencia_submit" class="btn btn-small btn-danger"><i class="fa-solid fa-user-plus"></i></button>
+                                    <input type="submit" name="nIncidencia_submit"><i class="fa-solid fa-user-minus"></i>
                                 </form>
+                                    
                                 <?php
                                 }
                                 ?>
-                                <a href="#" class="btn btn-small btn-danger my-1"><i class="fa-solid fa-file-arrow-down"></i></a>
+                                <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
                             </td>
                         </tr>
                 <?php
@@ -89,7 +91,7 @@
     
     <?php
 
-        if($_GET["add"]=="ok"){
+        if($_GET["class"]=="add_empleado"){
             echo "<script type='text/javascript'>
                     $(window).on('load', function() {
                         $('#exampleModalCenter').modal('show');
@@ -101,7 +103,7 @@
         }
     
     ?>
-    
+
     <script>
         //Script de busqueda por DNI de AJAX
         $(document).ready(function(){
