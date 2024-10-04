@@ -12,6 +12,8 @@ class Incidencias{
     private String $contacto;
     private String|null $observaciones=null;
     private bool $reabierto=false;
+    private String $hora_apertura;
+    private String $hora_cierre;
 
     public function __construct(String $motivo, String $idCreador, String $idCliente, String $contacto, String|null $observaciones=null, int $nIncidencia=null, String|null $solucion=null, int|null $estado=null, String|null $motivo_estado=null, String|null $idEmpleado=null, bool|null $reabierto=null){
         $this->motivo=$motivo;

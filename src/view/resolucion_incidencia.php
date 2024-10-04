@@ -21,43 +21,45 @@
 <body>
 
     <!-- Modal de Guardado -->
-    <div class="modal fade" id="staticBackdrop3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+    <div class="modal fade" id="modal_motivo_estado" tabindex="-1">
         <div class="modal-dialog d-flex justify-content-center">
             <div class="modal-content w-75">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel3">Motivo de estado</h5>
-                    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
                     <form>
-                        <!-- Name input -->
+                        <!-- Motivo input -->
                         <div data-mdb-input-init class="form-outline mb-4">
                             <input type="text" id="name3" class="form-control" />
-                            <label class="form-label" for="name3">Name</label>
+                            <label class="form-label" for="name3">Motivo de Estado</label>
                         </div>
-
-                        <!-- Email input -->
-                        <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="email" id="email3" class="form-control" />
-                            <label class="form-label" for="email3">Email address</label>
-                        </div>
-
-                        <!-- Checkbox -->
-                        <div class="form-check d-flex justify-content-center mb-4">
-                            <input class="form-check-input me-2" type="checkbox" value="" id="checkbox3" checked />
-                            <label class="form-check-label" for="checkbox3">
-                                I have read and agree to the terms
-                            </label>
-                        </div>
-
-                        <!-- Submit button -->
-                        <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block">Send</button>
+                        <button id="btn_cerrar_modal" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button id="btn_registrar_modal" type="button" class="btn btn-primary w-50" data-dismiss="modal">Guardar</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
     <!-- Modal -->
+
+    <!-- Modal de confirmación -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" >
+        <div class="modal-dialog modal-dialog-centered" >
+            <div class="modal-content">
+                <div class="modal-header" >
+                    <h5 class="modal-title" id="exampleModalLongTitle">Incidencia Guardada</h5>
+                </div>
+                <div class="modal-body">
+                    Incidencia guardada con éxito.
+                </div>
+                <div class="modal-footer">
+                    <button id="cerrar" type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de confirmación -->
     
     <?php
         include_once '../view/Templates/barra_lateral.inc.php';
