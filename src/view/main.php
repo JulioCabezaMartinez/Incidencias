@@ -13,7 +13,7 @@
     require_once '../view/Templates/inicio.inc.php';
     
 ?>
-<title>Main</title>
+<title>Resolución</title>
 </head>
 <body>
     <?php

@@ -3,7 +3,7 @@
     session_start();
 
     if (!empty($_SESSION)){
-        header("Location:main.php");
+        header("Location:../../../src/controller/actions_usuario.php?action=0");
         die();
     }
 
