@@ -19,9 +19,9 @@
                             </li>
                             <li class="w-100">
                                 <?php
-                                if($_SESSION==2){
+                                if($_SESSION["tipo"]=="2"){
                                 ?>
-                                    <a href="../../../src/controller/actions_tabla.php?class=mi" class="nav-link px-0"> <span class="d-none d-sm-inline">Mis Incidencias</span></a>
+                                    <a href="../../../src/controller/actions_tabla.php?class=cliente" class="nav-link px-0"> <span class="d-none d-sm-inline">Mis Incidencias</span></a>
                                 <?php
                                 }else{
                                     $incidencias_pendientes=Incidencias::contarIncidenciasPendientes($_SESSION["id"], $connection);

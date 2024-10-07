@@ -133,15 +133,15 @@
                     <button type="button" id="btn_busqueda_DNI" class="btn btn-outline-primary mx-3" ><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
                 
-                <datalist id="DNIs">
+                 <datalist id="DNIs">
                     <?php
-                        foreach($lista_DNIs as $DNI){
+                        //foreach($lista_DNIs as $DNI){
                     ?>
-                        <option value="<?php echo $DNI ?>"><?php echo $DNI ?></option>
+                        <!-- <option value="<?php echo $DNI ?>"><?php echo $DNI ?></option> -->
                     <?php
-                        }
+                        //}
                     ?>
-                </datalist>            
+                </datalist>             
             </div>
             <?php
                 }
@@ -179,12 +179,13 @@
 
             $("#btn_busqueda_DNI").click(function(){
                 var DNI_busqueda_usuario=$("#DNIBusqueda").val();
+                var DNI=DNI_busqueda_usuario.substring(0, 9);
                 $.ajax({
                     url: "AJAX.php",
                     method: "POST",
                     data:{
                         mode:"DNI_busqueda_usuario",
-                        DNI: DNI_busqueda_usuario
+                        DNI: DNI
                     },
                     success:function(data){
                         console.log(data);

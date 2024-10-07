@@ -29,7 +29,7 @@
                 </div>
                 <div class="modal-body p-4">
                     <form>
-                        <!-- Motivo input -->
+                        <!-- Motivo de Estado input -->
                         <div data-mdb-input-init class="form-outline mb-4">
                             <input type="text" id="name3" class="form-control" />
                             <label class="form-label" for="name3">Motivo de Estado</label>
@@ -41,7 +41,7 @@
             </div>
         </div>
     </div>
-    <!-- Modal -->
+    <!-- Modal de Guardado-->
 
     <!-- Modal de confirmación -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" >
@@ -71,7 +71,7 @@
         <div class="col py-3 mx-4">
             <div class="mb-3">
                 <label for="motivo" class="form-label w-50">Motivo de la Incidencia</label>
-                <input type="text" name="motivo" class="form-control w-50" id="motivoIncidencia" value="<?php echo $_POST["motivo_incidencia"] ?>">
+                <input type="text" name="motivo" class="form-control w-50" id="motivoIncidencia" value="<?php echo $_POST["motivo_incidencia"] ?>"> <!-- Cambiar value por incidencia-->
             </div>
 
             <form action="">

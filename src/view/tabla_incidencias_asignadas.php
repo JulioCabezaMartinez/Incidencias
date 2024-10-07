@@ -8,7 +8,6 @@
     }
 
     require_once '../view/Templates/inicio.inc.php';
-
 ?>
 <title>Incidencias</title>
 
@@ -85,7 +84,8 @@
                                 <?php
                                 }
                                 ?>
-                                <a href="#" class="btn btn-small btn-primary"><i class="fa-solid fa-envelope-open-text"></i></a>
+                                 <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>
+                                <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1 btn_descarga"><i class="fa-solid fa-file-arrow-down"></i></a>
                             </td>
                         </tr>
                 <?php

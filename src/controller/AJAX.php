@@ -22,7 +22,7 @@
             $busqueda_DNI=Usuario::busquedaDNI($_POST["DNI"], $connection);
 
             foreach($busqueda_DNI as $DNI){
-                echo '<option value="'.$DNI["DNI"].'">'.$DNI["DNI"].'-'.$DNI["nombre"].' '. $DNI["apellidos"] .'</option>';
+                echo '<option value="'.$DNI["DNI"].'-'.$DNI["nombre"].' '. $DNI["apellidos"] .'">'.$DNI["DNI"].'-'.$DNI["nombre"].' '. $DNI["apellidos"] .'</option>';
             }
         }
 
