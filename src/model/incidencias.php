@@ -230,13 +230,13 @@ class Incidencias{
 
             while($linea!=null){
                 $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado,idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto);
+                
+                return $incidencia;
             }
         }else{
             $error="Error de conexion a la BD";
             return $error;
         }
-
-        return $incidencia;
     }
 
     public static function recogerIncidenciasDNI(String $DNI, mysqli $connection){

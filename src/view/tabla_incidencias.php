@@ -83,7 +83,9 @@
                                 <?php
                                 }
                                 ?>
-                                <a href="#" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-file-arrow-down"></i></a>
+                                <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1 btn_descarga"><i class="fa-solid fa-file-arrow-down"></i></a>
+                                <!-- <input type="hidden" id="nIncidencia" value="">
+                                <button type="submit" id="" class="btn btn-small btn-primary my-1 btn_descarga"><i class="fa-solid fa-file-arrow-down"></i></button> -->
                             </td>
                         </tr>
                 <?php
@@ -96,17 +98,19 @@
     
     <?php
 
-        if($_GET["add"]=="ok"){
-            echo "<script type='text/javascript'>
-                    $(window).on('load', function() {
-                        $('#exampleModalCenter').modal('show');
-                    });
-                    $('#cerrar').on('click', function() {
-                        $('#exampleModalCenter').modal('hide');
-                    });
-                </script>";
+        if(isset($_GET["add"])){
+            if($_GET["add"]=="ok"){
+                echo "<script type='text/javascript'>
+                        $(window).on('load', function() {
+                            $('#exampleModalCenter').modal('show');
+                        });
+                        $('#cerrar').on('click', function() {
+                            $('#exampleModalCenter').modal('hide');
+                        });
+                    </script>";
+            }
         }
-    
+
     ?>
     
     <script>
@@ -133,6 +137,23 @@
                 }
                 
             });
+        });
+
+        //Descarga de la incidencia
+        $(".btn_descarga").click(function(){
+            console.log("descarga oli");
+            // var NIncidencia=$("#nIncidencia").val();
+            // $.ajax({
+            //     url: "AJAX.php",
+            //     method: "POST",
+            //     data:{
+            //         mode: "descarga",
+            //         nIncidencia: NIncidencia
+            //     },
+            //     success:function(data){
+            //         console.log("Descarga correcta");
+            //     }
+            // });
         });
         
     </script>
