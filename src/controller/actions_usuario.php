@@ -44,6 +44,15 @@
         if($_GET['action']==0){
             include "../view/main.php";
         }
+
+        if(isset($_POST["guardar_pass"])){
+            if(Usuario::cambiarPass($_SESSION["id"], $_POST["old_pass"], $_POST["new_pass"], $_POST["confirm"], $connection)){
+                header("Location: ../view/login.php");
+                die();
+            }else{
+                return mysqli_error($connection);
+            }
+        }
     }
    
 ?>

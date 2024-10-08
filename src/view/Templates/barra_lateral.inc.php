@@ -92,7 +92,7 @@
                         <span class="d-none d-sm-inline mx-1"><?php echo $_SESSION["nombre"]." ".$_SESSION["apellidos"]?></span> <!-- Aqui tendría que coger la info de la sesion iniciada = -->
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                        
+                        <li><a class="dropdown-item" href="../../../src/view/cambiar_pass.php">Cambiar Contraseña</a></li>
                         <li><a class="dropdown-item" href="../../../src/controller/actions_usuario.php?action=cerrar">Cerrar Sesion</a></li>
                     </ul>
                 </div>

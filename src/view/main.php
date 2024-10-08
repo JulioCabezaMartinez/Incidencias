@@ -6,7 +6,7 @@
     error_reporting(E_ALL & ~E_NOTICE);
 
     if (empty($_SESSION)){
-        header("Location:login.php");
+        header("Location:../../../src/view/login.php");
         die();
     }
 

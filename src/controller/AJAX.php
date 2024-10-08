@@ -1,8 +1,15 @@
 <?php
 
+    session_start();
+
     require "../model/BuscadorDB.php";
     require "../model/usuario.php";
     require "../model/incidencias.php";
+
+    if (empty($_SESSION)){
+        header("Location:../../../src/view/login.php");
+        die();
+    }
 
     if(isset($_POST["mode"])){
         if($_POST["mode"]=="registro"){
@@ -48,6 +55,26 @@
                             <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
                         </td>
                     <tr>';
+            }
+        }
+
+        if($_POST["mode"]=="resolucion_Trabajando"){
+            if(isset($_POST["motivo"])){
+                $resultado=Incidencias::actualizarIncidencia((int)$_POST["estado"], $_POST["motivo"], $_POST["resolucion"], $_POST["observaciones"], (int)$_POST["nIncidencia"], $_POST["horaApertura"], $_POST["horaCierre"], (float)$_POST["totalTiempo"], $connection);
+
+                if($resultado){
+                    echo (float)$_POST["totalTiempo"];
+                }else{
+                    echo mysqli_error($connection);
+                }
+            }else{
+                $resultado=Incidencias::actualizarIncidencia((int)$_POST["estado"], "", $_POST["resolucion"], $_POST["observaciones"], (int)$_POST["nIncidencia"], $_POST["horaApertura"], $_POST["horaCierre"], (float)$_POST["totalTiempo"], $connection);
+
+                if($resultado){
+                    echo "Todo correcto";
+                }else{
+                    echo mysqli_error($connection);
+                }
             }
         }
     }

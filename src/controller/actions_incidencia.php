@@ -4,6 +4,11 @@
 
     session_start();
 
+    if (empty($_SESSION)){
+        header("Location:../../../src/view/login.php");
+        die();
+    }
+
     include "../model/BuscadorDB.php";
     include "../model/usuario.php";
     include "../model/incidencias.php";
@@ -29,7 +34,7 @@
 
         if($resultado){
             
-            header("Location: ../../../src/controller/actions_tabla.php?class=mi&add=ok");
+            header("Location: ../../../src/controller/actions_tabla.php?class=empleados&add=ok");
         }
     }
     

@@ -3,7 +3,7 @@
     session_start();
 
     if (empty($_SESSION)){
-        header("Location:login.php");
+        header("Location:../../../src/view/login.php");
         die();
     }
 
@@ -80,6 +80,13 @@
                                     <input type="hidden" name="nIncidencia" value="<?php echo $incidencia->getNIncidencia()?>">
                                     <button type="submit" name="nIncidencia_submit" class="btn btn-small btn-success"><i class="fa-solid fa-user-plus"></i></button>
                                 </form>
+                                <?php
+                                }
+                                ?>
+                                <?php
+                                if($incidencia->getIdEmpleado()==$_SESSION["id"]){
+                                ?>
+                                    <a href="../../src/controller/actions_tabla.php?class=sol&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>
                                 <?php
                                 }
                                 ?>

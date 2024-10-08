@@ -317,7 +317,28 @@ class Usuario {
         }else{
             return false;
         }
-    } 
+    }
+
+    public static function cambiarPass($id, $old_pass, $new_pass, $confirm, mysqli $connection){
+        if(!is_null($new_pass) && !is_null($new_pass)){
+            $result=$connection->query("Select pasword from usuarios where id_usuario= '". $id ."';");
+
+            $linea=$result->fetch_object();
+
+            if(password_verify($old_pass, $linea->password)){
+                if($new_pass==$confirm){
+                    $cambio=$connection->query("UPDATE usuarios SET password = '".password_hash($new_pass, PASSWORD_DEFAULT)."' WHERE (`id_usuario` = '".$id."');");
+
+                    if($cambio!=false){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            }
+        }
+        
+    }
 }
 
 ?>

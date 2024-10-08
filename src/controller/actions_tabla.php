@@ -2,7 +2,6 @@
     ini_set('display_errors', 1);
     error_reporting(E_ALL & ~E_NOTICE);
 
-
     session_start();
 
     require '../model/BuscadorDB.php';
@@ -76,6 +75,11 @@
     
                 include '../../src/view/tabla_incidencias_asignadas.php';
                 break;
+            
+            case 'sol':
+                $incidencia=Incidencias::recogerIncidencia($connection, $_GET["nIncidencia"]);
+                $incidencia->setHoraApertura(date('Y-m-d\TH:i:s'));
+                include '../../src/view/resolucion_incidencia.php';
         }
     }
     

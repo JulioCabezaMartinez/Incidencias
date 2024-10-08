@@ -3,7 +3,7 @@
     session_start();
 
     if (empty($_SESSION)){
-        header("Location:login.php");
+        header("Location:../../../src/view/login.php");
         die();
     }
 

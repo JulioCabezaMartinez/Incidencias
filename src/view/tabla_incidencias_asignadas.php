@@ -3,7 +3,7 @@
     session_start();
 
     if (empty($_SESSION)){
-        header("Location:login.php");
+        header("Location:../../../src/view/login.php");
         die();
     }
 
@@ -84,7 +84,7 @@
                                 <?php
                                 }
                                 ?>
-                                 <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>
+                                <a href="../../src/controller/actions_tabla.php?class=sol&back=asig&nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>
                                 <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1 btn_descarga"><i class="fa-solid fa-file-arrow-down"></i></a>
                             </td>
                         </tr>
