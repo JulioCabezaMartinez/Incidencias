@@ -73,17 +73,6 @@
                             <td><?php echo $usuario["nombre"]. " " .$usuario["apellidos"] ?></td>
                             <td><?php echo $estado ?></td>
                             <td>
-                            <?php
-                                if(!is_null($incidencia->getIdEmpleado()) && $_SESSION["tipo"]==1){
-                                ?>
-                                <form action="../../src/controller/actions_tabla.php?class=del_Empleado" method="post">
-                                    <input type="hidden" name="nIncidencia" value="<?php echo $incidencia->getNIncidencia()?>">
-                                    <input type="submit" name="nIncidencia_submit"><i class="fa-solid fa-user-minus"></i>
-                                </form>
-                                    
-                                <?php
-                                }
-                                ?>
                                 <a href="../../src/controller/actions_tabla.php?class=sol&back=asig&nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>
                                 <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1 btn_descarga"><i class="fa-solid fa-file-arrow-down"></i></a>
                             </td>

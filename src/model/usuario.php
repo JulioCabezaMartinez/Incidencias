@@ -464,6 +464,26 @@ class Usuario {
             return mysqli_error($connection);
         }
     }
+
+    public static function asignarMotivoBaja($id, $motivo_baja, mysqli $connection){
+        $result=$connection->query('Update usuarios SET motivo_denegacion_baja = "'.$motivo_baja.'" WHERE id_usuario="'.$id.'";');
+
+        if($result!=false){
+            return true;
+        }else{
+            return mysqli_error($connection);
+        }
+    }
+
+    public static function asignarMotivoReadmision($id, $motivo_readmision, mysqli $connection){
+        $result=$connection->query('Update usuarios SET motivo_readmision = "'.$motivo_readmision.'" WHERE id_usuario="'.$id.'";');
+
+        if($result!=false){
+            return true;
+        }else{
+            return mysqli_error($connection);
+        }
+    }
 }
 
 ?>

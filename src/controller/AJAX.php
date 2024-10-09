@@ -77,4 +77,42 @@
                 }
             }
         }
+
+        if($_POST["mode"]=="baja"){
+            if($_POST["tipo"]==2){
+                $usuario=Usuario::bajaCliente($_POST["id"], $connection);
+
+            }elseif($_POST["tipo"]==1 || $_POST["tipo"]>2){
+
+                $usuario=Usuario::bajaEmpleado($_POST["id"], $connection);
+
+            }
+
+            $resultado=Usuario::asignarMotivoBaja($_POST["id"], $_POST["motivo_baja"], $connection);
+
+            if($resultado){
+                echo var_dump($resultado); //Pribar que pasa si se pone aqui un header.
+            }else{
+                echo var_dump($resultado);
+            }
+        }
+
+        if($_POST["mode"]=="readmision"){
+            if($_POST["tipo"]==8){
+                $usuario=Usuario::readmisionCliente($_POST["id"], $connection);
+
+            }elseif($_POST["tipo"]==7){
+
+                $usuario=Usuario::readmisionEmpleado($_POST["id"], $connection);
+
+            }
+
+            $resultado=Usuario::asignarMotivoReadmision($_POST["id"], $_POST["motivo_readmision"], $connection);
+
+            if($resultado){
+                echo var_dump($resultado); //Pribar que pasa si se pone aqui un header.
+            }else{
+                echo var_dump($resultado);
+            }
+        }
     }
