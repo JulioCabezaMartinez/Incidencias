@@ -75,24 +75,31 @@
                             <td>
                             <?php
                                 if(is_null($incidencia->getIdEmpleado()) && $_SESSION["tipo"]!=2){
-                                ?>
-                                <form action="../../src/controller/actions_tabla.php?class=add_empleado" method="post">
-                                    <input type="hidden" name="nIncidencia" value="<?php echo $incidencia->getNIncidencia()?>">
-                                    <button type="submit" name="nIncidencia_submit" class="btn btn-small btn-success"><i class="fa-solid fa-user-plus"></i></button>
-                                </form>
-                                <?php
+                                    ?>
+                                    <form action="../../src/controller/actions_tabla.php?class=add_empleado" method="post">
+                                        <input type="hidden" name="nIncidencia" value="<?php echo $incidencia->getNIncidencia()?>">
+                                        <button type="submit" name="nIncidencia_submit" class="btn btn-small btn-success"><i class="fa-solid fa-user-plus"></i></button>Quedarse con la Incidencia
+                                    </form>
+                                    <?php
                                 }
                                 ?>
                                 <?php
                                 if($incidencia->getIdEmpleado()==$_SESSION["id"]){
-                                ?>
-                                    <a href="../../src/controller/actions_tabla.php?class=sol&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>
-                                <?php
+                                    ?>
+                                        <a href="../../src/controller/actions_tabla.php?class=sol&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>Trabajar en Incidencia<br>
+                                    <?php
                                 }
                                 ?>
-                                <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1 btn_descarga"><i class="fa-solid fa-file-arrow-down"></i></a>
-                                <!-- <input type="hidden" id="nIncidencia" value="">
-                                <button type="submit" id="" class="btn btn-small btn-primary my-1 btn_descarga"><i class="fa-solid fa-file-arrow-down"></i></button> -->
+                                    <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-file-arrow-down"></i></a>Descargar Incidencia<br>
+
+                                
+                                <?php
+                                if($_SESSION["tipo"]==1){
+                                    ?>
+                                        <a href="../../src/controller/actions_incidencia.php?action=mod&nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-file-pen"></i></a>Modificar Incidencia
+                                    <?php
+                                }
+                                ?>
                             </td>
                         </tr>
                 <?php

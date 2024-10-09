@@ -129,7 +129,7 @@
 
                 <label for="DNIBusqueda">DNI:</label><br>
                 <div class="d-flex flex-row">
-                    <input id="DNIBusqueda" name="DNIBusqueda" list="DNIs" class=" form-control w-25 h-25">
+                    <input id="DNIBusqueda" name="DNIBusqueda" list="DNIs" class=" form-control w-25 h-25" autocomplete="off">
                     <button type="button" id="btn_busqueda_DNI" class="btn btn-outline-primary mx-3" ><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
                 

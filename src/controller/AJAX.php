@@ -60,7 +60,7 @@
 
         if($_POST["mode"]=="resolucion_Trabajando"){
             if(isset($_POST["motivo"])){
-                $resultado=Incidencias::actualizarIncidencia((int)$_POST["estado"], $_POST["motivo"], $_POST["resolucion"], $_POST["observaciones"], (int)$_POST["nIncidencia"], $_POST["horaApertura"], $_POST["horaCierre"], (float)$_POST["totalTiempo"], $connection);
+                $resultado=Incidencias::solucionarIncidencia((int)$_POST["estado"], $_POST["motivo"], $_POST["resolucion"], $_POST["observaciones"], (int)$_POST["nIncidencia"], $_POST["horaApertura"], $_POST["horaCierre"], (float)$_POST["totalTiempo"], $connection);
 
                 if($resultado){
                     echo (float)$_POST["totalTiempo"];
@@ -68,7 +68,7 @@
                     echo mysqli_error($connection);
                 }
             }else{
-                $resultado=Incidencias::actualizarIncidencia((int)$_POST["estado"], "", $_POST["resolucion"], $_POST["observaciones"], (int)$_POST["nIncidencia"], $_POST["horaApertura"], $_POST["horaCierre"], (float)$_POST["totalTiempo"], $connection);
+                $resultado=Incidencias::solucionarIncidencia((int)$_POST["estado"], "", $_POST["resolucion"], $_POST["observaciones"], (int)$_POST["nIncidencia"], $_POST["horaApertura"], $_POST["horaCierre"], (float)$_POST["totalTiempo"], $connection);
 
                 if($resultado){
                     echo "Todo correcto";

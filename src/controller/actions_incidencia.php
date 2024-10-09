@@ -34,8 +34,26 @@
 
         if($resultado){
             
-            header("Location: ../../../src/controller/actions_tabla.php?class=empleados&add=ok");
+            header("Location: ../../../src/controller/actions_tabla.php?class=all&add=ok");
         }
     }
+
+    if(isset($_GET["action"])){
+        if($_GET["action"]=="mod"){
+            $incidencia=Incidencias::recogerIncidencia($connection, $_GET["nIncidencia"]);
+            include "../view/modificar_Incidencia.php";
+        }
+    }
+
+    if(isset($_POST["modificar_incidencia"])){
+        $resultado=Incidencias::actualizarIncidencia($_POST["estado"], $_POST["motivo_estado"], $_POST["motivo_estado"], $_POST["resolucion"], $_POST["observaciones"], $_POST["nIncidencia"], $_POST["hora_apertura"], $_POST["hora_cierre"], $_POST["total_tiempo"], $connection);
+    
+        if($resultado){
+            header("Location: ../../src/controller/actions_tabla.php?class=all");
+        }else{
+            echo mysqli_error($connection);
+        }
+    }
+
     
 

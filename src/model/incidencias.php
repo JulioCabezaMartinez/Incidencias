@@ -81,6 +81,9 @@ class Incidencias{
     public function getEstado(): int{
         return $this->estado;
     }
+    public function getMotivoEstado(): String{
+        return $this->motivo_estado;
+    }
     public function getIdCreador(): String{
         return $this->idCreador;
     }
@@ -133,6 +136,10 @@ class Incidencias{
 
     public function setEstado(int $estado){
         $this->estado=$estado;
+    }
+
+    public function setMotivoEstado(String $motivo_estado){
+        $this->motivo_estado=$motivo_estado;
     }
 
     public function setIdCreador(String $idCreador) {
@@ -339,8 +346,16 @@ class Incidencias{
         }
     }
 
-    public static function actualizarIncidencia(int $estado, String $motivo, String|null $resolucion, String|null $observaciones, int $nIncidencia, String $horaApertura, String $horaCierre, float $totalTiempo, mysqli $connection){
-        $result=$connection->query("UPDATE incidencias SET solucion = '".$resolucion."', estado=".$estado.", motivo_estado = '".$motivo."', observaciones = '".$observaciones."', hora_apertura='".$horaApertura."', hora_cierre='".$horaCierre."', totalTiempo='".$totalTiempo."' WHERE (`numero_incidencia` = '".$nIncidencia."');");
+    public static function solucionarIncidencia(int $estado, String $motivo_estado, String|null $resolucion, String|null $observaciones, int $nIncidencia, String $horaApertura, String $horaCierre, float $totalTiempo, mysqli $connection){
+        $result=$connection->query("UPDATE incidencias SET solucion = '".$resolucion."', estado=".$estado.", motivo_estado = '".$motivo_estado."', observaciones = '".$observaciones."', hora_apertura='".$horaApertura."', hora_cierre='".$horaCierre."', totalTiempo='".$totalTiempo."' WHERE (`numero_incidencia` = '".$nIncidencia."');");
+
+        if($result!=false){
+            return true;
+        }else return false;
+    }
+
+    public static function actualizarIncidencia(int $estado, String $motivo, String $motivo_estado, String|null $resolucion, String|null $observaciones, int $nIncidencia, String $horaApertura, String $horaCierre, float $totalTiempo, mysqli $connection){
+        $result=$connection->query("UPDATE incidencias SET motivo='".$motivo."', solucion = '".$resolucion."', estado=".$estado.", motivo_estado = '".$motivo_estado."', observaciones = '".$observaciones."', hora_apertura='".$horaApertura."', hora_cierre='".$horaCierre."', totalTiempo='".$totalTiempo."' WHERE (`numero_incidencia` = '".$nIncidencia."');");
 
         if($result!=false){
             return true;

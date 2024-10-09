@@ -80,6 +80,13 @@
                 $incidencia=Incidencias::recogerIncidencia($connection, $_GET["nIncidencia"]);
                 $incidencia->setHoraApertura(date('Y-m-d\TH:i:s'));
                 include '../../src/view/resolucion_incidencia.php';
+                break;
+            
+            case 'all_em':
+                $lista_empleados=Usuario::verAllEmpleados($connection);
+               
+                include "../view/tabla_Empleados_admin.php";
+                break;
         }
     }
     

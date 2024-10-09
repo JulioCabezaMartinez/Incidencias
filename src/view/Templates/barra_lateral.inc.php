@@ -62,7 +62,6 @@
                                 ?>
 
                                 <a href="../../../src/controller/actions_tabla.php?class=em" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i>
                                     <span class="ms-1 d-none d-sm-inline">Peticiones de empleados 
                                         <span class="circulo_barraLateral">
                                         <?php
@@ -75,8 +74,8 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Panel Principal</span>
+                                <a href="../../../src/controller/actions_tabla.php?class=all_em" class="nav-link align-middle px-0">
+                                <span class="ms-1 d-none d-sm-inline">Todos los empleados</span>
                                 </a>
                             </li>
                         

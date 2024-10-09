@@ -187,7 +187,7 @@
             let totalTiempo= calcularTiempo(new Date(horaApertura).getTime(), new Date(horaCierre).getTime());
 
 
-            if(estado!=1){
+            if(estado!=1 || estado!=4){
                 $("#modal_motivo_estado").modal("show");
             }else{
                 $.ajax({

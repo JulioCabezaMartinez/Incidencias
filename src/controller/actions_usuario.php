@@ -45,13 +45,47 @@
             include "../view/main.php";
         }
 
-        if(isset($_POST["guardar_pass"])){
-            if(Usuario::cambiarPass($_SESSION["id"], $_POST["old_pass"], $_POST["new_pass"], $_POST["confirm"], $connection)){
-                header("Location: ../view/login.php");
-                die();
-            }else{
-                return mysqli_error($connection);
-            }
+        if($_GET['action']=="modificar"){
+            $usuario=Usuario::recogerDatosEmpleadoAdmin($_GET["id"], $connection);
+            include "../view/modificar_usuario.php";
+        }
+
+        if($_GET['action']=="bajaEmpleado"){
+            $usuario=Usuario::bajaEmpleado($_GET["id"], $connection);
+            header("Location: ../../../src/controller/actions_tabla.php?class=all_em");
+        }
+
+        if($_GET['action']=="readmisionEmpleado"){
+            $usuario=Usuario::readmisionEmpleado($_GET["id"], $connection);
+            header("Location: ../../../src/controller/actions_tabla.php?class=all_em");
+        }
+
+        if($_GET['action']=="bajaCliente"){
+            $usuario=Usuario::bajaCliente($_GET["id"], $connection);
+            header("Location: ../../../src/controller/actions_tabla.php?class=all_em");
+        }
+
+        if($_GET['action']=="readmisionCliente"){
+            $usuario=Usuario::readmisionCliente($_GET["id"], $connection);
+            header("Location: ../../../src/controller/actions_tabla.php?class=all_em");
+        }
+        // if(isset($_POST["guardar_pass"])){
+        //     if(Usuario::cambiarPass($_SESSION["id"], $_POST["old_pass"], $_POST["new_pass"], $_POST["confirm"], $connection)){
+        //         header("Location: ../view/login.php");
+        //         die();
+        //     }else{
+        //         return mysqli_error($connection);
+        //     }
+        // }
+    }
+
+    if(isset($_POST["modificar"])){
+        $resultado=Usuario::modificarUsuario($_POST["idUsuario"], $_POST["correo"], $_POST["tipo"], $_POST["telefono"], $_POST["direccion"], $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["motivo_baja"], $_POST["motivo_readmision"], $_POST["fecha_baja"], $_POST["fecha_readmision"], $connection);
+        if($resultado){
+            header("Location: ../../src/controller/actions_tabla.php?class=all_em");
+            die();
+        }else{
+            echo mysqli_error($connection);
         }
     }
    

@@ -11,8 +11,13 @@ class Usuario {
     private String $DNI;
     private String $telefono;
     private String $direccion;
+    private String|null $motivo_baja=null;
+    private String|null $motivo_readmision=null;
+    private String|null $fecha_baja=null;
+    private String|null $fecha_readmision=null;
 
-    public function __construct(String $correo, int $tipo, String $pass, String $nombre, String $apellidos, String $DNI, String $telefono, String $direccion, String $id=null){
+
+    public function __construct(String $correo, int $tipo, String $pass, String $nombre, String $apellidos, String $DNI, String $telefono, String $direccion, String $id=null, String|null $motivo_baja=null, String|null $motivo_readmision=null, String|null $fecha_baja=null, String|null $fecha_readmision=null){
         if(!is_null($id)){
             $this->id=$id;
         }else $this->id=uniqid();
@@ -24,6 +29,19 @@ class Usuario {
         $this->DNI=$DNI;
         $this->telefono=$telefono;
         $this->direccion=$direccion;
+
+        if(!is_null($motivo_baja)){
+            $this->motivo_baja=$motivo_baja;
+        }
+        if(!is_null($motivo_readmision)){
+            $this->motivo_readmision=$motivo_readmision;
+        }
+        if(!is_null($fecha_baja)){
+            $this->fecha_baja=$fecha_baja;
+        }
+        if(!is_null($fecha_readmision)){
+            $this->fecha_readmision=$fecha_readmision;
+        }
     }
 
     //Gettter
@@ -64,6 +82,22 @@ class Usuario {
         return $this->direccion;
     }
 
+    public function getMotivoBaja(): string {
+        return $this->motivo_baja;
+    }
+
+    public function getMotivoReadmision(): string {
+        return $this->motivo_readmision;
+    }
+
+    public function getFechaBaja(): string {
+        return $this->fecha_baja;
+    }
+
+    public function getFechaReadmision(): string {
+        return $this->fecha_readmision;
+    }
+
     //Setters
 
     public function setId(String $id)  {
@@ -102,6 +136,21 @@ class Usuario {
         $this->direccion = $direccion;
     }
 
+    public function setMotivoBaja(string $motivo_baja): void {
+        $this->motivo_baja = $motivo_baja;
+    }
+
+    public function setMotivoReadmision(string $motivo_readmision): void {
+        $this->motivo_readmision = $motivo_readmision;
+    }
+
+    public function setFechaBaja(string $fecha_baja): void {
+        $this->fecha_baja = $fecha_baja;
+    }
+
+    public function setFechaReadmision(string $fecha_readmision): void {
+        $this->fecha_readmision = $fecha_readmision;
+    }
     //Funciones de Clase
 
     //Esta funcion comprueba que no exista ningun usuario con el mismo correo o el mismo DNI dentro de la DB.
@@ -203,9 +252,61 @@ class Usuario {
         }
     }
 
+    public static function verAllEmpleados(mysqli $connection){
+        $lista_empleados=[];
+        $result=$connection->query("Select * from usuarios;");
+
+        if($result!=false){
+            $linea=$result->fetch_object();
+
+            while($linea!=null){
+                $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision);
+                array_push($lista_empleados, $empleado);
+
+                $linea=$result->fetch_object();
+            }
+            
+            return $lista_empleados;
+        }else{
+            return mysqli_error($connection);
+        }
+    }
+
     public static function aceptarEmpleado($id ,mysqli $connection){
         $result=$connection->query("UPDATE usuarios SET `tipo` = '3' WHERE id_usuario = '". $id ."';");
         $result=$connection->query("UPDATE relacion_empleados SET estado = 2 WHERE id_empleado =  '". $id ."';");
+
+        if($result!=false){
+            return true;
+        }else return false;
+    }
+
+    public static function bajaEmpleado($id ,mysqli $connection){
+        $result=$connection->query("UPDATE usuarios SET `tipo` = '7' WHERE id_usuario = '". $id ."';");
+
+        if($result!=false){
+            return true;
+        }else return false;
+    }
+
+    public static function readmisionEmpleado($id ,mysqli $connection){
+        $result=$connection->query("UPDATE usuarios SET `tipo` = '3' WHERE id_usuario = '". $id ."';");
+
+        if($result!=false){
+            return true;
+        }else return false;
+    }
+
+    public static function bajaCliente($id ,mysqli $connection){
+        $result=$connection->query("UPDATE usuarios SET `tipo` = '8' WHERE id_usuario = '". $id ."';");
+
+        if($result!=false){
+            return true;
+        }else return false;
+    }
+
+    public static function readmisionCliente($id ,mysqli $connection){
+        $result=$connection->query("UPDATE usuarios SET `tipo` = '2' WHERE id_usuario = '". $id ."';");
 
         if($result!=false){
             return true;
@@ -230,6 +331,21 @@ class Usuario {
             $datos_usuario=["nombre"=>$linea->nombre, "apellidos"=>$linea->apellidos, "DNI"=>$linea->DNI, "telefono"=>$linea->telefono];
 
             return $datos_usuario;
+
+        }else return false;
+
+    }
+
+    public static function recogerDatosEmpleadoAdmin($id ,mysqli $connection){
+        $result=$connection->query("Select * from usuarios where id_usuario= '". $id ."';");
+
+        $linea=$result->fetch_object();
+
+        if($linea!=null){
+            $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision);
+
+
+            return $empleado;
 
         }else return false;
 
@@ -337,7 +453,16 @@ class Usuario {
                 }
             }
         }
-        
+    }
+
+    public static function modificarUsuario($id, $correo, $tipo, $telefono, $direccion, $nombre, $apellidos, $DNI, $motivo_baja, $motivo_readmision, $fecha_baja, $fecha_readmision, mysqli $connection){
+        $result=$connection->query('Update usuarios SET correo = "'.$correo.'", tipo="'.$tipo.'", telefono="'.$telefono.'", direccion="'.$telefono.'", nombre="'.$nombre.'", apellidos="'.$apellidos.'", DNI="'.$DNI.'", motivo_denegacion_baja="'.$motivo_baja.'", motivo_readmision="'.$motivo_readmision.'", fecha_denegacion_baja="'.$fecha_baja.'", fecha_readmision="'.$fecha_readmision.'" WHERE (`id_usuario` = "'.$id.'")');
+
+        if($result!=false){
+            return true;
+        }else{
+            return mysqli_error($connection);
+        }
     }
 }
 
