@@ -104,14 +104,30 @@
                     ?>
                 <div class="col-2 w-25">
                     <h2>Cliente</h2>
+                        <div>
+                            <h5>Busqueda de Cliente por DNI</h5>
+
+                            <label for="DNIBusqueda">DNI (Busqueda):</label><br>
+                            <div class="d-flex flex-row">
+                                <input id="DNIBusqueda" name="DNIBusqueda" list="DNIs" class=" form-control h-25" autocomplete="off">
+                                <button type="button" id="btn_busqueda_DNI" class="btn btn-outline-primary mx-3" ><i class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                            
+                            <datalist id="DNIs">
+                                <?php
+                                    //foreach($lista_DNIs as $DNI){
+                                ?>
+                                    <!-- <option value="<?php echo $DNI ?>"><?php echo $DNI ?></option> -->
+                                <?php
+                                    //}
+                                ?>
+                            </datalist>             
+                        </div>
                     <label for="nombre">Nombre:</label>
                     <input type="text" name="nombreCliente" class="form-control w-100" id="nombreCliente" required>
                     <br>
                     <label for="apellidos">Apellidos:</label>
                     <input type="text" name="apellidosCliente" class="form-control w-100" id="apellidosCliente"  required>
-                    <br>
-                    <label for="DNI">DNI:</label>
-                    <input type="text" name="DNICliente" class="form-control w-100" id="DNICliente" required>
                 </div>
                 <?php
                 }
@@ -123,26 +139,6 @@
                 if($_SESSION["tipo"]!=2){ //Los clientes no podrán ver el botón.
             ?>
             <button type="button" id="btn_modal" class="btn btn-outline-primary mx-4" >Registrar nuevo Usuario</button>
-            <div class="mx-4">
-                <br><br>
-                <h2>Busqueda de Cliente por DNI</h2>
-
-                <label for="DNIBusqueda">DNI:</label><br>
-                <div class="d-flex flex-row">
-                    <input id="DNIBusqueda" name="DNIBusqueda" list="DNIs" class=" form-control w-25 h-25" autocomplete="off">
-                    <button type="button" id="btn_busqueda_DNI" class="btn btn-outline-primary mx-3" ><i class="fa-solid fa-magnifying-glass"></i></button>
-                </div>
-                
-                 <datalist id="DNIs">
-                    <?php
-                        //foreach($lista_DNIs as $DNI){
-                    ?>
-                        <!-- <option value="<?php echo $DNI ?>"><?php echo $DNI ?></option> -->
-                    <?php
-                        //}
-                    ?>
-                </datalist>             
-            </div>
             <?php
                 }
             ?>

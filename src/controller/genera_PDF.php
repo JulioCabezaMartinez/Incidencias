@@ -30,7 +30,7 @@ $pdf->Cell(16.5, 10, "N-". $incidencia->getNIncidencia());
 
 //Nombre Apellidos Cliente
 $pdf->SetFont('Arial', '', 12);
-$pdf->SetXY(96, 24);
+$pdf->SetXY(80, 24);
 // $pdf->Cell(79, 6, "Hola"." Apellido 1 Apellido-Compuesto 2"); Ejemplo
 $pdf->Cell(79, 6, $usuario_Cliente['nombre']." ". $usuario_Cliente['apellidos']);
 

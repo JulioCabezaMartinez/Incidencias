@@ -69,14 +69,6 @@
             $usuario=Usuario::readmisionCliente($_GET["id"], $connection);
             header("Location: ../../../src/controller/actions_tabla.php?class=all_em");
         }
-        // if(isset($_POST["guardar_pass"])){
-        //     if(Usuario::cambiarPass($_SESSION["id"], $_POST["old_pass"], $_POST["new_pass"], $_POST["confirm"], $connection)){
-        //         header("Location: ../view/login.php");
-        //         die();
-        //     }else{
-        //         return mysqli_error($connection);
-        //     }
-        // }
     }
 
     if(isset($_POST["modificar"])){
@@ -89,4 +81,16 @@
         }
     }
    
+    if(isset($_POST["guardar_pass"])){
+
+        if(Usuario::cambiarPass($_SESSION["id"], $_POST["old_pass"], $_POST["new_pass"], $_POST["confirm"], $connection)){
+            Usuario::logOut();
+            header("Location: ../view/login.php");
+            
+            die();
+        }else{
+            return mysqli_error($connection);
+        }
+    }
+
 ?>

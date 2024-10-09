@@ -437,7 +437,7 @@ class Usuario {
 
     public static function cambiarPass($id, $old_pass, $new_pass, $confirm, mysqli $connection){
         if(!is_null($new_pass) && !is_null($new_pass)){
-            $result=$connection->query("Select pasword from usuarios where id_usuario= '". $id ."';");
+            $result=$connection->query("Select password from usuarios where id_usuario= '". $id ."';");
 
             $linea=$result->fetch_object();
 
