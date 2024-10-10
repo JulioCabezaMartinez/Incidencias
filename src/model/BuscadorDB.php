@@ -2,10 +2,10 @@
 
     //Requiere de utilizar composer para poder utilizar variables de entorno.
 
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "incidencias";
+    $servername = "localhost"; //Ip de la base de datos
+    $username = "root"; //Usuario que vamos a utilizar para entrar en la base de datos.
+    $password = ""; //Password del usuario elegido.
+    $dbname = "incidencias"; //Nombre de la base de datos.
     // Create connection
     $connection = new mysqli($servername, $username, $password, $dbname);
     // Check connection
