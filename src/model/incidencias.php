@@ -1,6 +1,6 @@
 <?php
 /**
- * Esta clase recoge los atributos de la tabla incidencias de la Base de Datos.
+ * Esta clase recoge los atributos de la tabla Incidencias de la Base de Datos.
  */
 class Incidencias{
     /**
@@ -72,9 +72,9 @@ class Incidencias{
     private String|null $hora_cierre=null;
     /**
      * Indica la hora a la que se guardó el estado de la incidencia.
-     * @var int|null
+     * @var float|null
      */
-    private int|null $totalTiempo=null;
+    private float|null $totalTiempo=null;
     /**
      * Constructor de la incidencia. Los parametros que que tengan un valor por defecto deben de ser indicados obligatoriamente, el resto se le asiganará un valor por defecto al crearse la incidencia.
      * @param string $motivo
@@ -92,7 +92,7 @@ class Incidencias{
      * @param string|null $hora_cierre
      * @param int|null $totalTiempo
      */
-    public function __construct(String $motivo, String $idCreador, String $idCliente, String $contacto, String|null $observaciones=null, int $nIncidencia=null, String|null $solucion=null, int|null $estado=null, String|null $motivo_estado=null, String|null $idEmpleado=null, bool|null $reabierto=null, String|null $hora_apertura=null, String|null $hora_cierre=null, int|null $totalTiempo=null){
+    public function __construct(String $motivo, String $idCreador, String $idCliente, String $contacto, String|null $observaciones=null, int $nIncidencia=null, String|null $solucion=null, int|null $estado=null, String|null $motivo_estado=null, String|null $idEmpleado=null, bool|null $reabierto=null, String|null $hora_apertura=null, String|null $hora_cierre=null, float|null $totalTiempo=null){
         $this->motivo=$motivo;
 
         $this->solucion=$solucion;
@@ -372,7 +372,7 @@ class Incidencias{
             $linea=$result->fetch_object();
 
             while($linea!=null){
-                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto, hora_apertura: $linea->hora_apertura, hora_cierre: $linea->hora_cierre, totalTiempo: $linea->totalTiempo);
+                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto, hora_apertura: $linea->hora_apertura, hora_cierre: $linea->hora_cierre, totalTiempo: (float)$linea->totalTiempo);
                 array_push($incidencias, $incidencia);
 
                 $linea=$result->fetch_object();
@@ -419,6 +419,32 @@ class Incidencias{
     public static function recogerTodasIncidenciasAsignadas(mysqli $connection){
         $incidencias=[];
         $result=$connection->query("Select * from incidencias where estado=1");
+
+        if($result!=false){
+            $linea=$result->fetch_object();
+
+            while($linea!=null){
+                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado,idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto, hora_apertura: $linea->hora_apertura, hora_cierre: $linea->hora_cierre, totalTiempo: $linea->totalTiempo);
+                array_push($incidencias, $incidencia);
+
+                $linea=$result->fetch_object();
+            }
+        }else{ //Linea escrita para Debug.
+            $error="Error de conexion a la BD";
+            return $error;
+        }
+
+        return $incidencias;
+    }
+
+    /**
+     * Método que recoge todas las incidencias que no tienen un trabajador asociado en ese momento.
+     * @param mysqli $connection Conexión a la base de datos generada con anterioridad.
+     * @return array|string Devuelve un array de incidencias con todas las incidencias que no tienen un atrabajador asociado alojadas en la base de datos, o devuelve el mensaje de error sql.
+     */
+    public static function recogerTodasIncidenciasNoAsignadas(mysqli $connection){
+        $incidencias=[];
+        $result=$connection->query("Select * from incidencias where estado=5");
 
         if($result!=false){
             $linea=$result->fetch_object();
@@ -564,6 +590,12 @@ class Incidencias{
         }else return false;
     }
 
+    /**
+     * Método que cuenta todas las incidencias que se encuentran en trabajo y que tiene un empleado en especifico.
+     * @param mixed $id_empleado Id de empleado.
+     * @param mysqli $connection Conexión a la base de datos generada con anterioridad.
+     * @return mixed
+     */
     public static function contarIncidenciasPendientes($id_empleado, mysqli $connection){
         $result=$connection->query("Select count(*) as total from incidencias where estado<4 and id_empleado='". $id_empleado ."';");
 
@@ -578,6 +610,19 @@ class Incidencias{
         }
     }
 
+    /**
+     * Método que permite rellenar los campos asociados a la resolución de una incidencia en especifico.
+     * @param int $estado Estado de la incidencia.
+     * @param string $motivo_estado Motivo del estado por el cual se ha guardado la incidencia.
+     * @param string|null $resolucion Solución que se le ha dado a una incidencia en especifico.
+     * @param string|null $observaciones Observaciones adicionales asociadas tanto al motivo como a la solucion de la incidencia.
+     * @param int $nIncidencia Número identificativo de la incidencia.
+     * @param string $horaApertura Hora a la que se ha abierto la incidencia para empezar a solucionarla.
+     * @param string $horaCierre Hora a la que se ha guardado la incidencia.
+     * @param float $totalTiempo Tiempo total de trabajado en la incidencia.
+     * @param mysqli $connection Conexión a la base de datos generada con anterioridad.
+     * @return bool True en caso de que se hayan implementado los datos en la base de datos, false en caso contrario.
+     */
     public static function solucionarIncidencia(int $estado, String $motivo_estado, String|null $resolucion, String|null $observaciones, int $nIncidencia, String $horaApertura, String $horaCierre, float $totalTiempo, mysqli $connection){
         $result=$connection->query("UPDATE incidencias SET solucion = '".$resolucion."', estado=".$estado.", motivo_estado = '".$motivo_estado."', observaciones = '".$observaciones."', hora_apertura='".$horaApertura."', hora_cierre='".$horaCierre."', totalTiempo='".$totalTiempo."' WHERE (`numero_incidencia` = '".$nIncidencia."');");
 
@@ -586,6 +631,20 @@ class Incidencias{
         }else return false;
     }
 
+    /**
+     * Método que permite modificar todos los datos de una incidencia en especifico.
+     * @param int $estado Estado de la incidencia.
+     * @param string $motivo Problema por el que se crea la incidencia.
+     * @param string $motivo_estado Motivo del estado por el cual se ha guardado la incidencia.
+     * @param string|null $resolucion Solución que se le ha dado a una incidencia en especifico.
+     * @param string|null $observaciones Observaciones adicionales asociadas tanto al motivo como a la solucion de la incidencia.
+     * @param int $nIncidencia Número identificativo de la incidencia.
+     * @param string $horaApertura Hora a la que se ha abierto la incidencia para empezar a solucionarla.
+     * @param string $horaCierre Hora a la que se ha guardado la incidencia.
+     * @param float $totalTiempo Tiempo total de trabajado en la incidencia.
+     * @param mysqli $connection True en caso de que se hayan implementado los datos en la base de datos, false en caso contrario.
+     * @return bool
+     */
     public static function actualizarIncidencia(int $estado, String $motivo, String $motivo_estado, String|null $resolucion, String|null $observaciones, int $nIncidencia, String $horaApertura, String $horaCierre, float $totalTiempo, mysqli $connection){
         $result=$connection->query("UPDATE incidencias SET motivo='".$motivo."', solucion = '".$resolucion."', estado=".$estado.", motivo_estado = '".$motivo_estado."', observaciones = '".$observaciones."', hora_apertura='".$horaApertura."', hora_cierre='".$horaCierre."', totalTiempo='".$totalTiempo."' WHERE (`numero_incidencia` = '".$nIncidencia."');");
 

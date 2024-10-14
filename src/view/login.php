@@ -17,11 +17,86 @@
 
         if(isset($_GET['action'])){
             if($_GET['action']==1){
-                echo "fallo de Sesion";
+                echo '<!-- Modal de Confirmación de fallo de login -->
+                            <div class="modal fade" id="fallo_login" tabindex="-1" >
+                                <div class="modal-dialog modal-dialog-centered" >
+                                    <div class="modal-content">
+                                        <div class="modal-header" >
+                                            <h5 id="confirmacion_header" class="modal-title" id="exampleModalLongTitle">Fallo de incio de sesión</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <label id="confirmacion_body">Las credenciales no son correctas.</label>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="btn_cerrar_confirmacion" type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- Modal de Confirmación de fallo de login -->
+                <script>
+                    $(document).ready(function(){
+                        $("#fallo_login").modal("show");
+                        $("#btn_cerrar_confirmacion").on("click", function() {
+                            $("#fallo_login").modal("hide");
+                        });
+                    });
+                </script>';
             }
             
             if($_GET['action']==2){
-                echo "No tiene permitido el acceso. Contacte al administrador.";
+                echo '<!-- Modal de Confirmación de fallo de permisos -->
+                            <div class="modal fade" id="fallo_usuario" tabindex="-1" >
+                                <div class="modal-dialog modal-dialog-centered" >
+                                    <div class="modal-content">
+                                        <div class="modal-header" >
+                                            <h5 id="confirmacion_header" class="modal-title" id="exampleModalLongTitle">Fallo de permisos de empleado</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <label id="confirmacion_body">Usted ya figura como empleado. Pongase en contacto con el administrador.</label>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="btn_cerrar_confirmacion" type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- Modal de Confirmación de fallo de permisos -->
+                <script>
+                    $(document).ready(function(){
+                        $("#fallo_usuario").modal("show");
+                        $("#btn_cerrar_confirmacion").on("click", function() {
+                            $("#fallo_usuario").modal("hide");
+                        });
+                    });
+                </script>';
+            }
+            if($_GET['action']==3){
+                echo '<!-- Modal de Confirmación de cambio de pass -->
+                            <div class="modal fade" id="cambio_pass" tabindex="-1" >
+                                <div class="modal-dialog modal-dialog-centered" >
+                                    <div class="modal-content">
+                                        <div class="modal-header" >
+                                            <h5 id="confirmacion_header" class="modal-title" id="exampleModalLongTitle">Cambio de contraseña</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <label id="confirmacion_body">Contraseña cambiada con exito.</label>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="btn_cerrar_confirmacion" type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- Modal de Confirmación de cambio de pass -->
+                <script>
+                    $(document).ready(function(){
+                        $("#cambio_pass").modal("show");
+                        $("#btn_cerrar_confirmacion").on("click", function() {
+                            $("#cambio_pass").modal("hide");
+                        });
+                    });
+                </script>';
             }
 
         }
@@ -44,5 +119,7 @@
         </form>
         
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

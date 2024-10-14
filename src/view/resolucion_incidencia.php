@@ -66,6 +66,16 @@
     ?>
         <div>
             <h1>Resolución de Incidencias</h1>
+            <div>
+                <div>
+
+                </div>
+                <div class="my-4">
+                    <h3>Tiempo trabajado: </h3>
+                    <p><span id="horas">00</span>:<span id="minutos">00</span>:<span id="segundos">00</span></p><!-- Contador -->
+                </div>    
+            </div>
+
                 <?php
                     if($_GET["back"]=="asig"){ //Con esta variable podemos ver de donde viene el usuario para al darle atras pueda volver.
                 ?>
@@ -252,6 +262,30 @@
         $("#cerrar").click(function(){
             $("#modal_estado_confirmacion").modal('hide');
         })
+
+        //Ccontador
+        let segundos=0;
+        let minutos=0;
+        let horas=0;
+
+        setInterval(function(){
+            segundos++;
+            if(segundos==60){
+                segundos=0;
+                minutos++;
+            }
+            if(minutos==60){
+                minutos=0;
+                horas++;
+            }
+
+            console.log(segundos);
+
+            $("#horas").text(horas.toString().padStart(2, '0'));
+            $("#minutos").text(minutos.toString().padStart(2, '0'));
+            $("#segundos").text(segundos.toString().padStart(2, '0'));
+        }, 1000);
+
     });
 </script>
 

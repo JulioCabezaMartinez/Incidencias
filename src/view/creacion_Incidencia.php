@@ -128,6 +128,9 @@
                     <br>
                     <label for="apellidos">Apellidos:</label>
                     <input type="text" name="apellidosCliente" class="form-control w-100" id="apellidosCliente"  required>
+                    <br>
+                    <label for="DNI">DNI:</label>
+                    <input type="text" name="DNICliente" class="form-control w-100" id="DNICliente"  required>
                 </div>
                 <?php
                 }

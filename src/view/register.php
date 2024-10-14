@@ -35,7 +35,20 @@ require_once "../view/Templates/inicio.inc.php";
             <input type="text" name="telefono" required> <!-- Poner para el NIE -->
             <br><br>
             <label for="direccion">Dirección:</label><br>
-            <input type="text" name="direccion" required> <!-- Poner para el NIE -->
+            <input type="text" name="direccion" required> 
+            <br><br>
+            <label for="pais">País:</label><br>
+            <select type="text" name="direccion" id="pais" required>
+                <option value="es">España</option>
+                <option value="us">Estados Unidos</option>
+            </select>
+            <br><br>
+            <label for="cp">Código Postal:</label><br>
+            <input type="text" name="cp" id="cp" required>
+            <button type="button" id="btn_busqueda_codigo_postal" class="btn btn-outline-primary col-2 w-auto mx-3" ><i class="fa-solid fa-magnifying-glass"></i></button> 
+            <br><br>
+            <label for="ciudad">Ciudad:</label><br>
+            <input type="text" name="ciudad" id="ciudad" required readonly> 
             <br><br>
             <label for="tipo">Tipo de Empleado:</label><br><br>
             <input type="radio" name="tipo" value="Empleado"><label>Empleado</label>
@@ -46,11 +59,25 @@ require_once "../view/Templates/inicio.inc.php";
                 <br>
                 <a href="./login.php">Volver</a>
             </div>
-
-            
-            
         </form>
     </div>
-    
+
+    <script>
+        $(document).ready(function(){
+            $("#btn_busqueda_codigo_postal").click(function(){
+                let codigo_postal=$("#cp").val();
+                let pais=$("#pais").val();
+                $.ajax({
+                    url: "http://api.zippopotam.us/"+ pais + "/" +codigo_postal,
+                    method: "GET",
+                    success:function(data){
+                        $("#ciudad").val(data.places[0]['place name']);
+                    }
+                })
+            });
+        });
+    </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

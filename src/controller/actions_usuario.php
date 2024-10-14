@@ -85,7 +85,7 @@
 
         if(Usuario::cambiarPass($_SESSION["id"], $_POST["old_pass"], $_POST["new_pass"], $_POST["confirm"], $connection)){
             Usuario::logOut();
-            header("Location: ../view/login.php");
+            header("Location: ../view/login.php?action=3");
             
             die();
         }else{

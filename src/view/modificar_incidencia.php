@@ -111,19 +111,75 @@ require_once "../view/Templates/inicio.inc.php";
                     <input type="text" name="motivo_estado" class="form-control w-25" id="motivoIncidencia" value="<?php echo $incidencia->getMotivoEstado() ?>">
                 </div>
 
-                <div class="mb-3">
-                    <label for="id_creador" class="form-label w-50">Id Creador de Incidencia:</label>
-                    <input type="text" name="id_creador" class="form-control w-25" id="motivoIncidencia" value="<?php echo $incidencia->getIdCreador() ?>">
+                <div class="d-flex mb-3" style="gap: 10px;">
+                    <div style="width: 15%;">
+                        <label for="id_creador" class="form-label">Id Creador de Incidencia:</label>
+                        <input type="text" name="id_creador" class="form-control w-75" id="id_creador" value="<?php echo $incidencia->getIdCreador() ?>" readonly>
+                    </div>
+                    <div class="w-25">
+                        <label for="id_creador" class="form-label w-50">DNI Creador de Incidencia:</label>
+                        <div class="row">
+                            <select type="text" name="DNI_creador" class="form-control w-50" id="DNI_creador">
+                                <?php
+                                    $busqueda_DNI=Usuario::busquedaDNI($_POST["DNI"], $connection);
+
+                                    foreach($busqueda_DNI as $DNI){
+                                        echo '<option value="'.$DNI["DNI"].'-'.$DNI["nombre"].' '. $DNI["apellidos"] .'">'.$DNI["DNI"].'-'.$DNI["nombre"].' '. $DNI["apellidos"] .'</option>';
+                                    }
+                                ?>
+                            </select>
+                            <button type="button" id="btn_busqueda_DNI_creador" class="btn btn-outline-primary col-2 w-auto mx-3" ><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
+                        
+                    </div>
+                    
                 </div>
 
-                <div class="mb-3">
-                    <label for="id_cliente" class="form-label w-50">Id Cliente de Incidencia:</label>
-                    <input type="text" name="id_cliente" class="form-control w-25" id="motivoIncidencia" value="<?php echo $incidencia->getIdCliente() ?>">
+                <div class="d-flex mb-3" style="gap: 10px;">
+                    <div style="width: 15%;">
+                        <label for="id_cliente" class="form-label">Id Cliente de Incidencia:</label>
+                        <input type="text" name="id_cliente" class="form-control w-75" id="id_cliente" value="<?php echo $incidencia->getIdCliente() ?>" readonly>
+                    </div>
+                    <div class="w-25">
+                        <label for="id_creador" class="form-label w-50">DNI Cliente de Incidencia:</label>
+                        <div class="row">
+                            <select type="text" name="id_creador" class="form-control w-50" id="DNI_cliente">
+                            <?php
+                                $busqueda_DNI=Usuario::busquedaDNI($_POST["DNI"], $connection);
+
+                                foreach($busqueda_DNI as $DNI){
+                                    echo '<option value="'.$DNI["DNI"].'-'.$DNI["nombre"].' '. $DNI["apellidos"] .'">'.$DNI["DNI"].'-'.$DNI["nombre"].' '. $DNI["apellidos"] .'</option>';
+                                }
+                            ?>
+                            </select>
+                            <button type="button" id="btn_busqueda_DNI_cliente" class="btn btn-outline-primary col-2 w-auto mx-3" ><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
+                        
+                    </div>
+                    
                 </div>
 
-                <div class="mb-3">
-                    <label for="id_empleado" class="form-label w-50">Id Empleado de Incidencia:</label>
-                    <input type="text" name="id_empleado" class="form-control w-25" id="motivoIncidencia" value="<?php echo $incidencia->getIdEmpleado() ?>">
+                <div class="d-flex mb-3" style="gap: 10px;">
+                    <div style="width: 15%;">
+                        <label for="id_empleado" class="form-label">Id Empleado de Incidencia:</label>
+                        <input type="text" name="id_empleado" class="form-control w-75" id="id_empleado" value="<?php echo $incidencia->getIdEmpleado() ?>" readonly>
+                    </div>
+                    <div class="w-25">
+                        <label for="id_creador" class="form-label w-50">DNI Empleado de Incidencia:</label>
+                        <div class="row">
+                            <select type="text" name="id_creador" class="form-control w-50" id="DNI_empleado">
+                            <?php
+                                $busqueda_DNI=Usuario::busquedaDNI($_POST["DNI"], $connection);
+
+                                foreach($busqueda_DNI as $DNI){
+                                    echo '<option value="'.$DNI["DNI"].'-'.$DNI["nombre"].' '. $DNI["apellidos"] .'">'.$DNI["DNI"].'-'.$DNI["nombre"].' '. $DNI["apellidos"] .'</option>';
+                                }
+                                ?>
+                            </select>
+                            <button type="button" id="btn_busqueda_DNI_empleado" class="btn btn-outline-primary col-2 w-auto mx-3" ><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
+                        
+                    </div>
                 </div>
 
                 <div class="mb-3">
@@ -169,6 +225,64 @@ require_once "../view/Templates/inicio.inc.php";
     </div> <!-- Div que cierra la barra lateral para que se mantenga en su lugar -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+            //Creador
+            $("#btn_busqueda_DNI_creador").click(function(){
+                var DNI_busqueda_usuario=$("#DNI_creador").val();
+                var DNI=DNI_busqueda_usuario.substring(0, 9);
+                $.ajax({
+                    url: "AJAX.php",
+                    method: "POST",
+                    data:{
+                        mode:"DNI_busqueda_usuario",
+                        DNI: DNI
+                    },
+                    success:function(data){
+                        console.log(data);
+                        datos=JSON.parse(data)
+                    $("#id_creador").val(datos.id);
+                    }
+                })
+            });
+            //Cliente
+            $("#btn_busqueda_DNI_cliente").click(function(){
+                var DNI_busqueda_usuario=$("#DNI_cliente").val();
+                var DNI=DNI_busqueda_usuario.substring(0, 9);
+                $.ajax({
+                    url: "AJAX.php",
+                    method: "POST",
+                    data:{
+                        mode:"DNI_busqueda_usuario",
+                        DNI: DNI
+                    },
+                    success:function(data){
+                        console.log(data);
+                        datos=JSON.parse(data)
+                    $("#id_cliente").val(datos.id);
+                    }
+                })
+            });
+            //Empleado
+            $("#btn_busqueda_DNI_empleado").click(function(){
+                var DNI_busqueda_usuario=$("#DNI_empleado").val();
+                var DNI=DNI_busqueda_usuario.substring(0, 9);
+                $.ajax({
+                    url: "AJAX.php",
+                    method: "POST",
+                    data:{
+                        mode:"DNI_busqueda_usuario",
+                        DNI: DNI
+                    },
+                    success:function(data){
+                        console.log(data);
+                        datos=JSON.parse(data)
+                    $("#id_empleado").val(datos.id);
+                    }
+                })
+            });
+        })
+    </script>
 </body>
 
 </html>

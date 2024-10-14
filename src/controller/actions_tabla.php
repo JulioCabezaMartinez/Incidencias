@@ -87,6 +87,11 @@
                
                 include "../view/tabla_Empleados_admin.php";
                 break;
+            case 'no_asig':
+                $lista_incidencias=Incidencias::recogerTodasIncidenciasNoAsignadas($connection);
+
+                include "../view/tabla_incidencias_no_asignadas.php";
+                break;
         }
     }
     
