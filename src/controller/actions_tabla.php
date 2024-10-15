@@ -78,8 +78,15 @@
             
             case 'sol':
                 $incidencia=Incidencias::recogerIncidencia($connection, $_GET["nIncidencia"]);
-                $incidencia->setHoraApertura(date('Y-m-d\TH:i:s'));
+                if($incidencia->getHoraApertura()==''){
+                    $incidencia->setHoraApertura(date('Y-m-d\TH:i:s'));
+                    Incidencias::guardarHoraEntrada($incidencia->getHoraApertura(), $incidencia->getNIncidencia(), $connection);
+                }
                 include '../../src/view/resolucion_incidencia.php';
+                break;
+
+            case 'reabrir':
+                
                 break;
             
             case 'all_em':
@@ -94,5 +101,3 @@
                 break;
         }
     }
-    
-        

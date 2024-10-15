@@ -85,9 +85,15 @@
                                 ?>
                                 <?php
                                 if($incidencia->getIdEmpleado()==$_SESSION["id"]){
-                                    ?>
+                                    if($incidencia->getReabierto()){
+                                ?>
+                                        <!-- <a href="../../src/controller/actions_tabla.php?class=reabrir&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>Trabajar en Incidencia<br> -->
+                                <?php
+                                    }else{
+                                ?>
                                         <a href="../../src/controller/actions_tabla.php?class=sol&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>Trabajar en Incidencia<br>
-                                    <?php
+                                <?php
+                                    }
                                 }
                                 ?>
                                     <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-file-arrow-down"></i></a>Descargar Incidencia<br>

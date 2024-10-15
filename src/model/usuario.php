@@ -478,6 +478,26 @@ class Usuario {
         }
     }
 
+    public static function recogerEmpleados(mysqli $connection){
+        $lista_empleados=[];
+        $result=$connection->query("Select * from usuarios where tipo=3 OR tipo=4;");
+
+        if($result!=false){
+            $linea=$result->fetch_object();
+
+            while($linea!=null){
+                $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision);
+                array_push($lista_empleados, $empleado);
+
+                $linea=$result->fetch_object();
+            }
+            
+            return $lista_empleados;
+        }else{
+            return mysqli_error($connection);
+        }
+    }
+
     public static function aceptarEmpleado($id ,mysqli $connection){
         $result=$connection->query("UPDATE usuarios SET `tipo` = '3' WHERE id_usuario = '". $id ."';");
         $result=$connection->query("UPDATE relacion_empleados SET estado = 2 WHERE id_empleado =  '". $id ."';");

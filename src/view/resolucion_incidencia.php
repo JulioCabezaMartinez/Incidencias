@@ -13,6 +13,37 @@
 
     $lista_DNIs=Usuario::recogerDNIsUsuarios($connection);
 
+    function recogeSegundos($incidencia){
+        $hora_inicio=new DateTime($incidencia->getHoraApertura());
+        $hora_actual=new DateTime();
+
+        (int)$segundos=$hora_actual->getTimestamp() - $hora_inicio->getTimestamp(); 
+
+        return $segundos%60;
+    }
+
+    function recogeMinutos($incidencia){
+        $hora_inicio=new DateTime($incidencia->getHoraApertura());
+        $hora_actual=new DateTime();
+
+        (int)$segundos=$hora_actual->getTimestamp() - $hora_inicio->getTimestamp();
+
+        (int)$minutos=$segundos/60;
+
+        return $minutos%60;
+    }
+
+    function recogeHoras($incidencia){
+        $hora_inicio=new DateTime($incidencia->getHoraApertura());
+        $hora_actual=new DateTime();
+
+        (int)$segundos=$hora_actual->getTimestamp() - $hora_inicio->getTimestamp();
+
+        (int)$minutos=$segundos/60;
+        
+        return (int)$horas=$minutos/60;
+    }
+
     require_once "../view/Templates/inicio.inc.php";
 
 ?>
@@ -72,7 +103,7 @@
                 </div>
                 <div class="my-4">
                     <h3>Tiempo trabajado: </h3>
-                    <p><span id="horas">00</span>:<span id="minutos">00</span>:<span id="segundos">00</span></p><!-- Contador -->
+                    <p><span id="horas"><?php echo recogeHoras($incidencia) ?></span>:<span id="minutos"><?php echo recogeMinutos($incidencia) ?></span>:<span id="segundos"><?php echo recogeSegundos($incidencia) ?></span></p><!-- Contador -->
                 </div>    
             </div>
 
@@ -197,7 +228,7 @@
             let totalTiempo= calcularTiempo(new Date(horaApertura).getTime(), new Date(horaCierre).getTime());
 
 
-            if(estado!=1 || estado!=4){
+            if(estado!=1){
                 $("#modal_motivo_estado").modal("show");
             }else{
                 $.ajax({
@@ -264,17 +295,17 @@
         })
 
         //Ccontador
-        let segundos=0;
-        let minutos=0;
-        let horas=0;
+        let segundos=$("#segundos").text();
+        let minutos=$("#minutos").text();
+        let horas=$("#horas").text();
 
         setInterval(function(){
             segundos++;
-            if(segundos==60){
+            if(segundos>=60){
                 segundos=0;
                 minutos++;
             }
-            if(minutos==60){
+            if(minutos>=60){
                 minutos=0;
                 horas++;
             }

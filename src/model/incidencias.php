@@ -471,7 +471,7 @@ class Incidencias{
      */
     public static function recogerTodasIncidenciasAsignadasUsuario(mysqli $connection, String $id_User){
         $incidencias=[];
-        $result=$connection->query("Select * from incidencias where id_empleado='". $id_User ."' and estado<4");
+        $result=$connection->query("Select * from incidencias where id_empleado='". $id_User ."' and estado<4 ");
 
         if($result!=false){
             $linea=$result->fetch_object();
@@ -625,6 +625,22 @@ class Incidencias{
      */
     public static function solucionarIncidencia(int $estado, String $motivo_estado, String|null $resolucion, String|null $observaciones, int $nIncidencia, String $horaApertura, String $horaCierre, float $totalTiempo, mysqli $connection){
         $result=$connection->query("UPDATE incidencias SET solucion = '".$resolucion."', estado=".$estado.", motivo_estado = '".$motivo_estado."', observaciones = '".$observaciones."', hora_apertura='".$horaApertura."', hora_cierre='".$horaCierre."', totalTiempo='".$totalTiempo."' WHERE (`numero_incidencia` = '".$nIncidencia."');");
+
+        if($result!=false){
+            return true;
+        }else return false;
+    }
+
+    public static function guardarHoraEntrada(String $hora_apertura, $nIncidencia, mysqli $connection){
+        $result=$connection->query("UPDATE incidencias SET hora_apertura='".$hora_apertura."' WHERE (`numero_incidencia` = '".$nIncidencia."');");
+
+        if($result!=false){
+            return true;
+        }else return false;
+    }
+
+    public static function actualizarReabrirIncidencia($nIncidencia, mysqli $connection){
+        $result=$connection->query("UPDATE incidencias SET reabierto=1 WHERE (`numero_incidencia` = '".$nIncidencia."');");
 
         if($result!=false){
             return true;

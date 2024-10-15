@@ -7,14 +7,45 @@
         die();
     }
 
+    $lista_empleados=Usuario::recogerEmpleados($connection);
+
     require_once '../view/Templates/inicio.inc.php';
 ?>
 <title>Incidencias no Asignadas</title>
 
 </head>
 <body>
+    <!-- Modal de asignacion de empleado -->
+    <div class="modal fade" id="modal_asignacion_empleado" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
+            <div class="modal-content">
+                <div class="modal-header" >
+                    <h5 class="modal-title" id="exampleModalLongTitle">Menu de Asignación</h5>
+                </div>
+                <div class="modal-body d-flex justify-content-center">
+                    <div class=""> 
+                        <label for="nombre" class="form-label">Empleado: </label><br>
+                        <select name="empleado" id="select_empleado" class="form-select">
+                            <?php
+                            foreach($lista_empleados as $empleado){
+                            ?>
+                                <option value="<?php echo $empleado->getId() ?>"><?php echo $empleado->getNombre(). " " . $empleado->getApellidos() ?></option>
+                            <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_cerrar_modal" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button id="btn_asignar_modal" type="button" class="btn btn-primary w-auto" data-dismiss="modal">Asignar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de asignacion de empleado -->
     <!-- Modal de confirmación -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" >
+    <div class="modal fade" id="modal_confirmacion" tabindex="-1" >
         <div class="modal-dialog modal-dialog-centered" >
             <div class="modal-content">
                 <div class="modal-header" >
@@ -73,8 +104,7 @@
                             <td><?php echo $usuario["nombre"]. " " .$usuario["apellidos"] ?></td>
                             <td><?php echo $estado ?></td>
                             <td>
-                                <a href="../../src/controller/actions_tabla.php?class=sol&back=asig&nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>
-                                <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1 btn_descarga"><i class="fa-solid fa-file-arrow-down"></i></a>
+                                <button id="btn_asig_emp/<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1 btn_asig_emp"><i class="fa-solid fa-user-tie mx-1"></i> Asignar Empleado</button>    
                             </td>
                         </tr>
                 <?php
@@ -124,6 +154,46 @@
             //     }
                 
             // });
+
+            var nIncidencia;
+
+            $(".btn_asig_emp").click(function(){
+                $("#modal_asignacion_empleado").modal("show");
+                nIncidencia=$(this).attr('id');
+            });
+        
+            $("#btn_asignar_modal").click(function(){
+                let id_empleado=$("#select_empleado").val();
+                let real_nIncidencia=nIncidencia.split("/")[1];
+                console.log(real_nIncidencia);
+
+                $.ajax({
+                    url: "AJAX.php",
+                    method: "POST",
+                    data:{
+                        mode: "asignar_empleado",
+                        id_empleado:id_empleado,
+                        nIncidencia:real_nIncidencia
+                    },
+                    success:function(data){
+                        console.log(data);
+                        if(data){
+                            $("#modal_confirmacion").modal("hide");
+                            location.reload();
+                        }
+                    }
+                })
+            });
+
+            $("#btn_cerrar_modal").click(function(){
+                $("#modal_asignacion_empleado").modal("hide");
+                $("#modal_confirmacion").modal("hide");
+            });
+            $("#cerrar").click(function(){
+                $("#modal_asignacion_empleado").modal("hide");
+                $("#modal_confirmacion").modal("hide");
+            });
+
         });
         
     </script>

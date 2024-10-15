@@ -61,7 +61,7 @@
         if($_POST["mode"]=="resolucion_Trabajando"){
             if(isset($_POST["motivo"])){
                 $resultado=Incidencias::solucionarIncidencia((int)$_POST["estado"], $_POST["motivo"], $_POST["resolucion"], $_POST["observaciones"], (int)$_POST["nIncidencia"], $_POST["horaApertura"], $_POST["horaCierre"], (float)$_POST["totalTiempo"], $connection);
-
+                // Incidencias::actualizarReabrirIncidencia((int)$_POST["nIncidencia"], $connection);
                 if($resultado){
                     echo (float)$_POST["totalTiempo"];
                 }else{
@@ -113,6 +113,14 @@
                 echo var_dump($resultado); //Pribar que pasa si se pone aqui un header.
             }else{
                 echo var_dump($resultado);
+            }
+        }
+
+        if($_POST["mode"]=="asignar_empleado"){
+            if(Incidencias::asignarEmpleado($_POST['id_empleado'], $_POST['nIncidencia'], $connection)){
+                echo true;
+            }else{
+                echo false;
             }
         }
     }
