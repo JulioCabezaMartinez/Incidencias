@@ -13,7 +13,11 @@
         $resultado=Usuario::registrarUsuario($_POST["correo"], $_POST["tipo"], $_POST["pass"], $_POST["confirm_pass"],
          $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $connection);
 
-        header("Location: ../view/login.php?action=register");
+        if(is_string($resultado)){
+            $error=$resultado;
+        }
+
+        include "../view/login.php?action=register";
     }
 
     if(isset($_POST['login'])){

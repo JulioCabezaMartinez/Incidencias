@@ -123,4 +123,38 @@
                 echo false;
             }
         }
+
+        if($_POST["mode"]=="upload_documento"){
+
+            $extension=strtolower(pathinfo($_FILES['documento']['name'], PATHINFO_EXTENSION));
+            $extensionesPermitidas = ['pdf'];
+
+            if($_FILES['documento']['size']>(5*1024*1204)){ //Que el tamaño no sea mayor de 5 mb
+
+                echo "Documento demasiado pesada";
+
+            }elseif(!in_array($extension, $extensionesPermitidas)){
+
+                echo "El archivo tiene un tipo no permitido";
+
+            }else{
+
+                $filename=$_FILES['documento']['name'];
+                $tempName=$_FILES['documento']['tmp_name'];
+                if(isset($filename)){
+                    if(!empty('$filename')){
+                        $location='../../assets/PDF/partes_fisicos/'. $filename;
+                        move_uploaded_file($tempName, $location);
+                    }
+                }
+            }
+
+            $resultado=Incidencias::guardarDocumento($_FILES['documento']['name'], $_POST['nIncidencia'], $connection);
+
+            if($resultado){
+                echo 'Subida correcta';
+            }else{
+                echo mysqli_error($connection);
+            }
+        }
     }

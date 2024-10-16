@@ -647,6 +647,14 @@ class Incidencias{
         }else return false;
     }
 
+    public static function guardarDocumento($documento, $nIncidencia, mysqli $connection){
+        $result=$connection->query("UPDATE incidencias SET incidencia_fisica='".$documento."' WHERE (`numero_incidencia` = '".$nIncidencia."');");
+    
+        if($result!=false){
+            return true;
+        }else return false;
+    }
+
     /**
      * Método que permite modificar todos los datos de una incidencia en especifico.
      * @param int $estado Estado de la incidencia.

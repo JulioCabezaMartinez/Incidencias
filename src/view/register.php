@@ -28,6 +28,9 @@ require_once "../view/Templates/inicio.inc.php";
             <label for="confirm_pass">Confirmar Contraseña:</label><br>
             <input type="password" name="confirm_pass" maxlength="60" required>
             <br><br>
+            <label for="imagen">Imagen Perfil: </label>
+            <input type="file" name="imagen" id="imagen" accept=".jpg, .jpeg, .png">
+            <br><br>
             <label for="DNI">DNI:</label><br>
             <input type="text" name="DNI" placeholder="12345678A" maxlength="9" pattern="(\d{8})([A-Z]{1})" required> <!-- Poner para el NIE -->
             <br><br>

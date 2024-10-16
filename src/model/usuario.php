@@ -77,6 +77,7 @@ class Usuario {
      * @var string|null
      */
     private String|null $fecha_readmision=null;
+    private String $image="donDigital_default.png";
 
     /**
      * Constructor de la incidencia. Los parametros que que tengan un valor por defecto deben de ser indicados obligatoriamente, el resto se le asiganará un valor por defecto al crearse el usuario.
@@ -93,8 +94,9 @@ class Usuario {
      * @param string|null $motivo_readmision
      * @param string|null $fecha_baja
      * @param string|null $fecha_readmision
+     * @param string $image
      */
-    public function __construct(String $correo, int $tipo, String $pass, String $nombre, String $apellidos, String $DNI, String $telefono, String $direccion, String $id=null, String|null $motivo_baja=null, String|null $motivo_readmision=null, String|null $fecha_baja=null, String|null $fecha_readmision=null){
+    public function __construct(String $correo, int $tipo, String $pass, String $nombre, String $apellidos, String $DNI, String $telefono, String $direccion, String $id=null, String|null $motivo_baja=null, String|null $motivo_readmision=null, String|null $fecha_baja=null, String|null $fecha_readmision=null, String $image=null){
         if(!is_null($id)){
             $this->id=$id;
         }else $this->id=uniqid();
@@ -118,6 +120,9 @@ class Usuario {
         }
         if(!is_null($fecha_readmision)){
             $this->fecha_readmision=$fecha_readmision;
+        }
+        if(!is_null($image)){
+            $this->image=$image;
         }
     }
 
@@ -212,6 +217,10 @@ class Usuario {
      */
     public function getFechaReadmision(): string {
         return $this->fecha_readmision;
+    }
+
+    public function getImage(): string{
+        return $this->image;
     }
 
     //Setters
@@ -319,6 +328,9 @@ class Usuario {
     public function setFechaReadmision(string $fecha_readmision): void {
         $this->fecha_readmision = $fecha_readmision;
     }
+    public function setImage(string $image): void{
+        $this->image=$image;
+    }
     //Funciones de Clase
 
     //Esta funcion comprueba que no exista ningun usuario con el mismo correo o el mismo DNI dentro de la DB.
@@ -356,7 +368,7 @@ class Usuario {
      * @param mysqli $connection Conexión a la base de datos generada con anterioridad.
      * @return string En caso de que haya algún fallo, se le indicara al usuario mediante un texto. En caso de que la insercción en la base de datos falle, se indicara el motivo del error.
      */
-    public static function registrarUsuario(String $correo, String $tipo, String $pass, String $confirmPass, String $nombre, String $apellidos, String $DNI, String $telefono, String $direccion, mysqli $connection){
+    public static function registrarUsuario(String $correo, String $tipo, String $pass, String $confirmPass, String $nombre, String $apellidos, String $DNI, String $telefono, String $direccion, mysqli $connection, String $image=null){
         if(!is_null($correo) && !is_null($tipo) && !is_null($pass) && !is_null($confirmPass) && !is_null($nombre) && !is_null($apellidos) && !is_null($DNI) && !is_null($telefono) && !is_null($direccion)){ //Doble comprobación para evitar que inyecciones de datos erroneas en la BD
             if($pass===$confirmPass){
                 if(Usuario::compruebaCredenciales($correo, $DNI, $connection)){
@@ -365,8 +377,34 @@ class Usuario {
                         "Cliente"=>2,
                         "Empleado"=>4
                     };
-    
-                    $usuario=new Usuario($correo, $confirmTipo, password_hash($pass, PASSWORD_DEFAULT), $nombre, $apellidos, $DNI, $telefono, $direccion);
+
+                    if(!empty($image["name"])){
+                        $extension=strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
+                        $extensionesPermitidas = ['jpg', 'jpeg', 'png'];
+
+                        if($_FILES['imagen']['size']>(12*1024*1204)){ //Que el tamaño no sea mayor de 12 mb
+
+                            return "Imagen demasiado pesada";
+
+                        }elseif(!in_array($extension, $extensionesPermitidas)){
+
+                            return "El archivo tiene un tipo no permitido";
+
+                        }else{
+
+                            $filename=$image['name'];
+                            $tempName=$image['tmp_name'];
+                            if(isset($filename)){
+                                if(!empty('$filename')){
+                                    $location="../../assets/IMG/". $filename;
+                                    move_uploaded_file($tempName, $location);
+                                }
+                            }
+                        }
+                         
+                        $usuario=new Usuario($correo, $confirmTipo, password_hash($pass, PASSWORD_DEFAULT), $nombre, $apellidos, $DNI, $telefono, $direccion, image: $image['name']);
+                    
+                    }else $usuario=new Usuario($correo, $confirmTipo, password_hash($pass, PASSWORD_DEFAULT), $nombre, $apellidos, $DNI, $telefono, $direccion);
     
                     if($tipo=="Empleado"){
                         $result=$connection->query("Insert into relacion_empleados values('66fa89e697c99', '". $usuario->getId() ."', 1)"); // Estado: 1 En espera, 2 Aceptado, 3 Denegado.
@@ -377,7 +415,7 @@ class Usuario {
                         }
                     }
     
-                    $result=$connection->query("Insert into usuarios values('". $usuario->getId() ."', '". $usuario->getCorreo() ."',". $usuario->getTipo() .", '". $usuario->getPass() ."', '". $usuario->getTelefono() ."', '". $usuario->getDireccion() ."', '". $usuario->getNombre() ."', '". $usuario->getApellidos() ."', '". $usuario->getDNI()."', null, null, null, null, null)");
+                    $result=$connection->query("Insert into usuarios values('". $usuario->getId() ."', '". $usuario->getCorreo() ."',". $usuario->getTipo() .", '". $usuario->getPass() ."', '". $usuario->getTelefono() ."', '". $usuario->getDireccion() ."', '". $usuario->getNombre() ."', '". $usuario->getApellidos() ."', '". $usuario->getDNI()."', '', '', '', '', '', '".$usuario->getImage()."')");
     
                     if(!$result){
                         return mysqli_error($connection); //Lineas de debug.
