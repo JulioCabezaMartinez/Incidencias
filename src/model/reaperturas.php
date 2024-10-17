@@ -7,7 +7,7 @@ class Reapertura{
      * Número de reapertura que  identifica a la reapertura.
      * @var int
      */
-    private int|null $nReapertura;
+    private int $nReapertura;
     /**
      * Número de Incidencia que identifica a la Incidencia Padre.
      * @var int
@@ -15,9 +15,9 @@ class Reapertura{
     private int $incidencia_padre;
     /**
      * Solución que se ha proporcionado a la reapertura.
-     * @var string|null
+     * @var string
      */
-    private String|null $solucion=null;
+    private String $solucion='';
     /**
      * Tipo de estado en el que se puede encontrar una reapertura. Estos tipos son: 0. Reabierto 
      * 1. Trabajando en ello. 2. Finalizado Pendiente. (El trabajador pausa la reapertura) 3. En Seguimiento. (Esperando a que el cliente envie) 
@@ -27,29 +27,29 @@ class Reapertura{
     private int $estado=1; 
     /**
      * Justificación del estado de la reapertura. Este campo se rellena en caso de que la reapertura se tenga que postergar (Tipos 2 y 3).
-     * @var string|null
+     * @var string
      */
-    private String|null $motivo_estado=null;
+    private String $motivo_estado='';
     /**
      * Aportaciones que el empleado puede indicar en caso de que esa reapertura o su resolución tenga algún tipo de comportamiento inusual.
-     * @var string|null
+     * @var string
      */
-    private String|null $observaciones=null;
+    private String $observaciones='';
     /**
      * Indica la hora a la que se abrio la reapertura para empezar a ser solucionada.
-     * @var string|null
+     * @var string
      */
-    private String|null $hora_apertura=null;
+    private String $hora_apertura='';
     /**
      * Summary of hora_cierre
-     * @var string|null
+     * @var string
      */
-    private String|null $hora_cierre=null;
+    private String|null $hora_cierre='';
     /**
      * Indica la hora a la que se guardó el estado de la reapertura.
-     * @var float|null
+     * @var float|String
      */
-    private float|null $totalTiempo=null;
+    private float|String $totalTiempo='';
     /**
      * Constructor de la reapertura. Los parametros que que tengan un valor por defecto deben de ser indicados obligatoriamente, el resto se le asiganará un valor por defecto al crearse la reapertura.
      * @param int $nReapertura
@@ -158,7 +158,7 @@ class Reapertura{
      * Getter de la variable totalTiempo.
      * @return int|null
      */
-    public function getTotalTiempo(): int|null{
+    public function getTotalTiempo(): int|String{
         return $this->totalTiempo;
     }
 
@@ -239,29 +239,44 @@ class Reapertura{
     //Funciones de Clase.
 
     public static function cuentaReaperturas($nIncidencia, mysqli $connection){
-        $result=$connection->query("Select count(*) as total from reapertura where nIncidencia_padre=".$nIncidencia.";");
+        $result=$connection->query("Select count(*) as total from reaperturas where incidencia_padre=".$nIncidencia.";");
 
-        if(is_numeric($result)){
-            if($result=0){
-                return 1;
-            }else{
-                return (int)$result;
-            }
-        
-        }else return mysqli_error($connection);
+        $linea=$result->fetch_object();
+
+        if($linea->total==0){
+            return 1;
+        }else{
+            return (int)$linea->total + 1;
+        }
     }
+        
+        
 
     public static function creaReapertura($nIncidencia, mysqli $connection){
         $nReapertura=Reapertura::cuentaReaperturas($nIncidencia, $connection);
 
         $reapertura= new Reapertura($nReapertura, $nIncidencia);
 
-        $resultado=$connection->query("Insert into reaperturas values(".$reapertura->getNreapertura().", ".$reapertura->getIncidenciaPadre().", '".$reapertura->getSolucion()."', ".$reapertura->getEstado().", '".$reapertura->getMotivoEstado()."', '".$reapertura->getObservaciones()."', '".$reapertura->getHoraApertura()."', '".$reapertura->getHoraCierre()."', ".$reapertura->getTotalTiempo().", '')");
+        $resultado=$connection->query("Insert into reaperturas values(".$reapertura->getNreapertura().", ".$reapertura->getIncidenciaPadre().", '".$reapertura->getSolucion()."', ".$reapertura->getEstado().", '".$reapertura->getMotivoEstado()."', '".$reapertura->getObservaciones()."', '".$reapertura->getHoraApertura()."', '".$reapertura->getHoraCierre()."', '".$reapertura->getTotalTiempo()."', '')");
 
         if($resultado!=false){
             return true;
         }else{
-            return false;
+            return mysqli_error($connection);
+        }
+    }
+
+    public static function recogerReapertura($nIncidencia, $nReapertura, mysqli $connection){
+        $resultado=$connection->query("Select * from reaperturas where incidencia_padre=".$nIncidencia." AND nReapertura=".$nReapertura.";");
+
+        if($resultado!=false){
+            $linea=$resultado->fetch_object();
+
+            $reapertura=new Reapertura($linea->nReapertura, $linea->incidencia_padre, $linea->observaciones, $linea->solucion, $linea->estado, $linea->motivo_estado, $linea->hora_apertura, $linea->hora_cierre, $linea->totalTiempo);
+
+            return $reapertura;
+        }else{
+            return mysqli_error($connection);
         }
     }
 
@@ -287,4 +302,11 @@ class Reapertura{
         }
     }
 
+    public static function guardarHoraEntrada(String $hora_apertura, $nReapertura, $nIncidencia, mysqli $connection){
+        $result=$connection->query("UPDATE reaperturas SET hora_apertura='".$hora_apertura."' WHERE (`nReapertura` = '".$nReapertura."' AND incidencia_padre=".$nIncidencia.");");
+
+        if($result!=false){
+            return true;
+        }else return mysqli_error($connection);
+    }
 }

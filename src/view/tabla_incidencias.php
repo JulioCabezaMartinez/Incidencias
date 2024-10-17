@@ -67,11 +67,11 @@
                             5=>"Sin trabajador Asignado"
                         }
                 ?>
-                    <tr id="main_row_<?php echo $incidencia->getNIncidencia() ?>" class="main-row">
+                    <tr>
                         <?php
                         if($incidencia->getReabierto()){
                         ?>
-                            <td><button class="btn btn-outline-secondary"><i class="fa-solid fa-arrow-down-wide-short"></i></button></td>
+                            <td><button id="main_row_<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-outline-secondary main-row"><i class="fa-solid fa-arrow-down-wide-short"></i></button></td>
                         <?php
                         }else{
                         ?>
@@ -99,22 +99,22 @@
                                 if($incidencia->getIdEmpleado()==$_SESSION["id"]){
                                     if($incidencia->getReabierto()){
                                 ?>
-                                        <a href="../../src/controller/actions_tabla.php?nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-warning my-1"><i class="fa-solid fa-envelope-open-text"></i></a>
+                                        <button id="btn_reabrir-<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-warning my-1 btn_reabrir"><i class="fa-solid fa-envelope-open-text me-2"></i>Reabrir Incidencia</button><br>
                                 <?php
                                     }else{
                                 ?>
-                                        <a href="../../src/controller/actions_tabla.php?class=sol&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>Trabajar en Incidencia<br>
+                                        <a href="../../src/controller/actions_tabla.php?class=sol&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase me-2"></i>Trabajar en Incidencia</a><br>
                                 <?php
                                     }
                                 }
                                 ?>
-                                    <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-file-arrow-down"></i></a>Descargar Incidencia<br>
+                                    <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-file-arrow-down me-2"></i>Descargar Incidencia</a><br>
 
                                 
                                 <?php
                                 if($_SESSION["tipo"]==1){
                                     ?>
-                                        <a href="../../src/controller/actions_incidencia.php?action=mod&nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-file-pen"></i></a>Modificar Incidencia
+                                        <a href="../../src/controller/actions_incidencia.php?action=mod&nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-file-pen me-2"></i>Modificar Incidencia</a>
                                     <?php
                                 }
                                 ?>
@@ -143,7 +143,7 @@
                                     <td class="filas_reapertura" style="width: 150px">R-<?php echo $reapertura->getNreapertura() ?></td>
                                     <td class="filas_reapertura"><?php echo $estado_reapertura ?></td>
                                     <td class="filas_reapertura">
-                                        <a href="../../src/controller/actions_tabla.php?class=sol&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>Trabajar en Incidencia<br>
+                                        <a href="../../src/controller/actions_tabla.php?class=solR&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia()?>&nReapertura=<?php echo $reapertura->getNreapertura()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i>Trabajar en Reapertura</a><br>
                                     </td>
                                 </tr>
                             <?php
@@ -200,11 +200,29 @@
             });
 
             //Reaperturas
+
+            //Mostrar Reaperturas
             $(".main-row").click(function(){
                 let incidencia=$(this).attr('id').split('_')[2];
                 // console.log(".subelement"+incidencia);
                 $(".subelement_"+incidencia).toggle();  // Muestra u oculta el subelemento
             });
+
+            //Crear Reaperturas
+            $('.btn_reabrir').click(function(){
+                let nIncidencia=$(this).attr('id').split('-')[1];
+                $.ajax({
+                    url: "AJAX.php",
+                    method: "POST",
+                    data:{
+                        mode: "reabrir_incidencia",
+                        nIncidencia: nIncidencia,
+                    },
+                    success:function(data){
+                        location.reload();
+                    }
+                })
+            })
         });
 
         

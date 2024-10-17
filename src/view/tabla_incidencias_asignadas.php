@@ -142,7 +142,7 @@ require_once '../view/Templates/inicio.inc.php';
                             <td class="filas_reapertura">R-<?php echo $reapertura->getNreapertura() ?></td>
                             <td class="filas_reapertura"><?php echo $estado_reapertura ?></td>
                             <td class="filas_reapertura">
-                                <a href="../../src/controller/actions_tabla.php?class=sol&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>Trabajar en Incidencia<br>
+                                <a href="../../src/controller/actions_tabla.php?class=solR&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>Trabajar en Incidencia<br>
                             </td>
                         </tr>
                     <?php

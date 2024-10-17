@@ -5,6 +5,7 @@
     require "../model/BuscadorDB.php";
     require "../model/usuario.php";
     require "../model/incidencias.php";
+    require "../model/reaperturas.php";
 
     if (empty($_SESSION)){
         header("Location:../../../src/view/login.php");
@@ -156,5 +157,10 @@
             }else{
                 echo mysqli_error($connection);
             }
+        }
+
+        if($_POST["mode"]=="reabrir_incidencia"){
+            $reapertura=Reapertura::creaReapertura($_POST['nIncidencia'], $connection);
+            echo var_dump($reapertura);
         }
     }

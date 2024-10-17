@@ -88,8 +88,14 @@
                 include '../../src/view/resolucion_incidencia.php';
                 break;
 
-            case 'reabrir':
-                
+            case 'solR':
+                $incidencia=Incidencias::recogerIncidencia($connection, $_GET["nIncidencia"]);
+                $reapertura=Reapertura::recogerReapertura($incidencia->getNIncidencia(), $_GET['nReapertura'], $connection);
+                if($reapertura->getHoraApertura()==''){
+                    $reapertura->setHoraApertura(date('Y-m-d\TH:i:s'));
+                    Reapertura::guardarHoraEntrada($reapertura->getHoraApertura(), $reapertura->getNreapertura(), $incidencia->getNIncidencia(), $connection);
+                }
+                include '../../src/view/resolucion_incidencia.php';
                 break;
             
             case 'all_em':
