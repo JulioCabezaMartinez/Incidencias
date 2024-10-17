@@ -309,4 +309,12 @@ class Reapertura{
             return true;
         }else return mysqli_error($connection);
     }
+
+    public static function solucionarReapertura(int $estado, String $motivo_estado, String|null $resolucion, String|null $observaciones, int $nIncidencia, $nReapertura, String $horaApertura, String $horaCierre, float $totalTiempo, mysqli $connection){
+        $result=$connection->query("UPDATE reaperturas SET solucion = '".$resolucion."', estado=".$estado.", motivo_estado = '".$motivo_estado."', observaciones = '".$observaciones."', hora_apertura='".$horaApertura."', hora_cierre='".$horaCierre."', totalTiempo='".$totalTiempo."' WHERE (`incidencia_padre` = '".$nIncidencia."' AND nReapertura='".$nReapertura."');");
+
+        if($result!=false){
+            return true;
+        }else return false;
+    }
 }

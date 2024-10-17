@@ -70,7 +70,19 @@ require_once "../view/Templates/inicio.inc.php";
                             <input id="motivo_estado" type="text" id="name3" class="form-control" />
                         </div>
                         <button id="btn_cerrar_modal" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button id="btn_guardar_estado_modal" type="button" class="btn btn-primary w-50" data-dismiss="modal">Guardar</button>
+                        <?php
+                            if(!isset($reapertura)){
+                        ?>
+                                <button id="btn_guardar_estado_modal" type="button" class="btn btn-primary w-50" data-dismiss="modal">Guardar</button>
+                        <?php
+                            }else{
+                        ?>
+                                <button id="btn_guardar_estado_modal_reapertura" type="button" class="btn btn-primary w-50" data-dismiss="modal">Guardar</button>
+                        <?php
+                            }
+                        ?>
+                        
+                        
                     </form>
                 </div>
             </div>
@@ -83,10 +95,31 @@ require_once "../view/Templates/inicio.inc.php";
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Incidencia Guardada</h5>
+                <?php
+                    if(!isset($reapertura)){
+                ?>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Incidencia Guardada</h5>
+                <?php
+                    }else{
+                ?>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Reapertura Guardada</h5>
+                <?php
+                    }
+                ?>
+                    
                 </div>
                 <div class="modal-body">
-                    Incidencia guardada con éxito.
+                <?php
+                    if(!isset($reapertura)){
+                ?>
+                        Incidencia guardada con éxito.
+                <?php
+                    }else{
+                ?>
+                        Reapertura guardada con éxito.
+                <?php
+                    }
+                ?>
                 </div>
                 <div class="modal-footer">
                     <button id="cerrar" type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
@@ -259,15 +292,18 @@ require_once "../view/Templates/inicio.inc.php";
                 if (!isset($reapertura)) {
                 ?>
                     <input type="hidden" id="hidden_hApertura" value="<?php echo $incidencia->getHoraApertura() ?>">
+                    <input id="btn_guardar_resolucion" type="button" value="Guardar" class="btn btn-outline-success">
                 <?php
                 } else {
                 ?>
                     <input type="hidden" id="hidden_hApertura" value="<?php echo $reapertura->getHoraApertura() ?>">
+                    <input type="hidden" id="hidden_nReapertura" value="<?php echo $reapertura->getNreapertura() ?>">
+                    <input id="btn_guardar_reapertura" type="button" value="Guardar" class="btn btn-outline-success">
                 <?php
                 }
                 ?>
 
-                <input id="btn_guardar_resolucion" type="button" value="Guardar" class="btn btn-outline-success">
+                
             </form>
         </div>
     </div>
@@ -294,6 +330,7 @@ require_once "../view/Templates/inicio.inc.php";
         }
 
         //Cuando se pulse el boton de guardar. (Si se ha seleccionado "Trabajando en ello" se guardarán los datos usando AJAX, en caso contrario se abrirá un modal para indicar el motivo del estado)
+        //Incidencia
         $(document).ready(function() {
             $("#btn_guardar_resolucion").click(function() {
                 let estado = $('input[type="radio"]:checked').val();
@@ -329,13 +366,51 @@ require_once "../view/Templates/inicio.inc.php";
                 }
             });
 
+            //Reapertura
+            $("#btn_guardar_reapertura").click(function() {
+                let estado = $('input[type="radio"]:checked').val();
+                let resolucion = $("#resolucion_instancia").val();
+                let observaciones = $("#observaciones_incidencia").val();
+                let nIncidencia = $("#hidden_nIncidencia").val();
+                let nReapertura = $("#hidden_nReapertura").val();
+                let horaApertura = $("#hidden_hApertura").val();
+                let horaCierre = conseguirFecha();
+                let totalTiempo = calcularTiempo(new Date(horaApertura).getTime(), new Date(horaCierre).getTime());
+
+
+                if (estado != 1) {
+                    $("#modal_motivo_estado").modal("show");
+                } else {
+                    $.ajax({
+                        url: "AJAX.php",
+                        method: "POST",
+                        data: {
+                            mode: "resolucion_Reapertura",
+                            estado: estado,
+                            resolucion: resolucion,
+                            observaciones: observaciones,
+                            nIncidencia: nIncidencia,
+                            nReapertura:nReapertura,
+                            horaApertura: horaApertura,
+                            horaCierre: horaCierre,
+                            totalTiempo: totalTiempo
+                        },
+                        success: function(data) {
+                            $("#modal_motivo_estado").modal('hide');
+                            $("#modal_estado_confirmacion").modal('show');
+                        }
+                    })
+                }
+            });
+
+            //Botón de guardar Incidencia
             $("#btn_guardar_estado_modal").click(function() {
                 let estado = $('input[type="radio"]:checked').val();
                 let resolucion = $("#resolucion_instancia").val();
                 let observaciones = $("#observaciones_incidencia").val();
                 let nIncidencia = $("#hidden_nIncidencia").val();
+                let nReapertura = $("#hidden_nReapertura").val();
                 let motivo = $("#motivo_estado").val();
-                console.log(motivo);
                 let horaApertura = $("#hidden_hApertura").val();
                 let horaCierre = conseguirFecha();
                 let totalTiempo = calcularTiempo(new Date(horaApertura).getTime(), new Date(horaCierre).getTime());
@@ -363,6 +438,42 @@ require_once "../view/Templates/inicio.inc.php";
                 })
             });
 
+            //Botón de guardar Reapertura
+            $("#btn_guardar_estado_modal_reapertura").click(function() {
+                let estado = $('input[type="radio"]:checked').val();
+                let resolucion = $("#resolucion_instancia").val();
+                let observaciones = $("#observaciones_incidencia").val();
+                let nIncidencia = $("#hidden_nIncidencia").val();
+                let nReapertura = $("#hidden_nReapertura").val();
+                let motivo = $("#motivo_estado").val();
+                let horaApertura = $("#hidden_hApertura").val();
+                let horaCierre = conseguirFecha();
+                let totalTiempo = calcularTiempo(new Date(horaApertura).getTime(), new Date(horaCierre).getTime());
+                $.ajax({
+                    url: "AJAX.php",
+                    method: "POST",
+                    data: {
+                        mode: "resolucion_reapertura",
+                        estado: estado,
+                        motivo: motivo,
+                        resolucion: resolucion,
+                        observaciones: observaciones,
+                        nIncidencia: nIncidencia,
+                        nReapertura:nReapertura,
+                        horaApertura: horaApertura,
+                        horaCierre: horaCierre,
+                        totalTiempo: totalTiempo
+
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        $("#modal_motivo_estado").modal('hide');
+                        $("#modal_estado_confirmacion").modal('show');
+
+                    }
+                })
+            });
+
             $("#btn_cerrar_modal").click(function() {
                 $("#modal_motivo_estado").modal('hide');
             })
@@ -371,7 +482,7 @@ require_once "../view/Templates/inicio.inc.php";
                 $("#modal_estado_confirmacion").modal('hide');
             })
 
-            //Ccontador
+            //Contador
             let segundos = $("#segundos").text();
             let minutos = $("#minutos").text();
             let horas = $("#horas").text();
@@ -386,8 +497,6 @@ require_once "../view/Templates/inicio.inc.php";
                     minutos = 0;
                     horas++;
                 }
-
-                console.log(segundos);
 
                 $("#horas").text(horas.toString().padStart(2, '0'));
                 $("#minutos").text(minutos.toString().padStart(2, '0'));

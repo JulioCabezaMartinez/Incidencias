@@ -79,6 +79,26 @@
             }
         }
 
+        if($_POST["mode"]=="resolucion_reapertura"){
+            if(isset($_POST["motivo"])){
+                $resultado=Reapertura::solucionarReapertura((int)$_POST["estado"], $_POST["motivo"], $_POST["resolucion"], $_POST["observaciones"], (int)$_POST["nIncidencia"], $_POST["nReapertura"], $_POST["horaApertura"], $_POST["horaCierre"], (float)$_POST["totalTiempo"], $connection);
+                // Incidencias::actualizarReabrirIncidencia((int)$_POST["nIncidencia"], $connection);
+                if($resultado){
+                    echo (float)$_POST["totalTiempo"];
+                }else{
+                    echo mysqli_error($connection);
+                }
+            }else{
+                $resultado=Reapertura::solucionarReapertura((int)$_POST["estado"], "", $_POST["resolucion"], $_POST["observaciones"], (int)$_POST["nIncidencia"], $_POST["nReapertura"], $_POST["horaApertura"], $_POST["horaCierre"], (float)$_POST["totalTiempo"], $connection);
+
+                if($resultado){
+                    echo "Todo correcto";
+                }else{
+                    echo mysqli_error($connection);
+                }
+            }
+        }
+
         if($_POST["mode"]=="baja"){
             if($_POST["tipo"]==2){
                 $usuario=Usuario::bajaCliente($_POST["id"], $connection);
