@@ -4,6 +4,8 @@
 
     session_start();
 
+    
+
     include "../model/BuscadorDB.php";
     include "../model/usuario.php";
     include "../model/incidencias.php";

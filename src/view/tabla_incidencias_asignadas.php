@@ -88,18 +88,66 @@ require_once '../view/Templates/inicio.inc.php';
                         5 => "Sin trabajador Asignado"
                     }
                 ?>
-                    <tr>
+                    <tr id="main_row_<?php echo $incidencia->getNIncidencia() ?>" class="main-row">
+                        <?php
+                        if($incidencia->getReabierto()){
+                        ?>
+                            <td><button class="btn btn-outline-secondary"><i class="fa-solid fa-arrow-down-wide-short"></i></button></td>
+                        <?php
+                        }else{
+                        ?>
+                        <td></td>
+                        <?php
+                        }
+                        ?>
                         <td>01-<?php echo $incidencia->getNIncidencia() ?></td>
                         <td><?php echo $incidencia->getMotivo() ?></td>
                         <td><?php echo $usuario["DNI"] ?></td>
                         <td><?php echo $usuario["nombre"] . " " . $usuario["apellidos"] ?></td>
                         <td><?php echo $estado ?></td>
                         <td>
-                            <a href="../../src/controller/actions_tabla.php?class=sol&back=asig&nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>
+                            <?php
+                            if(!$incidencia->getReabierto()){
+                            ?>
+                                <a href="../../src/controller/actions_tabla.php?class=sol&back=asig&nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>
+                            <?php
+                            }else{
+                            ?>
+                                <a href="../../src/controller/actions_tabla.php?nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-warning my-1"><i class="fa-solid fa-envelope-open-text"></i></a>
+                            <?php
+                            }
+                            ?>
                             <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1 btn_descarga"><i class="fa-solid fa-file-arrow-down"></i></a>
                             <button id="incidencia_fisica/<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1 btn_subir_incidencia"><i class="fa-solid fa-upload me-2"></i>Subir incidencia</button>
                         </td>
                     </tr>
+                    <tr class="subelement_<?php echo $incidencia->getNIncidencia() ?>" style="display:none;">
+                            <th></th>
+                            <th class="bg-dark text-light">N. Reapertura</th>
+                            <th class="bg-dark text-light">Estado</th>
+                            <th class="bg-dark text-light">Acciones</th>
+                    <?php
+                        $lista_reaperturas = Reapertura::recogerReaperturas($incidencia->getNIncidencia(), $connection);
+                        foreach ($lista_reaperturas as $reapertura) {
+                            $estado_reapertura = match ($reapertura->getEstado()) {
+                                1 => "Trabajando en ello",
+                                2 => "Pausa",
+                                3 => "En Seguimiento",
+                                4 => "Finalizado"
+                            }
+
+                    ?>
+                        <tr class="subelement_<?php echo $incidencia->getNIncidencia() ?> ps-4" style="display:none;">
+                            <td></td>
+                            <td class="filas_reapertura">R-<?php echo $reapertura->getNreapertura() ?></td>
+                            <td class="filas_reapertura"><?php echo $estado_reapertura ?></td>
+                            <td class="filas_reapertura">
+                                <a href="../../src/controller/actions_tabla.php?class=sol&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>Trabajar en Incidencia<br>
+                            </td>
+                        </tr>
+                    <?php
+                        }
+                    ?>
                 <?php
                 }
                 ?>
@@ -154,9 +202,9 @@ require_once '../view/Templates/inicio.inc.php';
                 $("#modal_upload").modal("show");
             });
 
-            $("#btn_upload_modal").click(function(){
-                let documento=$("#documento").prop('files')[0];
-                let formData=new FormData();
+            $("#btn_upload_modal").click(function() {
+                let documento = $("#documento").prop('files')[0];
+                let formData = new FormData();
                 formData.append('documento', documento);
                 formData.append('nIncidencia', real_nIncidencia);
                 formData.append('mode', "upload_documento");
@@ -164,16 +212,23 @@ require_once '../view/Templates/inicio.inc.php';
                 $.ajax({
                     url: "AJAX.php",
                     method: "POST",
-                    data:formData,
+                    data: formData,
                     contentType: false,
                     processData: false,
-                    success:function(data){
+                    success: function(data) {
                         $("#modal_upload").modal("hide");
                     }
                 })
             });
-            $("#btn_cerrar_modal").click(function(){
+            $("#btn_cerrar_modal").click(function() {
                 $("#modal_upload").modal("hide");
+            });
+
+            //Reaperturas
+            $(".main-row").click(function(){
+                let incidencia=$(this).attr('id').split('_')[2];
+                // console.log(".subelement"+incidencia);
+                $(".subelement_"+incidencia).toggle();  // Muestra u oculta el subelemento
             });
         });
     </script>

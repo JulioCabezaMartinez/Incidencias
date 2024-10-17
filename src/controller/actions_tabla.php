@@ -4,9 +4,12 @@
 
     session_start();
 
+    
+
     require '../model/BuscadorDB.php';
     require '../model/incidencias.php';
     require '../model/usuario.php';
+    require '../model/reaperturas.php';
     
 
     if(isset($_GET['class'])){

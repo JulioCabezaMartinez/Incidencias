@@ -45,12 +45,13 @@
         <table style="width: 85%;" class="table table-striped">
             <thead>
                 <tr>
-                <th scope="col">N°Incidencia</th>
-                <th scope="col">Motivo</th>
-                <th scope="col">DNI-Cliente</th>
-                <th scope="col">Nombre-Cliente</th>
-                <th scope="col">Estado</th>
-                <th scope="col"></th>
+                    <th></th>
+                    <th scope="col">N°Incidencia</th>
+                    <th scope="col">Motivo</th>
+                    <th scope="col">DNI-Cliente</th>
+                    <th scope="col">Nombre-Cliente</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Acciones</th>
                 </tr>
             </thead>
             <tbody id="all_incidencias">
@@ -66,7 +67,18 @@
                             5=>"Sin trabajador Asignado"
                         }
                 ?>
-                    <tr>
+                    <tr id="main_row_<?php echo $incidencia->getNIncidencia() ?>" class="main-row">
+                        <?php
+                        if($incidencia->getReabierto()){
+                        ?>
+                            <td><button class="btn btn-outline-secondary"><i class="fa-solid fa-arrow-down-wide-short"></i></button></td>
+                        <?php
+                        }else{
+                        ?>
+                        <td></td>
+                        <?php
+                        }
+                        ?>
                             <td>01-<?php echo $incidencia->getNIncidencia()?></td>
                             <td><?php echo $incidencia->getMotivo() ?></td>
                             <td><?php echo $usuario["DNI"] ?></td>
@@ -87,7 +99,7 @@
                                 if($incidencia->getIdEmpleado()==$_SESSION["id"]){
                                     if($incidencia->getReabierto()){
                                 ?>
-                                        <!-- <a href="../../src/controller/actions_tabla.php?class=reabrir&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>Trabajar en Incidencia<br> -->
+                                        <a href="../../src/controller/actions_tabla.php?nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-warning my-1"><i class="fa-solid fa-envelope-open-text"></i></a>
                                 <?php
                                     }else{
                                 ?>
@@ -108,6 +120,35 @@
                                 ?>
                             </td>
                         </tr>
+                        <tr class="subelement_<?php echo $incidencia->getNIncidencia() ?>" style="display:none;">
+                            <th></th>
+                            <th class="bg-dark text-light">N. Reapertura</th>
+                            <th class="bg-dark text-light">Estado</th>
+                            <th class="bg-dark text-light">Acciones</th>
+                        </tr>
+                            <?php
+                                $lista_reaperturas=Reapertura::recogerReaperturas($incidencia->getNIncidencia(), $connection);
+                                foreach($lista_reaperturas as $reapertura){
+                                    $estado_reapertura=match($reapertura->getEstado()){
+                                        1=>"Trabajando en ello",
+                                        2=>"Pausa",
+                                        3=>"En Seguimiento",
+                                        4=>"Finalizado"
+                                    }
+
+                            ?>
+                                
+                                <tr class="subelement_<?php echo $incidencia->getNIncidencia() ?>" style="display:none;">
+                                    <td></td>
+                                    <td class="filas_reapertura" style="width: 150px">R-<?php echo $reapertura->getNreapertura() ?></td>
+                                    <td class="filas_reapertura"><?php echo $estado_reapertura ?></td>
+                                    <td class="filas_reapertura">
+                                        <a href="../../src/controller/actions_tabla.php?class=sol&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia()?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>Trabajar en Incidencia<br>
+                                    </td>
+                                </tr>
+                            <?php
+                                }
+                            ?>
                 <?php
                 }
                 ?>
@@ -157,24 +198,15 @@
                 }
                 
             });
+
+            //Reaperturas
+            $(".main-row").click(function(){
+                let incidencia=$(this).attr('id').split('_')[2];
+                // console.log(".subelement"+incidencia);
+                $(".subelement_"+incidencia).toggle();  // Muestra u oculta el subelemento
+            });
         });
 
-        //Descarga de la incidencia
-        $(".btn_descarga").click(function(){
-            console.log("descarga oli");
-            // var NIncidencia=$("#nIncidencia").val();
-            // $.ajax({
-            //     url: "AJAX.php",
-            //     method: "POST",
-            //     data:{
-            //         mode: "descarga",
-            //         nIncidencia: NIncidencia
-            //     },
-            //     success:function(data){
-            //         console.log("Descarga correcta");
-            //     }
-            // });
-        });
         
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
