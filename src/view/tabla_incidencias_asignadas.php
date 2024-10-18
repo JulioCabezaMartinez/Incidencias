@@ -113,7 +113,7 @@ require_once '../view/Templates/inicio.inc.php';
                             <?php
                             }else{
                             ?>
-                                <a href="../../src/controller/actions_tabla.php?nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-warning my-1"><i class="fa-solid fa-envelope-open-text"></i></a>
+                                <button id="btn_reabrir-<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-warning my-1 btn_reabrir"><i class="fa-solid fa-envelope-open-text me-2"></i>Reabrir Incidencia</button><br>
                             <?php
                             }
                             ?>
@@ -195,6 +195,7 @@ require_once '../view/Templates/inicio.inc.php';
                 }
 
             });
+            
             var real_nIncidencia;
             $(".btn_subir_incidencia").click(function() {
                 let nIncidencia = $(this).attr("id");
@@ -230,6 +231,21 @@ require_once '../view/Templates/inicio.inc.php';
                 // console.log(".subelement"+incidencia);
                 $(".subelement_"+incidencia).toggle();  // Muestra u oculta el subelemento
             });
+
+            $('.btn_reabrir').click(function(){
+                let nIncidencia=$(this).attr('id').split('-')[1];
+                $.ajax({
+                    url: "AJAX.php",
+                    method: "POST",
+                    data:{
+                        mode: "reabrir_incidencia",
+                        nIncidencia: nIncidencia,
+                    },
+                    success:function(data){
+                        location.reload();
+                    }
+                })
+            })
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

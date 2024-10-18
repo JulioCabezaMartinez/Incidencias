@@ -626,7 +626,11 @@ class Incidencias{
     public static function solucionarIncidencia(int $estado, String $motivo_estado, String|null $resolucion, String|null $observaciones, int $nIncidencia, String $horaApertura, String $horaCierre, float $totalTiempo, mysqli $connection){
         $result=$connection->query("UPDATE incidencias SET solucion = '".$resolucion."', estado=".$estado.", motivo_estado = '".$motivo_estado."', observaciones = '".$observaciones."', hora_apertura='".$horaApertura."', hora_cierre='".$horaCierre."', totalTiempo='".$totalTiempo."' WHERE (`numero_incidencia` = '".$nIncidencia."');");
 
-        if($result!=false){
+        if($estado>1 && $estado<5){
+            $indicarReapertura=Incidencias::actualizarReabrirIncidencia($nIncidencia, $connection);
+        }
+
+        if($result!=false && $indicarReapertura!=false){
             return true;
         }else return false;
     }

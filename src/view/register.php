@@ -12,7 +12,7 @@ require_once "../view/Templates/inicio.inc.php";
     <br><br>
     <label style="font-size: 150%;font-weight: bold;">REGISTRO</label>
     <div class="registro_login">
-        <form action="../controller/actions_usuario.php" method="post">
+        <form action="../controller/actions_usuario.php" enctype="multipart/form-data" method="post">
             <label for="nombre">Nombre:</label><br>
             <input type="text" name="nombre" placeholder="Nombre" maxlength="45" required >
             <br><br>

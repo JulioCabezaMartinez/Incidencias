@@ -11,15 +11,31 @@
     include "../model/incidencias.php";
 
 
-    if(isset($_POST["register"])){ //En este caso falta comprobar correo y/o DNI para evitar la duplicidad de contenido.
-        $resultado=Usuario::registrarUsuario($_POST["correo"], $_POST["tipo"], $_POST["pass"], $_POST["confirm_pass"],
+    if(isset($_POST["register"])){
+        if(isset($_FILES["imagen"])){
+            $resultado=Usuario::registrarUsuario($_POST["correo"], $_POST["tipo"], $_POST["pass"], $_POST["confirm_pass"],
+         $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $connection, $_FILES["imagen"]);
+
+            if(is_string($resultado)){
+                $error=$resultado;
+            }
+
+            echo $error;
+
+            //header('Location: ../view/login.php?action=register');
+        }else{
+            $resultado=Usuario::registrarUsuario($_POST["correo"], $_POST["tipo"], $_POST["pass"], $_POST["confirm_pass"],
          $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $connection);
 
-        if(is_string($resultado)){
-            $error=$resultado;
-        }
+            if(is_string($resultado)){
+                $error=$resultado;
+            }
 
-        include "../view/login.php?action=register";
+            echo var_dump($_FILES   );
+
+            // header('Location: ../view/login.php?action=register');
+        }
+        
     }
 
     if(isset($_POST['login'])){

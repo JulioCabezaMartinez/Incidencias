@@ -368,7 +368,7 @@ class Usuario {
      * @param mysqli $connection Conexión a la base de datos generada con anterioridad.
      * @return string En caso de que haya algún fallo, se le indicara al usuario mediante un texto. En caso de que la insercción en la base de datos falle, se indicara el motivo del error.
      */
-    public static function registrarUsuario(String $correo, String $tipo, String $pass, String $confirmPass, String $nombre, String $apellidos, String $DNI, String $telefono, String $direccion, mysqli $connection, String $image=null){
+    public static function registrarUsuario(String $correo, String $tipo, String $pass, String $confirmPass, String $nombre, String $apellidos, String $DNI, String $telefono, String $direccion, mysqli $connection, $image=null){
         if(!is_null($correo) && !is_null($tipo) && !is_null($pass) && !is_null($confirmPass) && !is_null($nombre) && !is_null($apellidos) && !is_null($DNI) && !is_null($telefono) && !is_null($direccion)){ //Doble comprobación para evitar que inyecciones de datos erroneas en la BD
             if($pass===$confirmPass){
                 if(Usuario::compruebaCredenciales($correo, $DNI, $connection)){
@@ -415,10 +415,10 @@ class Usuario {
                         }
                     }
     
-                    $result=$connection->query("Insert into usuarios values('". $usuario->getId() ."', '". $usuario->getCorreo() ."',". $usuario->getTipo() .", '". $usuario->getPass() ."', '". $usuario->getTelefono() ."', '". $usuario->getDireccion() ."', '". $usuario->getNombre() ."', '". $usuario->getApellidos() ."', '". $usuario->getDNI()."', '', '', '', '', '', '".$usuario->getImage()."')");
+                    $result=$connection->query("Insert into usuarios values('". $usuario->getId() ."', '". $usuario->getCorreo() ."',". $usuario->getTipo() .", '". $usuario->getPass() ."', '". $usuario->getTelefono() ."', '". $usuario->getDireccion() ."', '', '', '". $usuario->getNombre() ."', '". $usuario->getApellidos() ."', '". $usuario->getDNI()."', '', '', '', '', '', '".$usuario->getImage()."')");
     
                     if(!$result){
-                        return mysqli_error($connection); //Lineas de debug.
+                        return "Error al insertar usuario"; //Lineas de debug.
                     }
 
                 }else{
