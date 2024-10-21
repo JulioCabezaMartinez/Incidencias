@@ -47,9 +47,6 @@
                             <li>
                                 <a href="../../../src/controller/actions_tabla.php?class=all" class="nav-link px-0"> <span class="d-none d-sm-inline">Todas las Incidencias</span></a>
                             </li>
-                            <li>
-                            <a href="../../../src/controller/actions_tabla.php?class=no_asig" class="nav-link px-0"> <span class="d-none d-sm-inline">Todas las Incidencias no Asignadas</span></a>
-                            </li>
                             <?php
                             }
                             ?>
@@ -58,6 +55,9 @@
                         <?php
                         if($_SESSION['tipo']==1){
                         ?>
+                            <li>
+                                <a href="../../../src/controller/actions_tabla.php?class=no_asig" class="nav-link px-0"> <span class="d-none d-sm-inline">Todas las Incidencias no Asignadas</span></a>
+                            </li>
                             <li class="nav-item">
 
                                 <?php

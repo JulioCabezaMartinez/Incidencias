@@ -53,7 +53,7 @@
                                             <h5 id="confirmacion_header" class="modal-title" id="exampleModalLongTitle">Fallo de permisos de empleado</h5>
                                         </div>
                                         <div class="modal-body">
-                                            <label id="confirmacion_body">Usted ya figura como empleado. Pongase en contacto con el administrador.</label>
+                                            <label id="confirmacion_body">Usted ya no figura como empleado. Pongase en contacto con el administrador.</label>
                                         </div>
                                         <div class="modal-footer">
                                             <button id="btn_cerrar_confirmacion" type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>

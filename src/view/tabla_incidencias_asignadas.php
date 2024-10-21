@@ -109,15 +109,17 @@ require_once '../view/Templates/inicio.inc.php';
                             <?php
                             if(!$incidencia->getReabierto()){
                             ?>
-                                <a href="../../src/controller/actions_tabla.php?class=sol&back=asig&nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>
+                                <a href="../../src/controller/actions_tabla.php?class=sol&back=asig&nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i>Trabajar en Incidencia</a><br>
                             <?php
                             }else{
+                                if(Reapertura::compruebaEstadoUltimaReapertura($incidencia->getNIncidencia(), $connection)){
                             ?>
-                                <button id="btn_reabrir-<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-warning my-1 btn_reabrir"><i class="fa-solid fa-envelope-open-text me-2"></i>Reabrir Incidencia</button><br>
+                                    <button id="btn_reabrir-<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-warning my-1 btn_reabrir"><i class="fa-solid fa-envelope-open-text me-2"></i>Reabrir Incidencia</button><br>
                             <?php
+                                }
                             }
                             ?>
-                            <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1 btn_descarga"><i class="fa-solid fa-file-arrow-down"></i></a>
+                            <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1 btn_descarga"><i class="fa-solid fa-file-arrow-down"></i> Descargar Incidencia</a><br>
                             <button id="incidencia_fisica/<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1 btn_subir_incidencia"><i class="fa-solid fa-upload me-2"></i>Subir incidencia</button>
                         </td>
                     </tr>
@@ -174,9 +176,9 @@ require_once '../view/Templates/inicio.inc.php';
     <script>
         //Script de busqueda por DNI de AJAX
         $(document).ready(function() {
+            var lista_incidencias = $("#all_incidencias").html();
             $('#busqueda_DNI_incidencia').keyup(function() {
                 var DNI = $(this).val();
-                var lista_incidencias = $("#all_incidencias").html();
                 if (DNI == "") {
                     $("#all_incidencias").html(lista_incidencias);
                 } else {
@@ -225,12 +227,13 @@ require_once '../view/Templates/inicio.inc.php';
                 $("#modal_upload").modal("hide");
             });
 
-            //Reaperturas
-            $(".main-row").click(function(){
-                let incidencia=$(this).attr('id').split('_')[2];
+            //Mostrar Reaperturas:
+            $(document).on('click', '.main-row', function(){
+                console.log('soy un boton');
+                let incidencia = $(this).attr('id').split('_')[2];
                 // console.log(".subelement"+incidencia);
-                $(".subelement_"+incidencia).toggle();  // Muestra u oculta el subelemento
-            });
+                $(".subelement_" + incidencia).toggle(); // Muestra u oculta el subelemento
+            })
 
             $('.btn_reabrir').click(function(){
                 let nIncidencia=$(this).attr('id').split('-')[1];

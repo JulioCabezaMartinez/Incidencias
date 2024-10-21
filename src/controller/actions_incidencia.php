@@ -33,8 +33,12 @@
         var_dump($resultado);
 
         if($resultado){
+            if($_SESSION['tipo']==2){
+                header("Location: ../../../src/controller/actions_tabla.php?class=cliente&add=ok");
+            }else{
+                header("Location: ../../../src/controller/actions_tabla.php?class=all&add=ok");
+            }
             
-            header("Location: ../../../src/controller/actions_tabla.php?class=all&add=ok");
         }
     }
 

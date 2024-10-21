@@ -4,7 +4,10 @@
 
     session_start();
 
-    
+    if (empty($_SESSION)){
+        header("Location:../../../src/view/login.php");
+        die();
+    }
 
     require '../model/BuscadorDB.php';
     require '../model/incidencias.php';

@@ -20,9 +20,7 @@
                 $error=$resultado;
             }
 
-            echo $error;
-
-            //header('Location: ../view/login.php?action=register');
+            header('Location: ../view/login.php?action=register');
         }else{
             $resultado=Usuario::registrarUsuario($_POST["correo"], $_POST["tipo"], $_POST["pass"], $_POST["confirm_pass"],
          $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $connection);
@@ -31,9 +29,7 @@
                 $error=$resultado;
             }
 
-            echo var_dump($_FILES   );
-
-            // header('Location: ../view/login.php?action=register');
+            header('Location: ../view/login.php?action=register');
         }
         
     }

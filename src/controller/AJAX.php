@@ -45,17 +45,75 @@
 
             foreach($lista_incidencias as $incidencia){
                 $cliente=Usuario::recogerDatosEmpleado($incidencia->getIdCliente(), $connection);
-                echo '<tr>
-                        <td>01-'. $incidencia->getNIncidencia() .'</td>
-                        <td>'. $incidencia->getMotivo() .'</td>
-                        <td>'. $cliente["DNI"] .'</td>
-                        <td>'. $cliente["telefono"] .'</td>
-                        <td>'. $incidencia->getEstado() .'</td>
-                        <td>
-                            <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
-                            <a href="#" class="btn btn-small btn-danger"><i class="fa-solid fa-envelope-open-text"></i></a>
+                $usuario=Usuario::recogerUsuarioId($incidencia->getIdCliente(), $connection);
+                $estado=match($incidencia->getEstado()){
+                    1=>"Trabajando en ello",
+                    2=>"Pausa",
+                    3=>"En Seguimiento",
+                    4=>"Finalizado",
+                    5=>"Sin trabajador Asignado"
+                };
+                echo '<tr>';
+                if($incidencia->getReabierto()){
+                    echo '<td><button id="main_row_'.$incidencia->getNIncidencia().'" class="btn btn-outline-secondary main-row"><i class="fa-solid fa-arrow-down-wide-short"></i></button></td>';
+                }else{
+                    echo '<td></td>';
+                }
+                
+                echo '<td>01-'.$incidencia->getNIncidencia().'</td>
+                    <td>'.$incidencia->getMotivo() .'</td>
+                    <td>'.$usuario["DNI"] .'</td>
+                    <td>'.$usuario["nombre"]. " " .$usuario["apellidos"].'</td>
+                    <td>'.$estado .'</td>
+                    <td>';
+                if(is_null($incidencia->getIdEmpleado()) && $_SESSION["tipo"]!=2){
+                    echo '<form action="../../src/controller/actions_tabla.php?class=add_empleado" method="post">
+                                <input type="hidden" name="nIncidencia" value="'.$incidencia->getNIncidencia().'">
+                                <button type="submit" name="nIncidencia_submit" class="btn btn-small btn-success"><i class="fa-solid fa-user-plus"></i></button>Quedarse con la Incidencia
+                            </form>';
+                }
+                if($incidencia->getIdEmpleado()==$_SESSION["id"]){
+                    if($incidencia->getReabierto()){
+                        if(Reapertura::compruebaEstadoUltimaReapertura($incidencia->getNIncidencia(), $connection)){
+                            echo '<button id="btn_reabrir-'.$incidencia->getNIncidencia().'" class="btn btn-small btn-warning my-1 btn_reabrir"><i class="fa-solid fa-envelope-open-text me-2"></i>Reabrir Incidencia</button><br>';
+                        }
+                    }else{
+                        echo '<a href="../../src/controller/actions_tabla.php?class=sol&back=all&nIncidencia='.$incidencia->getNIncidencia().'" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase me-2"></i>Trabajar en Incidencia</a><br>';
+                    }
+                }
+                echo '<a href="../../src/controller/genera_PDF.php?nIncidencia='.$incidencia->getNIncidencia().'" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-file-arrow-down me-2"></i>Descargar Incidencia</a><br>';
+                
+                if ($_SESSION["tipo"] == 1){
+                    echo '<a href="../../src/controller/actions_incidencia.php?action=mod&nIncidencia='.$incidencia->getNIncidencia().'" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-file-pen me-2"></i>Modificar Incidencia</a>';
+                }
+                echo '</td>
+                    </tr>';
+                
+                echo ' <tr class="subelement_'.$incidencia->getNIncidencia().'" style="display:none;">
+                        <th></th>
+                        <th class="bg-dark text-light">N. Reapertura</th>
+                        <th class="bg-dark text-light">Estado</th>
+                        <th class="bg-dark text-light">Acciones</th>
+                    </tr>';
+
+                $lista_reaperturas = Reapertura::recogerReaperturas($incidencia->getNIncidencia(), $connection);
+                foreach ($lista_reaperturas as $reapertura){
+                    $estado_reapertura = match ($reapertura->getEstado()) {
+                        1 => "Trabajando en ello",
+                        2 => "Pausa",
+                        3 => "En Seguimiento",
+                        4 => "Finalizado"
+                    };
+
+                    echo '<tr class="subelement_'.$incidencia->getNIncidencia().'" style="display:none;">
+                        <td></td>
+                        <td class="filas_reapertura" style="width: 150px">R-'.$reapertura->getNreapertura().'</td>
+                        <td class="filas_reapertura">'.$estado_reapertura.'</td>
+                        <td class="filas_reapertura">
+                            <a href="../../src/controller/actions_tabla.php?class=solR&back=all&nIncidencia='.$incidencia->getNIncidencia().'&nReapertura='.$reapertura->getNreapertura().'" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i>Trabajar en Reapertura</a><br>
                         </td>
-                    <tr>';
+                    </tr>';
+                }      
             }
         }
 

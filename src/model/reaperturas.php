@@ -317,4 +317,15 @@ class Reapertura{
             return true;
         }else return false;
     }
+    public static function compruebaEstadoUltimaReapertura($nIncidencia, mysqli $connection){
+        $result=$connection->query('SELECT estado from reaperturas where incidencia_padre='.$nIncidencia.' order by nReapertura desc limit 1;');
+
+        $linea=$result->fetch_object();
+
+        if($linea->estado>1 && $linea->estado<5){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
