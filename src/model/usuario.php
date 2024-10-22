@@ -719,6 +719,22 @@ class Usuario {
         }
     }
 
+    public static function resetPass($correo, $new_pass, $confirm, mysqli $connection){
+
+        if($new_pass==$confirm){
+            $cambio=$connection->query("UPDATE usuarios SET password = '".password_hash($new_pass, PASSWORD_DEFAULT)."' WHERE (`correo` = '".$correo."');");
+
+            if($cambio!=false){
+                return true;
+            }else{
+                return mysqli_error($connection);
+            }
+        }else{
+            return "Contraseñas no coinciden";
+        }
+        
+    }
+
     public static function modificarUsuario($id, $correo, $tipo, $telefono, $direccion, $nombre, $apellidos, $DNI, $motivo_baja, $motivo_readmision, $fecha_baja, $fecha_readmision, mysqli $connection){
         $result=$connection->query('Update usuarios SET correo = "'.$correo.'", tipo="'.$tipo.'", telefono="'.$telefono.'", direccion="'.$telefono.'", nombre="'.$nombre.'", apellidos="'.$apellidos.'", DNI="'.$DNI.'", motivo_denegacion_baja="'.$motivo_baja.'", motivo_readmision="'.$motivo_readmision.'", fecha_denegacion_baja="'.$fecha_baja.'", fecha_readmision="'.$fecha_readmision.'" WHERE (`id_usuario` = "'.$id.'")');
 

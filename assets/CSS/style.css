@@ -63,3 +63,14 @@ body {
 .filas_reapertura{
     background-color: #ffe599 !important;
 }
+
+.link_falso{
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+}
+
+.oculto{
+    height: 0;
+    overflow: hidden;
+}

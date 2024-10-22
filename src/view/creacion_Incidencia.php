@@ -27,34 +27,34 @@
                     <h5 class="modal-title" id="exampleModalLongTitle">Menu de Registro</h5>
                 </div>
                 <div class="modal-body">
-                    <div class=" "> <!-- Falta darle estilos al register (Grid 2 columnas) -->
-                        <label for="nombre">Nombre:</label><br>
-                        <input id="nombre_modal" type="text" name="nombre" placeholder="Nombre" maxlength="45" required >
+                    <div class="form-outline"> <!-- Falta darle estilos al register (Grid 2 columnas) -->
+                        <label class="form-label" for="nombre">Nombre:</label><br>
+                        <input class="form-control w-50" id="nombre_modal" type="text" name="nombre" placeholder="Nombre" maxlength="45" required >
                         <br><br>
                         <label for="apellidos">Apellidos:</label><br>
-                        <input id="apellidos_modal" type="text" name="apellidos" placeholder="Apellidos" maxlength="60" required>
+                        <input class="form-control w-75" id="apellidos_modal" type="text" name="apellidos" placeholder="Apellidos" maxlength="60" required>
                         <br><br>
                         <label for="correo">Correo:</label><br>
-                        <input id="correo_modal" type="email" name="correo" maxlength="60" required>
+                        <input class="form-control w-75" id="correo_modal" type="email" name="correo" maxlength="60" required>
                         <br><br>
                         <label for="pass">Contraseña:</label><br>
-                        <input id="pass_modal" type="password" name="pass" maxlength="60" required>
+                        <input class="form-control w-75" id="pass_modal" type="password" name="pass" maxlength="60" required>
                         <br><br>
                         <label for="confirm_pass">Confirmar Contraseña:</label><br>
-                        <input id="confirm_modal" type="password" name="confirm_pass" maxlength="60" required>
+                        <input class="form-control w-75" id="confirm_modal" type="password" name="confirm_pass" maxlength="60" required>
                         <br><br>
                         <label for="DNI">DNI:</label><br>
-                        <input id="DNI_modal" type="text" name="DNI" placeholder="12345678A" maxlength="9" pattern="(\d{8})([A-Z]{1})" required> <!-- Poner para el NIE -->
+                        <input class="form-control w-50" id="DNI_modal" type="text" name="DNI" placeholder="12345678A" maxlength="9" pattern="(\d{8})([A-Z]{1})" required> <!-- Poner para el NIE -->
                         <br><br>
                         <label for="telefono">Telefono:</label><br>
-                        <input id="telefono_modal" type="text" name="telefono" required> <!-- Poner para el NIE -->
+                        <input class="form-control w-50" id="telefono_modal" type="text" name="telefono" required> <!-- Poner para el NIE -->
                         <br><br>
                         <label for="direccion">Dirección:</label><br>
-                        <input id="direccion_modal" type="text" name="direccion" required> <!-- Poner para el NIE -->
+                        <input class="form-control w-75" id="direccion_modal" type="text" name="direccion" required> <!-- Poner para el NIE -->
                         <br><br>
                         <label for="tipo">Tipo de Empleado:</label><br><br>
-                        <input type="radio" name="tipo" value="Empleado"><label>Empleado</label>
-                        <input type="radio" name="tipo" value="Cliente" checked><label>Cliente</label>
+                        <input class="form-check-input" type="radio" name="tipo" value="Empleado"><label>Empleado</label>
+                        <input class="form-check-input" type="radio" name="tipo" value="Cliente" checked><label>Cliente</label>
                     </div>
                 </div>
                 <div class="modal-footer">

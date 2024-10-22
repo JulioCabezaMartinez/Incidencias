@@ -1,23 +1,24 @@
 <?php
 
-    session_start();
+session_start();
 
-    if (!empty($_SESSION)){
-        header("Location:../../../src/controller/actions_usuario.php?action=0");
-        die();
-    }
+if (!empty($_SESSION)) {
+    header("Location:../../../src/controller/actions_usuario.php?action=0");
+    die();
+}
 
-    require_once "../view/Templates/inicio.inc.php";
+require_once "../view/Templates/inicio.inc.php";
 
 ?>
-    <title>Login</title>
+<title>Login</title>
 </head>
+
 <body>
     <?php
 
-        if(isset($_GET['action'])){
-            if($_GET['action']==1){
-                echo '<!-- Modal de Confirmación de fallo de login -->
+    if (isset($_GET['action'])) {
+        if ($_GET['action'] == 1) {
+            echo '<!-- Modal de Confirmación de fallo de login -->
                             <div class="modal fade" id="fallo_login" tabindex="-1" >
                                 <div class="modal-dialog modal-dialog-centered" >
                                     <div class="modal-content">
@@ -42,10 +43,10 @@
                         });
                     });
                 </script>';
-            }
-            
-            if($_GET['action']==2){
-                echo '<!-- Modal de Confirmación de fallo de permisos -->
+        }
+
+        if ($_GET['action'] == 2) {
+            echo '<!-- Modal de Confirmación de fallo de permisos -->
                             <div class="modal fade" id="fallo_usuario" tabindex="-1" >
                                 <div class="modal-dialog modal-dialog-centered" >
                                     <div class="modal-content">
@@ -70,9 +71,9 @@
                         });
                     });
                 </script>';
-            }
-            if($_GET['action']==3){
-                echo '<!-- Modal de Confirmación de cambio de pass -->
+        }
+        if ($_GET['action'] == 3) {
+            echo '<!-- Modal de Confirmación de cambio de pass -->
                             <div class="modal fade" id="cambio_pass" tabindex="-1" >
                                 <div class="modal-dialog modal-dialog-centered" >
                                     <div class="modal-content">
@@ -97,10 +98,10 @@
                         });
                     });
                 </script>';
-            }
-            if($_GET['action']=='register'){
-                if(isset($error)){
-                    echo '<!-- Modal de Confirmación de fallo de permisos -->
+        }
+        if ($_GET['action'] == 'register') {
+            if (isset($error)) {
+                echo '<!-- Modal de Confirmación de fallo de permisos -->
                     <div class="modal fade" id="fallo_usuario" tabindex="-1" >
                         <div class="modal-dialog modal-dialog-centered" >
                             <div class="modal-content">
@@ -108,7 +109,7 @@
                                     <h5 id="confirmacion_header" class="modal-title" id="exampleModalLongTitle">Fallo de registro</h5>
                                 </div>
                                 <div class="modal-body">
-                                    <label id="confirmacion_body">'.$error.'</label>
+                                    <label id="confirmacion_body">' . $error . '</label>
                                 </div>
                                 <div class="modal-footer">
                                     <button id="btn_cerrar_confirmacion" type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
@@ -125,8 +126,8 @@
                 });
             });
         </script>';
-                }else{
-                    '<!-- Modal de Confirmación de cambio de pass -->
+            } else {
+                '<!-- Modal de Confirmación de cambio de pass -->
                             <div class="modal fade" id="registro_ok" tabindex="-1" >
                                 <div class="modal-dialog modal-dialog-centered" >
                                     <div class="modal-content">
@@ -151,11 +152,51 @@
                         });
                     });
                 </script>';
-                }
             }
-
         }
+    }
     ?>
+
+    <!-- Modal de Olvido Pass -->
+    <div class="modal fade" id="modal_olvido_pass" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Recuperación de contraseña</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-outline">
+                        <p>Indique su correo para enviarle un codigo de recuperación.</p><br>
+                        <label class="form-label" for="correo_modal">Correo:</label><br>
+                        <input class="form-control w-50" id="correo_modal" type="text" name="correo_modal" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_cerrar_modal" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button id="btn_enviar_correo" type="button" class="btn btn-primary w-50" data-dismiss="modal">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de Olvido Pass -->
+
+    <!-- Modal de Confirmación envio de correo -->
+    <div class="modal fade" id="envio_ok" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="confirmacion_header" class="modal-title" id="exampleModalLongTitle">Recuperacion de contraseña</h5>
+                </div>
+                <div class="modal-body">
+                    <label id="confirmacion_body">Correo enviado, compruebe su bandeja de entrada.</label>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_cerrar_confirmacion" type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de Confirmación envio de correo -->
 
     <img class="DonDigitalLogo" src='../../assets/IMG/Imagotipo_Color_Negativo.webp'>
     <br><br>
@@ -170,11 +211,48 @@
             <br><br>
             <input type="submit" name="login" value="Iniciar Sesión">
             <br><br>
-            <a style="font-size: 130%;" href="./register.php">Nuevo Usuario</a>
+            <a style="font-size: 130%;" href="./register.php">Nuevo Usuario</a><br><br>
+            <p>Si ha olvidado su contraseña pulse <span id="recuperar_pass" class="link_falso">aqui</span></p>
         </form>
-        
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <script>
+        let correo;
+        $(document).ready(function() {
+            $("#recuperar_pass").click(function() {
+                $("#modal_olvido_pass").modal("show");
+            });
+            
+            $("#btn_enviar_correo").click(function() {
+                correo = $("#correo_modal").val();
+                $.ajax({
+                    url: "../controller/AJAX.php",
+                    method: "POST",
+                    data: {
+                        mode: "recuperar_pass",
+                        correo: correo
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        $("#modal_olvido_pass").modal("hide");
+                        $("#envio_ok").modal("show");
+                    }
+                });
+            });
+
+            $('#btn_cerrar_modal').on('click', function() {
+                $('#envio_ok').modal('hide');
+            });
+
+            $('#btn_cerrar_confirmacion').on('click', function() {
+                window.location.href = "recuperar_pass.php?correo="+correo;
+            });
+
+        });
+    </script>
 </body>
+
 </html>
