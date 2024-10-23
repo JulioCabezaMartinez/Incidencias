@@ -243,23 +243,28 @@
         }
 
         if($_POST["mode"]=="recuperar_pass"){
-            $codigo=uniqid();
+            if(!Usuario::compruebaCorreo($_POST["correo"], $connection)){
+                $codigo=uniqid();
 
-            $resultado=$connection->query("Insert into recuperacion_pass values('".$_POST["correo"]."', '".$codigo."', '".date('d/m/Y H:i')."') ON DUPLICATE KEY UPDATE codigo = '".$codigo."';");
-
-            $para = $_POST["correo"];
-            $asunto = "Cambio Contraseña";
-            $mensaje = "NO RESPONDER ESTE CORREO.\n
-            Su codigo de recuperacion es el siguiente: \n
-            ".$codigo." \n
-            Si no se encuentra registrado en dondigital.app ignore este mensaje.";
-            $cabeceras = "From: passwordreset@dondigital.app";
-
-            if(mail($para, $asunto, $mensaje, $cabeceras)){
-                echo "Todo correcto";
+                $resultado=$connection->query("Insert into recuperacion_pass values('".$_POST["correo"]."', '".$codigo."', '".date('d/m/Y H:i')."') ON DUPLICATE KEY UPDATE codigo = '".$codigo."';");
+    
+                $para = $_POST["correo"];
+                $asunto = "Cambio Contraseña";
+                $mensaje = "NO RESPONDER ESTE CORREO.\n
+                Su codigo de recuperacion es el siguiente: \n
+                ".$codigo." \n
+                Si no se encuentra registrado en dondigital.app ignore este mensaje.";
+                $cabeceras = "From: passwordreset@dondigital.app";
+    
+                if(mail($para, $asunto, $mensaje, $cabeceras)){
+                    echo "Todo correcto";
+                }else{
+                    echo "Algo fallo";
+                }
             }else{
-                echo "Algo fallo";
+                echo "Correo no valido";
             }
+            
         }
 
         if($_POST["mode"]=="comprobar_codigo_cambio_pass"){
@@ -278,9 +283,10 @@
         }
 
         if($_POST['mode']=="reset_pass"){
+            
             $prueba=Usuario::resetPass($_POST['correo'], $_POST['pass'], $_POST['confirm'], $connection);
             if($prueba){
-                echo var_dump($prueba);
+                echo "Todo correcto";
             }else{
                 echo "Error en el cambio";
             }

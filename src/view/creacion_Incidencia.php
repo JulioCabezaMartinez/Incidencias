@@ -28,33 +28,48 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-outline"> <!-- Falta darle estilos al register (Grid 2 columnas) -->
-                        <label class="form-label" for="nombre">Nombre:</label><br>
-                        <input class="form-control w-50" id="nombre_modal" type="text" name="nombre" placeholder="Nombre" maxlength="45" required >
-                        <br><br>
-                        <label for="apellidos">Apellidos:</label><br>
-                        <input class="form-control w-75" id="apellidos_modal" type="text" name="apellidos" placeholder="Apellidos" maxlength="60" required>
-                        <br><br>
-                        <label for="correo">Correo:</label><br>
-                        <input class="form-control w-75" id="correo_modal" type="email" name="correo" maxlength="60" required>
-                        <br><br>
-                        <label for="pass">Contraseña:</label><br>
-                        <input class="form-control w-75" id="pass_modal" type="password" name="pass" maxlength="60" required>
-                        <br><br>
-                        <label for="confirm_pass">Confirmar Contraseña:</label><br>
-                        <input class="form-control w-75" id="confirm_modal" type="password" name="confirm_pass" maxlength="60" required>
-                        <br><br>
-                        <label for="DNI">DNI:</label><br>
-                        <input class="form-control w-50" id="DNI_modal" type="text" name="DNI" placeholder="12345678A" maxlength="9" pattern="(\d{8})([A-Z]{1})" required> <!-- Poner para el NIE -->
-                        <br><br>
-                        <label for="telefono">Telefono:</label><br>
-                        <input class="form-control w-50" id="telefono_modal" type="text" name="telefono" required> <!-- Poner para el NIE -->
-                        <br><br>
-                        <label for="direccion">Dirección:</label><br>
-                        <input class="form-control w-75" id="direccion_modal" type="text" name="direccion" required> <!-- Poner para el NIE -->
-                        <br><br>
-                        <label for="tipo">Tipo de Empleado:</label><br><br>
-                        <input class="form-check-input" type="radio" name="tipo" value="Empleado"><label>Empleado</label>
-                        <input class="form-check-input" type="radio" name="tipo" value="Cliente" checked><label>Cliente</label>
+                    <label for="nombre">*Nombre:</label><br>
+                    <input id="nombre_modal" class="form-control w-50" type="text" name="nombre" placeholder="Nombre" maxlength="45" required >
+                    <br><br>
+                    <label for="apellidos">*Apellidos:</label><br>
+                    <input id="apellidos_modal" class="form-control w-50" type="text" name="apellidos" placeholder="Apellidos" maxlength="60" required>
+                    <br><br>
+                    <label for="correo">*Correo:</label><br>
+                    <input id="correo_modal" class="form-control w-50" type="email" name="correo" maxlength="60" required>
+                    <br><br>
+                    <label for="pass">*Contraseña:</label><br>
+                    <input id="pass_modal" class="form-control w-50" type="password" name="pass" maxlength="60" required>
+                    <br><br>
+                    <label for="confirm_pass">*Confirmar Contraseña:</label><br>
+                    <input id="confirm_modal" class="form-control w-50" type="password" name="confirm_pass" maxlength="60" required>
+                    <br><br>
+                    <label for="DNI">*DNI:</label><br>
+                    <input id="DNI_modal" class="form-control w-50" type="text" name="DNI" placeholder="12345678A" maxlength="9" pattern="(\d{8})([A-Z]{1})" required> <!-- Poner para el NIE -->
+                    <br><br>
+                    <label for="telefono">*Telefono:</label><br>
+                    <input id="telefono_modal" class="form-control w-50" type="text" name="telefono" required> <!-- Poner para el NIE -->
+                    <br><br>
+                    <label for="direccion">*Dirección:</label><br>
+                    <input id="direccion_modal" class="form-control w-50" type="text" name="direccion" required> 
+                    <br><br>
+                    <label for="pais">País:</label><br>
+                    <select id="pais_modal" class="form-select w-50" type="text" name="direccion" required>
+                        <option value="es">España</option>
+                        <option value="us">Estados Unidos</option>
+                    </select>
+                    <br><br>
+                    <label for="cp">*Código Postal:</label><br>
+                    <div class="d-flex flex-row">
+                        <input class="form-control w-25" type="text" name="cp" id="cp" required>
+                        <button type="button" id="btn_busqueda_codigo_postal" class="btn btn-outline-primary col-2 w-auto mx-3" ><i class="fa-solid fa-magnifying-glass"></i></button> 
+                    </div>
+                    <br><br>
+                    <label for="ciudad">Ciudad:</label><br>
+                    <input id="ciudad_modal" class="form-control w-50" type="text" name="ciudad" required readonly> 
+                    <br><br>
+                    <label for="tipo">Tipo de Empleado:</label><br><br>
+                    <input type="radio" name="tipo" value="Empleado"><label>Empleado</label>
+                    <input type="radio" name="tipo" value="Cliente" checked><label>Cliente</label>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -216,6 +231,8 @@
                 var DNI=$("#DNI_modal").val();
                 var telefono=$("#telefono_modal").val();
                 var direccion=$("#direccion_modal").val();
+                var pais=$("#pais_modal").val();
+                var ciudad=$("#ciudad_modal").val();
                 var tipo=$("input[name='tipo']:checked").val();
                 $.ajax({
                     url: "AJAX.php",
@@ -230,6 +247,8 @@
                         DNI: DNI,
                         telefono: telefono,
                         direccion: direccion,
+                        pais: pais,
+                        ciudad: ciudad,
                         tipo: tipo
                     },
                     success: function(data){
@@ -279,6 +298,19 @@
 
             $('#btn_cerrar_confirmacion').on('click', function() {
                 $('#confirmacion_registro').modal('hide');
+            });
+
+            //Codigo Postal y Ciudad
+            $("#btn_busqueda_codigo_postal").click(function(){
+                let codigo_postal=$("#cp").val();
+                let pais=$("#pais").val();
+                $.ajax({
+                    url: "http://api.zippopotam.us/"+ pais + "/" +codigo_postal,
+                    method: "GET",
+                    success:function(data){
+                        $("#ciudad").val(data.places[0]['place name']);
+                    }
+                })
             });
         });
     </script>

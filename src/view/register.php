@@ -13,31 +13,31 @@ require_once "../view/Templates/inicio.inc.php";
     <label style="font-size: 150%;font-weight: bold;">REGISTRO</label>
     <div class="registro_login">
         <form action="../controller/actions_usuario.php" enctype="multipart/form-data" method="post">
-            <label for="nombre">Nombre:</label><br>
+            <label for="nombre">*Nombre:</label><br>
             <input class="form-control w-50" type="text" name="nombre" placeholder="Nombre" maxlength="45" required >
             <br><br>
-            <label for="apellidos">Apellidos:</label><br>
+            <label for="apellidos">*Apellidos:</label><br>
             <input class="form-control w-50" type="text" name="apellidos" placeholder="Apellidos" maxlength="60" required>
             <br><br>
-            <label for="correo">Correo:</label><br>
+            <label for="correo">*Correo:</label><br>
             <input class="form-control w-50" type="email" name="correo" maxlength="60" required>
             <br><br>
-            <label for="pass">Contraseña:</label><br>
+            <label for="pass">*Contraseña:</label><br>
             <input class="form-control w-50" type="password" name="pass" maxlength="60" required>
             <br><br>
-            <label for="confirm_pass">Confirmar Contraseña:</label><br>
+            <label for="confirm_pass">*Confirmar Contraseña:</label><br>
             <input class="form-control w-50" type="password" name="confirm_pass" maxlength="60" required>
             <br><br>
             <label for="imagen">Imagen Perfil: </label>
             <input class="form-control" type="file" name="imagen" id="imagen" accept=".jpg, .jpeg, .png">
             <br><br>
-            <label for="DNI">DNI:</label><br>
+            <label for="DNI">*DNI:</label><br>
             <input class="form-control w-50" type="text" name="DNI" placeholder="12345678A" maxlength="9" pattern="(\d{8})([A-Z]{1})" required> <!-- Poner para el NIE -->
             <br><br>
-            <label for="telefono">Telefono:</label><br>
+            <label for="telefono">*Telefono:</label><br>
             <input class="form-control w-50" type="text" name="telefono" required> <!-- Poner para el NIE -->
             <br><br>
-            <label for="direccion">Dirección:</label><br>
+            <label for="direccion">*Dirección:</label><br>
             <input class="form-control w-50" type="text" name="direccion" required> 
             <br><br>
             <label for="pais">País:</label><br>
@@ -46,7 +46,7 @@ require_once "../view/Templates/inicio.inc.php";
                 <option value="us">Estados Unidos</option>
             </select>
             <br><br>
-            <label for="cp">Código Postal:</label><br>
+            <label for="cp">*Código Postal:</label><br>
             <div class="d-flex flex-row">
                 <input class="form-control w-25" type="text" name="cp" id="cp" required>
                 <button type="button" id="btn_busqueda_codigo_postal" class="btn btn-outline-primary col-2 w-auto mx-3" ><i class="fa-solid fa-magnifying-glass"></i></button> 

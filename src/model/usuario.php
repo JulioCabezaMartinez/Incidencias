@@ -354,6 +354,17 @@ class Usuario {
             }else return false;
         }
     }
+    public static function compruebaCorreo($correo , mysqli $connection){
+        $result=$connection->query('Select nombre from usuarios where correo="'. $correo .'";');
+
+        if($result!=false){
+            $linea=$result->fetch_object();
+
+            if(is_null($linea)){
+                return false;
+            }else return true;
+        }
+    }
     /**
      * Método que registra un usuario en la base de datos.
      * @param string $correo Correo del usuario.    

@@ -127,7 +127,7 @@ require_once "../view/Templates/inicio.inc.php";
             });
         </script>';
             } else {
-                '<!-- Modal de Confirmación de cambio de pass -->
+                '<!-- Modal de Registro -->
                             <div class="modal fade" id="registro_ok" tabindex="-1" >
                                 <div class="modal-dialog modal-dialog-centered" >
                                     <div class="modal-content">
@@ -143,7 +143,7 @@ require_once "../view/Templates/inicio.inc.php";
                                     </div>
                                 </div>
                             </div>
-                        <!-- Modal de Confirmación de cambio de pass -->
+                        <!-- Modal de Confirmación Registro -->
                 <script>
                     $(document).ready(function(){
                         $("#registro_ok").modal("show");
@@ -236,10 +236,14 @@ require_once "../view/Templates/inicio.inc.php";
                         correo: correo
                     },
                     success: function(data) {
-                        console.log(data);
-                        $("#modal_olvido_pass").modal("hide");
-                        $("#envio_ok").modal("show");
+                        if(data=="Todo correcto"){
+                            $("#modal_olvido_pass").modal("hide");
+                            $("#envio_ok").modal("show");
+                        }else if(data=="Correo no valido"){
+                            $("#correo_modal").after('<p style="color: red;">Las contraseñas no coinciden</p>');
+                        }
                     }
+                        
                 });
             });
 
