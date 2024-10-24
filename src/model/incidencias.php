@@ -557,8 +557,31 @@ class Incidencias{
         
         $result=$connection->query("INSERT INTO incidencias (motivo, estado, id_creador, id_cliente, persona_contacto) VALUES ('". $incidencia->getMotivo() ."', ". $incidencia->getEstado() ." ,'". $incidencia->getIdCreador() ."', '".$incidencia->getIdCliente()."', '".$incidencia->getContacto()."');");
 
+        $result_nIncidencia=$connection->query("SELECT numero_incidencia from incidencias ORDER BY numero_incidencia desc limit 1;");
+
+        $linea=$result_nIncidencia->fetch_object();
+
+        $nIncidencia=$linea->numero_incidencia;
+
         if($result!=false){
-            return true;
+            $cliente=Usuario::recogerUsuarioID($incidencia->getIdCliente(), $connection);
+            $para = "soporte@dondigital.es";
+            $asunto = "Nueva Incidencia";
+            $mensaje = "
+            Incidencia N°".$nIncidencia."
+            Motivo: ".$incidencia->getMotivo().".\n
+            Nombre del Cliente: ".$cliente["nombre"]." ".$cliente["apellidos"]."\n
+            DNI del Cliente: ".$cliente["DNI"]."\n
+            DNI del Cliente: ".$cliente["DNI"]."\n
+            Persona de contacto: ".$incidencia->getContacto()."\n";
+            $cabeceras = "From: passwordreset@dondigital.app";
+    
+            if(mail($para, $asunto, $mensaje, $cabeceras)){
+                return true;
+            }else{
+                return false;
+            }
+            
         }else return mysqli_error($connection);
     }
     /**

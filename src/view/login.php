@@ -168,7 +168,8 @@ require_once "../view/Templates/inicio.inc.php";
                     <div class="form-outline">
                         <p>Indique su correo para enviarle un codigo de recuperación.</p><br>
                         <label class="form-label" for="correo_modal">Correo:</label><br>
-                        <input class="form-control w-50" id="correo_modal" type="text" name="correo_modal" required>
+                        <input class="form-control w-50" id="correo_modal" type="email" name="correo_modal" required>
+                        <p id="error_correo" style="color: red;"></p>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -240,7 +241,7 @@ require_once "../view/Templates/inicio.inc.php";
                             $("#modal_olvido_pass").modal("hide");
                             $("#envio_ok").modal("show");
                         }else if(data=="Correo no valido"){
-                            $("#correo_modal").after('<p style="color: red;">Las contraseñas no coinciden</p>');
+                            $("#error_correo").text("Su correo no se encuentra en la base de datos");
                         }
                     }
                         

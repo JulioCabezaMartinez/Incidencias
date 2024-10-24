@@ -25,3 +25,8 @@ En este Changelog se iran comentando las funcionalidades y arreglos de la aplica
 ## Version 0.3
 
 - Solucionado problema con la busqueda de DNI en las Incidencias.
+
+## Version 0.4
+
+- Posibilidad de recuperar contraseña por envio de codigo al email.
+- Envio de email a soporte@dondigital.es de la incidencia con los datos de creación de Incidencia.

@@ -146,7 +146,13 @@ require_once '../view/Templates/inicio.inc.php';
                             <td class="filas_reapertura" style="width: 150px">R-<?php echo $reapertura->getNreapertura() ?></td>
                             <td class="filas_reapertura"><?php echo $estado_reapertura ?></td>
                             <td class="filas_reapertura">
-                                <a href="../../src/controller/actions_tabla.php?class=solR&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia() ?>&nReapertura=<?php echo $reapertura->getNreapertura() ?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i>Trabajar en Reapertura</a><br>
+                                <?php
+                                if ($incidencia->getIdEmpleado() == $_SESSION["id"] && $estado_reapertura=="Trabajando en ello"){
+                                ?>
+                                    <a href="../../src/controller/actions_tabla.php?class=solR&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia() ?>&nReapertura=<?php echo $reapertura->getNreapertura() ?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i>Trabajar en Reapertura</a><br>
+                                <?php
+                                }
+                                ?>
                             </td>
                         </tr>
                     <?php
