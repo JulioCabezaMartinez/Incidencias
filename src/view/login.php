@@ -100,6 +100,7 @@ require_once "../view/Templates/inicio.inc.php";
                 </script>';
         }
         if ($_GET['action'] == 'register') {
+            
             if (isset($error)) {
                 echo '<!-- Modal de Confirmación de fallo de permisos -->
                     <div class="modal fade" id="fallo_usuario" tabindex="-1" >
@@ -127,6 +128,7 @@ require_once "../view/Templates/inicio.inc.php";
             });
         </script>';
             } else {
+                echo 
                 '<!-- Modal de Registro -->
                             <div class="modal fade" id="registro_ok" tabindex="-1" >
                                 <div class="modal-dialog modal-dialog-centered" >

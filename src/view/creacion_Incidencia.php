@@ -28,48 +28,57 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-outline"> <!-- Falta darle estilos al register (Grid 2 columnas) -->
-                    <label for="nombre">*Nombre:</label><br>
-                    <input id="nombre_modal" class="form-control w-50" type="text" name="nombre" placeholder="Nombre" maxlength="45" required >
-                    <br><br>
-                    <label for="apellidos">*Apellidos:</label><br>
-                    <input id="apellidos_modal" class="form-control w-50" type="text" name="apellidos" placeholder="Apellidos" maxlength="60" required>
-                    <br><br>
-                    <label for="correo">*Correo:</label><br>
-                    <input id="correo_modal" class="form-control w-50" type="email" name="correo" maxlength="60" required>
-                    <br><br>
-                    <label for="pass">*Contraseña:</label><br>
-                    <input id="pass_modal" class="form-control w-50" type="password" name="pass" maxlength="60" required>
-                    <br><br>
-                    <label for="confirm_pass">*Confirmar Contraseña:</label><br>
-                    <input id="confirm_modal" class="form-control w-50" type="password" name="confirm_pass" maxlength="60" required>
-                    <br><br>
-                    <label for="DNI">*DNI:</label><br>
-                    <input id="DNI_modal" class="form-control w-50" type="text" name="DNI" placeholder="12345678A" maxlength="9" pattern="(\d{8})([A-Z]{1})" required> <!-- Poner para el NIE -->
-                    <br><br>
-                    <label for="telefono">*Telefono:</label><br>
-                    <input id="telefono_modal" class="form-control w-50" type="text" name="telefono" required> <!-- Poner para el NIE -->
-                    <br><br>
-                    <label for="direccion">*Dirección:</label><br>
-                    <input id="direccion_modal" class="form-control w-50" type="text" name="direccion" required> 
-                    <br><br>
-                    <label for="pais">País:</label><br>
-                    <select id="pais_modal" class="form-select w-50" type="text" name="direccion" required>
-                        <option value="es">España</option>
-                        <option value="us">Estados Unidos</option>
-                    </select>
-                    <br><br>
-                    <label for="cp">*Código Postal:</label><br>
-                    <div class="d-flex flex-row">
-                        <input class="form-control w-25" type="text" name="cp" id="cp" required>
-                        <button type="button" id="btn_busqueda_codigo_postal" class="btn btn-outline-primary col-2 w-auto mx-3" ><i class="fa-solid fa-magnifying-glass"></i></button> 
-                    </div>
-                    <br><br>
-                    <label for="ciudad">Ciudad:</label><br>
-                    <input id="ciudad_modal" class="form-control w-50" type="text" name="ciudad" required readonly> 
-                    <br><br>
-                    <label for="tipo">Tipo de Empleado:</label><br><br>
-                    <input type="radio" name="tipo" value="Empleado"><label>Empleado</label>
-                    <input type="radio" name="tipo" value="Cliente" checked><label>Cliente</label>
+                        <label for="tipo_registro">Indique si es un clinte particular o Empresa:</label><br>
+                        <input id="particular" type="radio" name="tipo_registro" value=1 checked><label>Particular</label>
+                        <input id="empresa" type="radio" name="tipo_registro" value=2><label>Empresa</label>
+                        <br><br>
+                        <div id="div_nombreEmpresa" class="d-none">
+                        <label for="nombre_empresa">*Nombre de la Empresa:</label><br>
+                        <input id="nombre_empresa" class="form-control w-50" type="text" name="nombre_empresa" placeholder="Nombre de la Empresa">
+                        </div>
+                        <br>
+                        <label for="nombre">*Nombre:</label><br>
+                        <input id="nombre_modal" class="form-control w-50" type="text" name="nombre_modal" placeholder="Nombre" maxlength="45" required >
+                        <br><br>
+                        <label for="apellidos">*Apellidos:</label><br>
+                        <input id="apellidos_modal" class="form-control w-50" type="text" name="apellidos_modal" placeholder="Apellidos" maxlength="60" required>
+                        <br><br>
+                        <label for="correo">*Correo:</label><br>
+                        <input id="correo_modal" class="form-control w-50" type="email" name="correo_modal" maxlength="60" required>
+                        <br><br>
+                        <label for="pass">*Contraseña:</label><br>
+                        <input id="pass_modal" class="form-control w-50" type="password" name="pass_modal" maxlength="60" required>
+                        <br><br>
+                        <label for="confirm_pass">*Confirmar Contraseña:</label><br>
+                        <input id="confirm_modal" class="form-control w-50" type="password" name="confirm_modal" maxlength="60" required>
+                        <br><br>
+                        <label for="DNI">*DNI:</label><br>
+                        <input id="DNI_modal" class="form-control w-50" type="text" name="DNI_modal" placeholder="12345678A" maxlength="9" pattern="(\d{8})([A-Z]{1})" required> <!-- Poner para el NIE -->
+                        <br><br>
+                        <label for="telefono">*Telefono:</label><br>
+                        <input id="telefono_modal" class="form-control w-50" type="text" name="telefono_modal" required> <!-- Poner para el NIE -->
+                        <br><br>
+                        <label for="direccion">*Dirección:</label><br>
+                        <input id="direccion_modal" class="form-control w-50" type="text" name="direccion_modal" required> 
+                        <br><br>
+                        <label for="pais">País:</label><br>
+                        <select class="form-select w-50" type="text" name="pais_modal" id="pais" required>
+                            <option value="es">España</option>
+                            <option value="us">Estados Unidos</option>
+                        </select>
+                        <br><br>
+                        <label for="cp">*Código Postal:</label><br>
+                        <div class="d-flex flex-row">
+                            <input class="form-control w-25" type="text" name="cp" id="cp" required>
+                            <button type="button" id="btn_busqueda_codigo_postal" class="btn btn-outline-primary col-2 w-auto mx-3" ><i class="fa-solid fa-magnifying-glass"></i></button> 
+                        </div>
+                        <br><br>
+                        <label for="ciudad">Ciudad:</label><br>
+                        <input class="form-control w-50" type="text" name="ciudad_modal" id="ciudad" required readonly> 
+                        <br><br>
+                        <label for="tipo">Tipo de Empleado:</label><br><br>
+                        <input type="radio" name="tipo" value="Empleado"><label>Empleado</label>
+                        <input type="radio" name="tipo" value="Cliente" checked><label>Cliente</label>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -223,6 +232,8 @@
 
             //Conexión con AJAX para registrar cliente.
             $("#btn_registrar_modal").on("click", function(){
+                var tipo_registro=$("input[name='tipo_registro']:checked").val();
+                var nombre_empresa=$("#nombre_empresa").val();
                 var nombre=$("#nombre_modal").val();
                 var apellidos=$("#apellidos_modal").val();
                 var correo=$("#correo_modal").val();
@@ -231,14 +242,16 @@
                 var DNI=$("#DNI_modal").val();
                 var telefono=$("#telefono_modal").val();
                 var direccion=$("#direccion_modal").val();
-                var pais=$("#pais_modal").val();
-                var ciudad=$("#ciudad_modal").val();
+                var pais=$("#pais").val();
+                var ciudad=$("#ciudad").val();
                 var tipo=$("input[name='tipo']:checked").val();
                 $.ajax({
                     url: "AJAX.php",
                     method: "POST",
                     data:{
                         mode: "registro",
+                        tipo_registro: tipo_registro,
+                        nombre_empresa: nombre_empresa,
                         nombre: nombre,
                         apellidos: apellidos,
                         correo: correo,
@@ -311,6 +324,11 @@
                         $("#ciudad").val(data.places[0]['place name']);
                     }
                 })
+            });
+
+            $("input[name='tipo_registro']").change(function(){
+                $("#div_nombreEmpresa").toggleClass("d-none");
+                $("#nombre_empresa").prop("required", !$("#nombre_empresa").prop("required"));
             });
         });
     </script>

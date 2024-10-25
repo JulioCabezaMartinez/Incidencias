@@ -11,8 +11,17 @@ require_once "../view/Templates/inicio.inc.php";
     <img class="DonDigitalLogo" src='../../assets/IMG/Imagotipo_Color_Negativo.webp'>
     <br><br>
     <label style="font-size: 150%;font-weight: bold;">REGISTRO</label>
-    <div class="registro_login">
+    <div id="registro_login" class="registro_login">
         <form action="../controller/actions_usuario.php" enctype="multipart/form-data" method="post">
+            <label for="tipo_registro">Indique si es un clinte particular o Empresa:</label><br>
+            <input id="particular" type="radio" name="tipo_registro" value=1 checked><label>Particular</label>
+            <input id="empresa" type="radio" name="tipo_registro" value=2><label>Empresa</label>
+            <br><br>
+            <div id="div_nombreEmpresa" class="d-none">
+            <label for="nombre_empresa">*Nombre de la Empresa:</label><br>
+            <input id="nombre_empresa" class="form-control w-50" type="text" name="nombre_empresa" placeholder="Nombre de la Empresa">
+            </div>
+            <br>
             <label for="nombre">*Nombre:</label><br>
             <input class="form-control w-50" type="text" name="nombre" placeholder="Nombre" maxlength="45" required >
             <br><br>
@@ -41,7 +50,7 @@ require_once "../view/Templates/inicio.inc.php";
             <input class="form-control w-50" type="text" name="direccion" required> 
             <br><br>
             <label for="pais">País:</label><br>
-            <select class="form-select w-50" type="text" name="direccion" id="pais" required>
+            <select class="form-select w-50" type="text" name="pais" id="pais" required>
                 <option value="es">España</option>
                 <option value="us">Estados Unidos</option>
             </select>
@@ -55,10 +64,10 @@ require_once "../view/Templates/inicio.inc.php";
             <label for="ciudad">Ciudad:</label><br>
             <input class="form-control w-50" type="text" name="ciudad" id="ciudad" required readonly> 
             <br><br>
-            <label for="tipo">Tipo de Empleado:</label><br><br>
+            <!-- <label for="tipo">Tipo de Empleado:</label><br><br>
             <input type="radio" name="tipo" value="Empleado"><label>Empleado</label>
             <input type="radio" name="tipo" value="Cliente" checked><label>Cliente</label>
-            <br><br>
+            <br><br> -->
             <div class="submit">
                 <input type="submit" name="register" value="Registrarse">
                 <br>
@@ -79,6 +88,11 @@ require_once "../view/Templates/inicio.inc.php";
                         $("#ciudad").val(data.places[0]['place name']);
                     }
                 })
+            });
+
+            $("input[name='tipo_registro']").change(function(){
+                $("#div_nombreEmpresa").toggleClass("d-none");
+                $("#nombre_empresa").prop("required", !$("#nombre_empresa").prop("required"));
             });
         });
     </script>

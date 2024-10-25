@@ -14,16 +14,29 @@
 
     if(isset($_POST["mode"])){
         if($_POST["mode"]=="registro"){
-            $resultado=Usuario::registrarUsuario($_POST["correo"], $_POST["tipo"], $_POST["pass"], $_POST["confirm"],
-         $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $connection);
+            if(!empty($_POST["nombre_empresa"])){
+                $resultado=Usuario::registrarUsuario(tipo_registro: (int)$_POST["tipo_registro"], correo: $_POST["correo"], tipo: $_POST["tipo"], pass: $_POST["pass"], confirmPass: $_POST["confirm"],
+                nombre: $_POST["nombre"], apellidos: $_POST["apellidos"], DNI: $_POST["DNI"], telefono: $_POST["telefono"], direccion: $_POST["direccion"], pais: $_POST["pais"], ciudad: $_POST["ciudad"], connection: $connection, nombre_empresa:$_POST["nombre_empresa"]);
 
-            
+                
 
-         if(is_string($resultado)){
-            echo $resultado;
-         }else{
-            echo "Todo correcto";
-         }
+                if(is_string($resultado)){
+                    echo $resultado;
+                }else{
+                    echo "Todo correcto";
+                }
+            }else{
+                    $resultado=Usuario::registrarUsuario(tipo_registro: (int)$_POST["tipo_registro"], correo: $_POST["correo"], tipo: $_POST["tipo"], pass: $_POST["pass"], confirmPass: $_POST["confirm"],
+                    nombre: $_POST["nombre"], apellidos: $_POST["apellidos"], DNI: $_POST["DNI"], telefono: $_POST["telefono"], direccion: $_POST["direccion"], pais: $_POST["pais"], ciudad: $_POST["ciudad"], connection: $connection);
+
+                    
+
+                    if(is_string($resultado)){
+                        echo $resultado;
+                    }else{
+                        echo "Todo correcto";
+                    }
+            }
         }
 
         if($_POST["mode"]=="busqueda_DNI"){

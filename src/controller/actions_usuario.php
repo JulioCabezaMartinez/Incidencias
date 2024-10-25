@@ -12,24 +12,48 @@
 
 
     if(isset($_POST["register"])){
-        if(isset($_FILES["imagen"])){
-            $resultado=Usuario::registrarUsuario($_POST["correo"], $_POST["tipo"], $_POST["pass"], $_POST["confirm_pass"],
-         $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $connection, $_FILES["imagen"]);
+        if(!empty($_FILES["imagen"]["name"])){
+            if(empty($_POST["nombre_empresa"])){
+                $resultado=Usuario::registrarUsuario($_POST["tipo_registro"], $_POST["correo"], "Cliente", $_POST["pass"], $_POST["confirm_pass"],
+         $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $_POST["pais"], $_POST["ciudad"], $connection, image: $_FILES["imagen"], nombre_empresa: $_POST["nombre_empresa"]);
 
             if(is_string($resultado)){
                 $error=$resultado;
             }
 
             header('Location: ../view/login.php?action=register');
+            }else{
+                $resultado=Usuario::registrarUsuario($_POST["tipo_registro"], $_POST["correo"], "Cliente", $_POST["pass"], $_POST["confirm_pass"],
+                $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $_POST["pais"], $_POST["ciudad"], $connection, image: $_FILES["imagen"]);
+       
+                if(is_string($resultado)){
+                   $error=$resultado;
+                }
+       
+                header('Location: ../view/login.php?action=register');
+            }
+           
         }else{
-            $resultado=Usuario::registrarUsuario($_POST["correo"], $_POST["tipo"], $_POST["pass"], $_POST["confirm_pass"],
-         $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $connection);
+            if(!empty($_POST["nombre_empresa"])){
+                $resultado=Usuario::registrarUsuario($_POST["tipo_registro"], $_POST["correo"], "Cliente", $_POST["pass"], $_POST["confirm_pass"],
+                $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $_POST["pais"], $_POST["ciudad"], $connection, nombre_empresa: $_POST["nombre_empresa"]);
+    
+                if(is_string($resultado)){
+                    $error=$resultado;
+                }
 
-            if(is_string($resultado)){
-                $error=$resultado;
+                header('Location: ../view/login.php?action=register');
+            }else{
+                $resultado=Usuario::registrarUsuario($_POST["tipo_registro"], $_POST["correo"], "Cliente", $_POST["pass"], $_POST["confirm_pass"],
+                $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $_POST["pais"], $_POST["ciudad"], $connection);
+    
+                if(is_string($resultado)){
+                    $error=$resultado;
+                }
+
+                header('Location: ../view/login.php?action=register');
             }
-
-            header('Location: ../view/login.php?action=register');
+            
         }
         
     }
@@ -90,7 +114,7 @@
     }
 
     if(isset($_POST["modificar"])){
-        $resultado=Usuario::modificarUsuario($_POST["idUsuario"], $_POST["correo"], $_POST["tipo"], $_POST["telefono"], $_POST["direccion"], $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["motivo_baja"], $_POST["motivo_readmision"], $_POST["fecha_baja"], $_POST["fecha_readmision"], $connection);
+        $resultado=Usuario::modificarUsuario($_POST["idUsuario"], $_POST["correo"], "2", $_POST["telefono"], $_POST["direccion"], $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["motivo_baja"], $_POST["motivo_readmision"], $_POST["fecha_baja"], $_POST["fecha_readmision"], $connection);
         if($resultado){
             header("Location: ../../src/controller/actions_tabla.php?class=all_em");
             die();

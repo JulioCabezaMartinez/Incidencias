@@ -36,6 +36,7 @@ class Usuario {
      * Nombre del usuario.
      * @var string
      */
+    private String $nombre_empresa;
     private String $nombre;
     /**
      * Apellidos del usuario.
@@ -57,6 +58,8 @@ class Usuario {
      * @var string
      */
     private String $direccion;
+    private String $pais;
+    private String $ciudad;
     /**
      * Motivo por el cual se ha dado de baja a un usuario.
      * @var string|null
@@ -96,7 +99,7 @@ class Usuario {
      * @param string|null $fecha_readmision
      * @param string $image
      */
-    public function __construct(String $correo, int $tipo, String $pass, String $nombre, String $apellidos, String $DNI, String $telefono, String $direccion, String $id=null, String|null $motivo_baja=null, String|null $motivo_readmision=null, String|null $fecha_baja=null, String|null $fecha_readmision=null, String $image=null){
+    public function __construct(String $correo, int $tipo, String $pass, String $nombre, String $apellidos, String $DNI, String $telefono, String $direccion, String $pais, String $ciudad, String $id=null, String|null $motivo_baja=null, String|null $motivo_readmision=null, String|null $fecha_baja=null, String|null $fecha_readmision=null, String $image=null,  String $nombre_empresa=null){
         if(!is_null($id)){
             $this->id=$id;
         }else $this->id=uniqid();
@@ -108,6 +111,8 @@ class Usuario {
         $this->DNI=$DNI;
         $this->telefono=$telefono;
         $this->direccion=$direccion;
+        $this->pais=$pais;
+        $this->ciudad=$ciudad;
 
         if(!is_null($motivo_baja)){
             $this->motivo_baja=$motivo_baja;
@@ -123,6 +128,9 @@ class Usuario {
         }
         if(!is_null($image)){
             $this->image=$image;
+        }
+        if(!is_null($nombre_empresa)){
+            $this->nombre_empresa=$nombre_empresa;
         }
     }
 
@@ -162,6 +170,9 @@ class Usuario {
     public function getNombre(): String {
         return $this->nombre;
     }
+    public function getNombreEmpresa(){
+        return $this->nombre_empresa;
+    }
     /**
      * Getter de los apellidos del usuario.
      * @return string
@@ -189,6 +200,12 @@ class Usuario {
      */
     public function getDireccion(): string {
         return $this->direccion;
+    }
+    public function getPais(){
+        return $this->pais;
+    }
+    public function getCiudad(){
+        return $this->ciudad;
     }
     /**
      * Getter del motivo de la baja.
@@ -365,21 +382,8 @@ class Usuario {
             }else return true;
         }
     }
-    /**
-     * Método que registra un usuario en la base de datos.
-     * @param string $correo Correo del usuario.    
-     * @param string $tipo Tipo de usuario que se intenta crear.
-     * @param string $pass Contraseña del usuario.
-     * @param string $confirmPass Confirmación de que la contraseña que se intenta insertar es la deseada por el usuario.
-     * @param string $nombre Nombre del usuario.
-     * @param string $apellidos Apellidos del usuario.
-     * @param string $DNI Dni del usuario.
-     * @param string $telefono Telefono del usuario.
-     * @param string $direccion Dirección del usuario.
-     * @param mysqli $connection Conexión a la base de datos generada con anterioridad.
-     * @return string En caso de que haya algún fallo, se le indicara al usuario mediante un texto. En caso de que la insercción en la base de datos falle, se indicara el motivo del error.
-     */
-    public static function registrarUsuario(String $correo, String $tipo, String $pass, String $confirmPass, String $nombre, String $apellidos, String $DNI, String $telefono, String $direccion, mysqli $connection, $image=null){
+    public static function registrarUsuario($tipo_registro, String $correo, String $tipo, String $pass, String $confirmPass, String $nombre, String $apellidos, String $DNI, String $telefono, String $direccion, String $pais, String $ciudad, mysqli $connection, $image=null, $nombre_empresa=null){
+
         if(!is_null($correo) && !is_null($tipo) && !is_null($pass) && !is_null($confirmPass) && !is_null($nombre) && !is_null($apellidos) && !is_null($DNI) && !is_null($telefono) && !is_null($direccion)){ //Doble comprobación para evitar que inyecciones de datos erroneas en la BD
             if($pass===$confirmPass){
                 if(Usuario::compruebaCredenciales($correo, $DNI, $connection)){
@@ -412,10 +416,22 @@ class Usuario {
                                 }
                             }
                         }
-                         
-                        $usuario=new Usuario($correo, $confirmTipo, password_hash($pass, PASSWORD_DEFAULT), $nombre, $apellidos, $DNI, $telefono, $direccion, image: $image['name']);
+
+                        if($tipo_registro==1){//Particular
+                            $usuario=new Usuario($correo, $confirmTipo, password_hash($pass, PASSWORD_DEFAULT), $nombre, $apellidos, $DNI, $telefono, $direccion, $pais, $ciudad, image: $image['name']);
+                        }else{
+                            $usuario=new Usuario($correo, $confirmTipo, password_hash($pass, PASSWORD_DEFAULT), $nombre, $apellidos, $DNI, $telefono, $direccion, $pais, $ciudad, image: $image['name'], nombre_empresa: $nombre_empresa);
+                        }
+                        
                     
-                    }else $usuario=new Usuario($correo, $confirmTipo, password_hash($pass, PASSWORD_DEFAULT), $nombre, $apellidos, $DNI, $telefono, $direccion);
+                    }else{
+                        if($tipo_registro==1){
+                            $usuario=new Usuario($correo, $confirmTipo, password_hash($pass, PASSWORD_DEFAULT), $nombre, $apellidos, $DNI, $telefono, $direccion, $pais, $ciudad,);
+                        }else{
+                            $usuario=new Usuario($correo, $confirmTipo, password_hash($pass, PASSWORD_DEFAULT), $nombre, $apellidos, $DNI, $telefono, $direccion, $pais, $ciudad, nombre_empresa:$nombre_empresa);
+                        }
+                        
+                    } 
     
                     if($tipo=="Empleado"){
                         $result=$connection->query("Insert into relacion_empleados values('66fa89e697c99', '". $usuario->getId() ."', 1)"); // Estado: 1 En espera, 2 Aceptado, 3 Denegado.
@@ -425,8 +441,11 @@ class Usuario {
                             return mysqli_error($connection); //Lineas de debug.
                         }
                     }
-    
-                    $result=$connection->query("Insert into usuarios values('". $usuario->getId() ."', '". $usuario->getCorreo() ."',". $usuario->getTipo() .", '". $usuario->getPass() ."', '". $usuario->getTelefono() ."', '". $usuario->getDireccion() ."', '', '', '". $usuario->getNombre() ."', '". $usuario->getApellidos() ."', '". $usuario->getDNI()."', '', '', '', '', '', '".$usuario->getImage()."')");
+                    if($tipo_registro==1){
+                        $result=$connection->query("Insert into usuarios values('". $usuario->getId() ."', '". $usuario->getCorreo() ."',". $usuario->getTipo() .", '". $usuario->getPass() ."', '". $usuario->getTelefono() ."', '". $usuario->getDireccion() ."', '".$usuario->getPais()."', '".$usuario->getCiudad()."', '', '". $usuario->getNombre() ."', '". $usuario->getApellidos() ."', '". $usuario->getDNI()."', '', '', '', '', '".$usuario->getImage()."')");
+                    }elseif($tipo_registro==2){
+                        $result=$connection->query("Insert into usuarios values('". $usuario->getId() ."', '". $usuario->getCorreo() ."',". $usuario->getTipo() .", '". $usuario->getPass() ."', '". $usuario->getTelefono() ."', '". $usuario->getDireccion() ."', '".$usuario->getPais()."', '".$usuario->getCiudad()."', '".$usuario->getNombreEmpresa()."', '". $usuario->getNombre() ."', '". $usuario->getApellidos() ."', '". $usuario->getDNI()."', '', '', '', '', '".$usuario->getImage()."')");
+                    }
     
                     if(!$result){
                         return "Error al insertar usuario"; //Lineas de debug.
@@ -515,7 +534,7 @@ class Usuario {
             $linea=$result->fetch_object();
 
             while($linea!=null){
-                $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision);
+                $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->pais, $linea->ciudad, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision, nombre_empresa:$linea->nombre_empresa);
                 array_push($lista_empleados, $empleado);
 
                 $linea=$result->fetch_object();
@@ -535,7 +554,7 @@ class Usuario {
             $linea=$result->fetch_object();
 
             while($linea!=null){
-                $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision);
+                $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->pais, $linea->ciudad, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision, nombre_empresa:$linea->nombre_empresa);
                 array_push($lista_empleados, $empleado);
 
                 $linea=$result->fetch_object();
@@ -617,7 +636,7 @@ class Usuario {
         $linea=$result->fetch_object();
 
         if($linea!=null){
-            $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision);
+            $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->pais, $linea->ciudad, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision, nombre_empresa:$linea->nombre_empresa);
 
 
             return $empleado;
