@@ -71,18 +71,18 @@ require_once "../view/Templates/inicio.inc.php";
                         </div>
                         <button id="btn_cerrar_modal" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         <?php
-                            if(!isset($reapertura)){
+                        if (!isset($reapertura)) {
                         ?>
-                                <button id="btn_guardar_estado_modal" type="button" class="btn btn-primary w-50" data-dismiss="modal">Guardar</button>
+                            <button id="btn_guardar_estado_modal" type="button" class="btn btn-primary w-50" data-dismiss="modal">Guardar</button>
                         <?php
-                            }else{
+                        } else {
                         ?>
-                                <button id="btn_guardar_estado_modal_reapertura" type="button" class="btn btn-primary w-50" data-dismiss="modal">Guardar</button>
+                            <button id="btn_guardar_estado_modal_reapertura" type="button" class="btn btn-primary w-50" data-dismiss="modal">Guardar</button>
                         <?php
-                            }
+                        }
                         ?>
-                        
-                        
+
+
                     </form>
                 </div>
             </div>
@@ -95,31 +95,31 @@ require_once "../view/Templates/inicio.inc.php";
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                <?php
-                    if(!isset($reapertura)){
-                ?>
+                    <?php
+                    if (!isset($reapertura)) {
+                    ?>
                         <h5 class="modal-title" id="exampleModalLongTitle">Incidencia Guardada</h5>
-                <?php
-                    }else{
-                ?>
+                    <?php
+                    } else {
+                    ?>
                         <h5 class="modal-title" id="exampleModalLongTitle">Reapertura Guardada</h5>
-                <?php
+                    <?php
                     }
-                ?>
-                    
+                    ?>
+
                 </div>
                 <div class="modal-body">
-                <?php
-                    if(!isset($reapertura)){
-                ?>
+                    <?php
+                    if (!isset($reapertura)) {
+                    ?>
                         Incidencia guardada con éxito.
-                <?php
-                    }else{
-                ?>
+                    <?php
+                    } else {
+                    ?>
                         Reapertura guardada con éxito.
-                <?php
+                    <?php
                     }
-                ?>
+                    ?>
                 </div>
                 <div class="modal-footer">
                     <button id="cerrar" type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
@@ -224,11 +224,11 @@ require_once "../view/Templates/inicio.inc.php";
                         <?php
                         if ($incidencia->getEstado() == 4) {
                         ?>
-                            <input type="radio" name="estado" value="4" checked>Finalizado
+                            <input class="finalizado" type="radio" name="estado" value="4" checked>Finalizado
                         <?php
                         } else {
                         ?>
-                            <input type="radio" name="estado" value="4">Finalizado
+                            <input class="finalizado" type="radio" name="estado" value="4">Finalizado
                         <?php
                         }
                     } else {
@@ -271,11 +271,11 @@ require_once "../view/Templates/inicio.inc.php";
                         <?php
                         if ($reapertura->getEstado() == 4) {
                         ?>
-                            <input type="radio" name="estado" value="4" checked>Finalizado
+                            <input class="finalizado" type="radio" name="estado" value="4" checked>Finalizado
                         <?php
                         } else {
                         ?>
-                            <input type="radio" name="estado" value="4">Finalizado
+                            <input class="finalizado" type="radio" name="estado" value="4">Finalizado
                     <?php
                         }
                     }
@@ -287,6 +287,29 @@ require_once "../view/Templates/inicio.inc.php";
                     <label for="motivo" class="form-label">Observaciones: </label>
                     <textarea id="observaciones_incidencia" class="form-control w-75" rows="3"></textarea>
                 </div>
+
+                <!-- Firma -->
+                <div id="contenedor_firma" class="d-none">
+
+                    <div class="col-md-12">
+
+                        <label class="" for="">Firma Empleado:</label>
+
+                        <br />
+
+                        <div id="sig"></div>
+
+                        <br />
+
+                        <button id="clear">Borrar</button>
+
+                        <textarea id="signature64" name="signed" style="display: none"></textarea>
+
+                    </div>
+                    <br />
+                </div>
+                <!-- Firma -->
+
                 <input type="hidden" id="hidden_nIncidencia" value="<?php echo $incidencia->getNIncidencia() ?>">
                 <?php
                 if (!isset($reapertura)) {
@@ -303,11 +326,31 @@ require_once "../view/Templates/inicio.inc.php";
                 }
                 ?>
 
-                
+
             </form>
         </div>
     </div>
     </div> <!-- Div que cierra la barra lateral para que se mantenga en su lugar -->
+
+
+    <!-- Firma -->
+    <script type="text/javascript">
+        var sig = $('#sig').signature({
+            syncField: '#signature64',
+            syncFormat: 'PNG'
+        });
+
+        $('#clear').click(function(e) {
+
+            e.preventDefault();
+
+            sig.signature('clear');
+
+            $("#signature64").val('');
+
+        });
+    </script>
+    <!-- Firma -->
 
     <script>
         function conseguirFecha() {
@@ -390,7 +433,7 @@ require_once "../view/Templates/inicio.inc.php";
                             resolucion: resolucion,
                             observaciones: observaciones,
                             nIncidencia: nIncidencia,
-                            nReapertura:nReapertura,
+                            nReapertura: nReapertura,
                             horaApertura: horaApertura,
                             horaCierre: horaCierre,
                             totalTiempo: totalTiempo
@@ -459,7 +502,7 @@ require_once "../view/Templates/inicio.inc.php";
                         resolucion: resolucion,
                         observaciones: observaciones,
                         nIncidencia: nIncidencia,
-                        nReapertura:nReapertura,
+                        nReapertura: nReapertura,
                         horaApertura: horaApertura,
                         horaCierre: horaCierre,
                         totalTiempo: totalTiempo
@@ -502,6 +545,14 @@ require_once "../view/Templates/inicio.inc.php";
                 $("#minutos").text(minutos.toString().padStart(2, '0'));
                 $("#segundos").text(segundos.toString().padStart(2, '0'));
             }, 1000);
+
+            $("input[type='radio'][name='estado']").change(function() {
+        if ($("input[type='radio'].finalizado").is(":checked")) {
+            $("#contenedor_firma").removeClass("d-none");
+        } else {
+            $("#contenedor_firma").addClass("d-none");
+        }
+    });
 
         });
     </script>

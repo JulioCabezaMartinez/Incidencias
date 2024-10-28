@@ -1,2 +1,10 @@
-Options All -Indexes
+## Redirecciones 
+<IfModule mod_rewrite.c>
+    RewriteEngine On
 
+    RewriteCond  %{REQUEST_FILENAME} -d
+    RewriteCond  %{REQUEST_FILENAME} -f
+    
+    RewriteRule ^login$ /src/view/login.php
+    
+</IfModule>
