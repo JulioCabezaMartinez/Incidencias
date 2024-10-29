@@ -13,13 +13,18 @@ require_once "../view/Templates/inicio.inc.php";
     <label style="font-size: 150%;font-weight: bold;">REGISTRO</label>
     <div id="registro_login" class="registro_login">
         <form action="../controller/actions_usuario.php" enctype="multipart/form-data" method="post">
-            <label for="tipo_registro">Indique si es un clinte particular o Empresa:</label><br>
+            <label for="tipo_registro">Indique si es un cliente particular, una empresa o un autónomo:</label><br>
             <input id="particular" type="radio" name="tipo_registro" value=1 checked><label>Particular</label>
             <input id="empresa" type="radio" name="tipo_registro" value=2><label>Empresa</label>
+            <input id="autonomo" type="radio" name="tipo_registro" value=3><label>Autónomo</label>
             <br><br>
-            <div id="div_nombreEmpresa" class="d-none">
-            <label for="nombre_empresa">*Nombre de la Empresa:</label><br>
-            <input id="nombre_empresa" class="form-control w-50" type="text" name="nombre_empresa" placeholder="Nombre de la Empresa">
+            <div class="d-none empresa">
+                <label for="nombre_empresa">*Nombre de la Empresa:</label><br>
+                <input id="nombre_empresa" class="form-control w-50" type="text" name="nombre_empresa" placeholder="Nombre de la Empresa">
+            </div>
+            <div class="d-none autonomo">
+                <label for="nombre_comercial">*Nombre Comercial:</label><br>
+                <input id="nombre_comercial" class="form-control w-50" type="text" name="nombre_comercial" placeholder="Nombre Comercial">
             </div>
             <br>
             <label for="nombre">*Nombre:</label><br>
@@ -43,6 +48,11 @@ require_once "../view/Templates/inicio.inc.php";
             <label for="DNI">*DNI:</label><br>
             <input class="form-control w-50" type="text" name="DNI" placeholder="12345678A" maxlength="9" pattern="(\d{8})([A-Z]{1})" required> <!-- Poner para el NIE -->
             <br><br>
+            <div class="d-none empresa">
+                <label for="nombre_empresa">*CIF de la Empresa:</label><br>
+                <input id="CIF" class="form-control w-50" type="text" name="CIF" maxlength="9">
+            </div>
+            <br>
             <label for="telefono">*Telefono:</label><br>
             <input class="form-control w-50" type="text" name="telefono" required> <!-- Poner para el NIE -->
             <br><br>
@@ -69,9 +79,9 @@ require_once "../view/Templates/inicio.inc.php";
             <input type="radio" name="tipo" value="Cliente" checked><label>Cliente</label>
             <br><br> -->
             <div class="submit">
-                <input type="submit" name="register" value="Registrarse">
+                <input class="btn btn-primary" type="submit" name="register" value="Registrarse">
                 <br>
-                <a href="./login.php">Volver</a>
+                <a class="btn btn-secondary" href="./login.php">Volver</a>
             </div>
         </form>
     </div>
@@ -90,10 +100,25 @@ require_once "../view/Templates/inicio.inc.php";
                 })
             });
 
-            $("input[name='tipo_registro']").change(function(){
-                $("#div_nombreEmpresa").toggleClass("d-none");
-                $("#nombre_empresa").prop("required", !$("#nombre_empresa").prop("required"));
+            $("input[type='radio'][name='tipo_registro']").change(function() {
+                if ($("input[type='radio']#empresa").is(":checked")) {
+                    $(".empresa").removeClass("d-none");
+                    $(".autonomo").addClass("d-none");
+                } else if($("input[type='radio']#autonomo").is(":checked")){
+                    $(".autonomo").removeClass("d-none");
+                    $(".empresa").addClass("d-none");
+                }else{
+                    $(".empresa").addClass("d-none");
+                    $(".autonomo").addClass("d-none");
+                }
             });
+
+            // $("input[name='tipo_registro']").change(function(){
+            //     $("#div_nombreEmpresa").toggleClass("d-none");
+            //     $("#nombre_empresa").prop("required", !$("#nombre_empresa").prop("required"));
+            // });
+
+            
         });
     </script>
 

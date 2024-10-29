@@ -13,45 +13,76 @@
 
     if(isset($_POST["register"])){
         if(!empty($_FILES["imagen"]["name"])){
-            if(empty($_POST["nombre_empresa"])){
+            if(!empty($_POST["nombre_empresa"])){//Empresa
                 $resultado=Usuario::registrarUsuario($_POST["tipo_registro"], $_POST["correo"], "Cliente", $_POST["pass"], $_POST["confirm_pass"],
-         $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $_POST["pais"], $_POST["ciudad"], $connection, image: $_FILES["imagen"], nombre_empresa: $_POST["nombre_empresa"]);
+         $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $_POST["pais"], $_POST["ciudad"], $connection, image: $_FILES["imagen"], nombre_empresa: $_POST["nombre_empresa"], CIF:$_POST["CIF"]);
 
             if(is_string($resultado)){
-                $error=$resultado;
-            }
+                    $error=$resultado;
+                    header('Location: ../view/login.php?action=error&error='.$error.'');
+                }else{
+                    header('Location: ../view/login.php?action=register');
+                }
 
-            header('Location: ../view/login.php?action=register');
-            }else{
+            }elseif(!empty($_POST["nombre_comercial"])){//Autonomo
+                $resultado=Usuario::registrarUsuario($_POST["tipo_registro"], $_POST["correo"], "Cliente", $_POST["pass"], $_POST["confirm_pass"],
+         $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $_POST["pais"], $_POST["ciudad"], $connection, image: $_FILES["imagen"], nombre_comercial:$_POST["nombre_comercial"]);
+            
+                if(is_string($resultado)){
+                    $error=$resultado;
+                    header('Location: ../view/login.php?action=error&error='.$error.'');
+                }else{
+                    header('Location: ../view/login.php?action=register');
+                }
+
+            }else{//Particular
                 $resultado=Usuario::registrarUsuario($_POST["tipo_registro"], $_POST["correo"], "Cliente", $_POST["pass"], $_POST["confirm_pass"],
                 $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $_POST["pais"], $_POST["ciudad"], $connection, image: $_FILES["imagen"]);
        
                 if(is_string($resultado)){
-                   $error=$resultado;
+                    $error=$resultado;
+                    header('Location: ../view/login.php?action=error&error='.$error.'');
+                }else{
+                    header('Location: ../view/login.php?action=register');
                 }
-       
-                header('Location: ../view/login.php?action=register');
             }
            
         }else{
             if(!empty($_POST["nombre_empresa"])){
                 $resultado=Usuario::registrarUsuario($_POST["tipo_registro"], $_POST["correo"], "Cliente", $_POST["pass"], $_POST["confirm_pass"],
-                $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $_POST["pais"], $_POST["ciudad"], $connection, nombre_empresa: $_POST["nombre_empresa"]);
+                $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $_POST["pais"], $_POST["ciudad"], $connection, nombre_empresa: $_POST["nombre_empresa"], CIF:$_POST["CIF"]);
     
                 if(is_string($resultado)){
                     $error=$resultado;
+                    header('Location: ../view/login.php?action=error&error='.$error.'');
+                }else{
+                    header('Location: ../view/login.php?action=register');
                 }
 
-                header('Location: ../view/login.php?action=register');
+            }elseif(!empty($_POST["nombre_comercial"])){
+                
+                $resultado=Usuario::registrarUsuario($_POST["tipo_registro"], $_POST["correo"], "Cliente", $_POST["pass"], $_POST["confirm_pass"],
+                $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $_POST["pais"], $_POST["ciudad"], $connection, nombre_comercial: $_POST["nombre_comercial"]);
+
+                if(is_string($resultado)){
+                    $error=$resultado;
+                    header('Location: ../view/login.php?action=error&error='.$error.'');
+                }else{
+                    header('Location: ../view/login.php?action=register');
+                }
+
+                
+
             }else{
                 $resultado=Usuario::registrarUsuario($_POST["tipo_registro"], $_POST["correo"], "Cliente", $_POST["pass"], $_POST["confirm_pass"],
                 $_POST["nombre"], $_POST["apellidos"], $_POST["DNI"], $_POST["telefono"], $_POST["direccion"], $_POST["pais"], $_POST["ciudad"], $connection);
     
                 if(is_string($resultado)){
                     $error=$resultado;
+                    header('Location: ../view/login.php?action=error&error='.$error.'');
+                }else{
+                    header('Location: ../view/login.php?action=register');
                 }
-
-                header('Location: ../view/login.php?action=register');
             }
             
         }

@@ -322,10 +322,14 @@ class Reapertura{
 
         $linea=$result->fetch_object();
 
-        if($linea->estado>1 && $linea->estado<5){
-            return true;
+        if($linea!=null){
+            if($linea->estado>1 && $linea->estado<5){
+                return true;
+            }else{
+                return false;
+            }
         }else{
-            return false;
+            return true;
         }
     }
 }

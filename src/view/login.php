@@ -100,34 +100,6 @@ require_once "../view/Templates/inicio.inc.php";
                 </script>';
         }
         if ($_GET['action'] == 'register') {
-            
-            if (isset($error)) {
-                echo '<!-- Modal de Confirmación de fallo de permisos -->
-                    <div class="modal fade" id="fallo_usuario" tabindex="-1" >
-                        <div class="modal-dialog modal-dialog-centered" >
-                            <div class="modal-content">
-                                <div class="modal-header" >
-                                    <h5 id="confirmacion_header" class="modal-title" id="exampleModalLongTitle">Fallo de registro</h5>
-                                </div>
-                                <div class="modal-body">
-                                    <label id="confirmacion_body">' . $error . '</label>
-                                </div>
-                                <div class="modal-footer">
-                                    <button id="btn_cerrar_confirmacion" type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <!-- Modal de Confirmación de fallo de permisos -->
-        <script>
-            $(document).ready(function(){
-                $("#fallo_usuario").modal("show");
-                $("#btn_cerrar_confirmacion").on("click", function() {
-                    $("#fallo_usuario").modal("hide");
-                });
-            });
-        </script>';
-            } else {
                 echo 
                 '<!-- Modal de Registro -->
                             <div class="modal fade" id="registro_ok" tabindex="-1" >
@@ -147,14 +119,41 @@ require_once "../view/Templates/inicio.inc.php";
                             </div>
                         <!-- Modal de Confirmación Registro -->
                 <script>
-                    $(document).ready(function(){
+                    $(window).on("load", function(){
                         $("#registro_ok").modal("show");
                         $("#btn_cerrar_confirmacion").on("click", function() {
                             $("#registro_ok").modal("hide");
                         });
                     });
                 </script>';
-            }
+        }
+
+        if($_GET['action'] == 'error'){
+            echo '<!-- Modal de Confirmación de fallo de permisos -->
+                    <div class="modal fade" id="fallo_usuario" tabindex="-1" >
+                        <div class="modal-dialog modal-dialog-centered" >
+                            <div class="modal-content">
+                                <div class="modal-header" >
+                                    <h5 id="confirmacion_header" class="modal-title" id="exampleModalLongTitle">Fallo de registro</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <label id="confirmacion_body">' . $_GET['error'] . '</label>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="btn_cerrar_confirmacion" type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <!-- Modal de Confirmación de fallo de permisos -->
+        <script>
+             $(window).on("load", function(){
+                $("#fallo_usuario").modal("show");
+                $("#btn_cerrar_confirmacion").on("click", function() {
+                    $("#fallo_usuario").modal("hide");
+                });
+            });
+        </script>';
         }
     }
     ?>
@@ -194,7 +193,7 @@ require_once "../view/Templates/inicio.inc.php";
                     <label id="confirmacion_body">Correo enviado, compruebe su bandeja de entrada.</label>
                 </div>
                 <div class="modal-footer">
-                    <button id="btn_cerrar_confirmacion" type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                    <button id="btn_cerrar_correo" type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -254,7 +253,7 @@ require_once "../view/Templates/inicio.inc.php";
                 $('#envio_ok').modal('hide');
             });
 
-            $('#btn_cerrar_confirmacion').on('click', function() {
+            $('#btn_cerrar_correo').on('click', function() {
                 window.location.href = "recuperar_pass.php?correo="+correo;
             });
 

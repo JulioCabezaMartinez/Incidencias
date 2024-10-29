@@ -67,6 +67,7 @@ require_once '../view/Templates/inicio.inc.php';
         <table style="width: 85%;" class="table table-striped">
             <thead>
                 <tr>
+                    <th></th>
                     <th scope="col">N°Incidencia</th>
                     <th scope="col">Motivo</th>
                     <th scope="col">DNI-Cliente</th>

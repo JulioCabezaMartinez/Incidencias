@@ -30,13 +30,16 @@
 
         $resultado=Incidencias::creacionIncidencia($_POST["motivo"], $_SESSION["id"], $id_cliente, $_POST["nombre_contacto"], $connection);
 
+        echo $resultado;
+
         if($resultado){
             if($_SESSION['tipo']==2){
                 header("Location: ../../../src/controller/actions_tabla.php?class=cliente&add=ok");
             }else{
                 header("Location: ../../../src/controller/actions_tabla.php?class=all&add=ok");
             }
-            
+        }else{
+            echo $resultado;
         }
     }
 
