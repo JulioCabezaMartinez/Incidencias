@@ -457,6 +457,7 @@ require_once "../view/Templates/inicio.inc.php";
                 let horaApertura = $("#hidden_hApertura").val();
                 let horaCierre = conseguirFecha();
                 let totalTiempo = calcularTiempo(new Date(horaApertura).getTime(), new Date(horaCierre).getTime());
+                let firma= $("#signature64").val();
                 $.ajax({
                     url: "AJAX.php",
                     method: "POST",
@@ -469,7 +470,8 @@ require_once "../view/Templates/inicio.inc.php";
                         nIncidencia: nIncidencia,
                         horaApertura: horaApertura,
                         horaCierre: horaCierre,
-                        totalTiempo: totalTiempo
+                        totalTiempo: totalTiempo,
+                        firma: firma
 
                     },
                     success: function(data) {
@@ -492,6 +494,7 @@ require_once "../view/Templates/inicio.inc.php";
                 let horaApertura = $("#hidden_hApertura").val();
                 let horaCierre = conseguirFecha();
                 let totalTiempo = calcularTiempo(new Date(horaApertura).getTime(), new Date(horaCierre).getTime());
+                let firma= $("#signature64").val();
                 $.ajax({
                     url: "AJAX.php",
                     method: "POST",
@@ -505,8 +508,8 @@ require_once "../view/Templates/inicio.inc.php";
                         nReapertura: nReapertura,
                         horaApertura: horaApertura,
                         horaCierre: horaCierre,
-                        totalTiempo: totalTiempo
-
+                        totalTiempo: totalTiempo,
+                        firma: firma
                     },
                     success: function(data) {
                         console.log(data);

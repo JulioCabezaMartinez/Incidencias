@@ -98,7 +98,7 @@
                         }
                 ?>
                     <tr>
-                            <td>01-<?php echo $incidencia->getNIncidencia()?></td>
+                            <td>PTDD<?php echo substr($incidencia->getYear(), 1) ?>-<?php echo $incidencia->getNIncidencia() ?></td>
                             <td><?php echo $incidencia->getMotivo() ?></td>
                             <td><?php echo $usuario["DNI"] ?></td>
                             <td><?php echo $usuario["nombre"]. " " .$usuario["apellidos"] ?></td>

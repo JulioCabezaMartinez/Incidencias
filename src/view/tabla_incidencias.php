@@ -80,7 +80,7 @@ require_once '../view/Templates/inicio.inc.php';
                         <?php
                         }
                         ?>
-                        <td>01-<?php echo $incidencia->getNIncidencia() ?></td>
+                        <td>PTDD<?php echo substr($incidencia->getYear(), 2) ?>-<?php echo $incidencia->getNumeroYear($incidencia->getYear(), $incidencia->getNIncidencia(), $connection) ?></td>
                         <td><?php echo $incidencia->getMotivo() ?></td>
                         <td><?php echo $usuario["DNI"] ?></td>
                         <td><?php echo $usuario["nombre"] . " " . $usuario["apellidos"] ?></td>
@@ -91,7 +91,7 @@ require_once '../view/Templates/inicio.inc.php';
                             ?>
                                 <form action="../../src/controller/actions_tabla.php?class=add_empleado" method="post">
                                     <input type="hidden" name="nIncidencia" value="<?php echo $incidencia->getNIncidencia() ?>">
-                                    <button type="submit" name="nIncidencia_submit" class="btn btn-small btn-success"><i class="fa-solid fa-user-plus"></i></button>Quedarse con la Incidencia
+                                    <button type="submit" name="nIncidencia_submit" class="btn btn-small btn-success"><i class="fa-solid fa-user-plus me-2"></i>Quedarse con la Incidencia</button>
                                 </form>
                             <?php
                             }

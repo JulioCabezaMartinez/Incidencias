@@ -133,10 +133,8 @@
         if($_POST["mode"]=="resolucion_Trabajando"){
             if(isset($_POST["motivo"])){
 
-                // echo $_POST["firma"];
-
                 $resultado=Incidencias::solucionarIncidencia((int)$_POST["estado"], $_POST["motivo"], $_POST["resolucion"], $_POST["observaciones"], (int)$_POST["nIncidencia"], $_POST["horaApertura"], $_POST["horaCierre"], (float)$_POST["totalTiempo"], $connection);
-                Incidencias::actualizarReabrirIncidencia((int)$_POST["nIncidencia"], $connection);
+                //Incidencias::actualizarReabrirIncidencia((int)$_POST["nIncidencia"], $connection);
                 if($resultado){
                     echo (float)$_POST["totalTiempo"];
                 }else{
@@ -156,15 +154,13 @@
         if($_POST["mode"]=="resolucion_reapertura"){
             if(isset($_POST["motivo"])){
 
-                echo $_POST["firma"];
-
-                // $resultado=Reapertura::solucionarReapertura((int)$_POST["estado"], $_POST["motivo"], $_POST["resolucion"], $_POST["observaciones"], (int)$_POST["nIncidencia"], $_POST["nReapertura"], $_POST["horaApertura"], $_POST["horaCierre"], (float)$_POST["totalTiempo"], $connection);
-                // // Incidencias::actualizarReabrirIncidencia((int)$_POST["nIncidencia"], $connection);
-                // if($resultado){
-                //     echo (float)$_POST["totalTiempo"];
-                // }else{
-                //     echo mysqli_error($connection);
-                // }
+                $resultado=Reapertura::solucionarReapertura((int)$_POST["estado"], $_POST["motivo"], $_POST["resolucion"], $_POST["observaciones"], (int)$_POST["nIncidencia"], $_POST["nReapertura"], $_POST["horaApertura"], $_POST["horaCierre"], (float)$_POST["totalTiempo"], $connection);
+                //Incidencias::actualizarReabrirIncidencia((int)$_POST["nIncidencia"], $connection);
+                if($resultado){
+                    echo (float)$_POST["totalTiempo"];
+                }else{
+                    echo mysqli_error($connection);
+                }
             }else{
                 $resultado=Reapertura::solucionarReapertura((int)$_POST["estado"], "", $_POST["resolucion"], $_POST["observaciones"], (int)$_POST["nIncidencia"], $_POST["nReapertura"], $_POST["horaApertura"], $_POST["horaCierre"], (float)$_POST["totalTiempo"], $connection);
 

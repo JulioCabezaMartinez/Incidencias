@@ -75,6 +75,7 @@ class Incidencias{
      * @var float|null
      */
     private float|null $totalTiempo=null;
+    private int $year;
     /**
      * Constructor de la incidencia. Los parametros que que tengan un valor por defecto deben de ser indicados obligatoriamente, el resto se le asiganará un valor por defecto al crearse la incidencia.
      * @param string $motivo
@@ -92,7 +93,7 @@ class Incidencias{
      * @param string|null $hora_cierre
      * @param int|null $totalTiempo
      */
-    public function __construct(String $motivo, String $idCreador, String $idCliente, String $contacto, String|null $observaciones=null, int $nIncidencia=null, String|null $solucion=null, int|null $estado=null, String|null $motivo_estado=null, String|null $idEmpleado=null, bool|null $reabierto=null, String|null $hora_apertura=null, String|null $hora_cierre=null, float|null $totalTiempo=null){
+    public function __construct(String $motivo, String $idCreador, String $idCliente, String $contacto, int $year, String|null $observaciones=null, int $nIncidencia=null, String|null $solucion=null, int|null $estado=null, String|null $motivo_estado=null, String|null $idEmpleado=null, bool|null $reabierto=null, String|null $hora_apertura=null, String|null $hora_cierre=null, float|null $totalTiempo=null){
         $this->motivo=$motivo;
 
         $this->solucion=$solucion;
@@ -104,6 +105,8 @@ class Incidencias{
         $this->contacto=$contacto;
 
         $this->observaciones=$observaciones;
+
+        $this->year=$year;
 
         if(!is_null($nIncidencia)){
             $this->nIncidencia=$nIncidencia;
@@ -242,6 +245,9 @@ class Incidencias{
     public function getTotalTiempo(): int|null{
         return $this->totalTiempo;
     }
+    public function getYear(){
+        return $this->year;
+    }
 
     //Setters
     /**
@@ -372,7 +378,7 @@ class Incidencias{
             $linea=$result->fetch_object();
 
             while($linea!=null){
-                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto, hora_apertura: $linea->hora_apertura, hora_cierre: $linea->hora_cierre, totalTiempo: (float)$linea->totalTiempo);
+                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, year:$linea->year, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto, hora_apertura: $linea->hora_apertura, hora_cierre: $linea->hora_cierre, totalTiempo: (float)$linea->totalTiempo);
                 array_push($incidencias, $incidencia);
 
                 $linea=$result->fetch_object();
@@ -399,8 +405,7 @@ class Incidencias{
             $linea=$result->fetch_object();
 
             while($linea!=null){
-                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto, hora_apertura: $linea->hora_apertura, hora_cierre: $linea->hora_cierre, totalTiempo: $linea->totalTiempo);
-                array_push($incidencias, $incidencia);
+                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, year:$linea->year, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto, hora_apertura: $linea->hora_apertura, hora_cierre: $linea->hora_cierre, totalTiempo: (float)$linea->totalTiempo);                array_push($incidencias, $incidencia);
 
                 $linea=$result->fetch_object();
             }
@@ -424,8 +429,7 @@ class Incidencias{
             $linea=$result->fetch_object();
 
             while($linea!=null){
-                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado,idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto, hora_apertura: $linea->hora_apertura, hora_cierre: $linea->hora_cierre, totalTiempo: $linea->totalTiempo);
-                array_push($incidencias, $incidencia);
+                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, year:$linea->year, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto, hora_apertura: $linea->hora_apertura, hora_cierre: $linea->hora_cierre, totalTiempo: (float)$linea->totalTiempo);                array_push($incidencias, $incidencia);
 
                 $linea=$result->fetch_object();
             }
@@ -450,8 +454,7 @@ class Incidencias{
             $linea=$result->fetch_object();
 
             while($linea!=null){
-                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado,idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto, hora_apertura: $linea->hora_apertura, hora_cierre: $linea->hora_cierre, totalTiempo: $linea->totalTiempo);
-                array_push($incidencias, $incidencia);
+                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, year:$linea->year, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto, hora_apertura: $linea->hora_apertura, hora_cierre: $linea->hora_cierre, totalTiempo: (float)$linea->totalTiempo);                array_push($incidencias, $incidencia);
 
                 $linea=$result->fetch_object();
             }
@@ -477,8 +480,7 @@ class Incidencias{
             $linea=$result->fetch_object();
 
             while($linea!=null){
-                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado,idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto, hora_apertura: $linea->hora_apertura, hora_cierre: $linea->hora_cierre, totalTiempo: $linea->totalTiempo);
-                array_push($incidencias, $incidencia);
+                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, year:$linea->year, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto, hora_apertura: $linea->hora_apertura, hora_cierre: $linea->hora_cierre, totalTiempo: (float)$linea->totalTiempo);                array_push($incidencias, $incidencia);
 
                 $linea=$result->fetch_object();
             }
@@ -503,8 +505,7 @@ class Incidencias{
             $linea=$result->fetch_object();
 
             while($linea!=null){
-                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado,idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto, hora_apertura: $linea->hora_apertura, hora_cierre: $linea->hora_cierre, totalTiempo: $linea->totalTiempo);
-                
+                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, year:$linea->year, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto, hora_apertura: $linea->hora_apertura, hora_cierre: $linea->hora_cierre, totalTiempo: (float)$linea->totalTiempo);                
                 return $incidencia;
             }
         }else{
@@ -532,8 +533,7 @@ class Incidencias{
             $linea=$result->fetch_object();
             
             while($linea!=null){
-                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado,idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto, hora_apertura: $linea->hora_apertura, hora_cierre: $linea->hora_cierre, totalTiempo: $linea->totalTiempo);
-                
+                $incidencia=new Incidencias(motivo: $linea->motivo, idCreador: $linea->id_creador, idCliente: $linea->id_cliente, contacto: $linea->persona_contacto, year:$linea->year, observaciones: $linea->observaciones, nIncidencia: $linea->numero_incidencia, solucion: $linea->solucion, estado: $linea->estado, motivo_estado: $linea->motivo_estado, idEmpleado: $linea->id_empleado, reabierto: $linea->reabierto, hora_apertura: $linea->hora_apertura, hora_cierre: $linea->hora_cierre, totalTiempo: (float)$linea->totalTiempo);                
                 array_push($lista_incidencias, $incidencia);
                 $linea=$result->fetch_object();
             }
@@ -553,9 +553,11 @@ class Incidencias{
      * @return bool|string Devuelve true si la insercción en la base de datos ha sido correcta o, en caso contrario, el mensaje de error de sql
      */
     public static function creacionIncidencia($motivo, $id_creador, $id_cliente, $contacto, mysqli $connection){
-        $incidencia=new Incidencias($motivo, $id_creador, $id_cliente, $contacto);
-        
-        $result=$connection->query("INSERT INTO incidencias (motivo, estado, id_creador, id_cliente, persona_contacto) VALUES ('". $incidencia->getMotivo() ."', ". $incidencia->getEstado() ." ,'". $incidencia->getIdCreador() ."', '".$incidencia->getIdCliente()."', '".$incidencia->getContacto()."');");
+        $fecha=new DateTime();
+        $year=$fecha->format('Y');
+        $incidencia=new Incidencias($motivo, $id_creador, $id_cliente, $contacto, $year);
+
+        $result=$connection->query("INSERT INTO incidencias (motivo, estado, id_creador, id_cliente, persona_contacto, year) VALUES ('". $incidencia->getMotivo() ."', ". $incidencia->getEstado() ." ,'". $incidencia->getIdCreador() ."', '".$incidencia->getIdCliente()."', '".$incidencia->getContacto()."', ".$incidencia->getYear().");");
 
         $result_nIncidencia=$connection->query("SELECT numero_incidencia from incidencias ORDER BY numero_incidencia desc limit 1;");
 
@@ -564,24 +566,25 @@ class Incidencias{
         $nIncidencia=$linea->numero_incidencia;
 
         if($result!=false){
-            $cliente=Usuario::recogerUsuarioID($incidencia->getIdCliente(), $connection);
-            $para = "soporte@dondigital.es";
-            $asunto = "Nueva Incidencia";
-            $mensaje = "
-            Incidencia N°".$nIncidencia."
-            Motivo: ".$incidencia->getMotivo().".\n
-            Nombre del Cliente: ".$cliente["nombre"]." ".$cliente["apellidos"]."\n
-            DNI del Cliente: ".$cliente["DNI"]."\n
-            DNI del Cliente: ".$cliente["DNI"]."\n
-            Persona de contacto: ".$incidencia->getContacto()."\n";
-            $cabeceras = "From: passwordreset@dondigital.app";
+            // $cliente=Usuario::recogerUsuarioID($incidencia->getIdCliente(), $connection);
+            // $para = "soporte@dondigital.es";
+            // $asunto = "Nueva Incidencia";
+            // $mensaje = "
+            // Incidencia N°".$nIncidencia."
+            // Motivo: ".$incidencia->getMotivo().".\n
+            // Nombre del Cliente: ".$cliente["nombre"]." ".$cliente["apellidos"]."\n
+            // DNI del Cliente: ".$cliente["DNI"]."\n
+            // DNI del Cliente: ".$cliente["DNI"]."\n
+            // Persona de contacto: ".$incidencia->getContacto()."\n";
+            // $cabeceras = "From: passwordreset@dondigital.app";
     
-            if(mail($para, $asunto, $mensaje, $cabeceras)){
-                return true;
-            }else{
-                return false;
-            }
+            // if(mail($para, $asunto, $mensaje, $cabeceras)){
+            //     return true;
+            // }else{
+            //     return false;
+            // }
             
+            return true ;
         }else return mysqli_error($connection);
     }
     /**
@@ -703,6 +706,30 @@ class Incidencias{
             return true;
         }else return false;
     }
+
+    public static function getNumeroYear($year, $numero_incidencia, mysqli $connection){
+        $result=$connection->query("SELECT count(*) as total from incidencias where year=".$year." and numero_incidencia<".$numero_incidencia.";");
+
+        if($result!=false){
+            $linea=$result->fetch_object();
+            
+            $posicion=$linea->total;
+            return $posicion+1;
+        }else{
+            return mysqli_error($connection);
+        }
+    }
+
+    // public static function guardarFirma($id, $firma){
+    //     $folderPath = "upload/";
+    //     $image_parts = explode(";base64,", $_POST['signed']); 
+    //     $image_type_aux = explode("image/", $image_parts[0]);
+    //     $image_type = $image_type_aux[1];
+    //     $image_base64 = base64_decode($image_parts[1]);
+    //     $file = $folderPath . uniqid() . '.'.$image_type;
+    //     file_put_contents($file, $image_base64);
+    //     echo "Signature Uploaded Successfully.";
+    // }
 }
 
 ?>

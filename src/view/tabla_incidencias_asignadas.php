@@ -101,7 +101,7 @@ require_once '../view/Templates/inicio.inc.php';
                         <?php
                         }
                         ?>
-                        <td>01-<?php echo $incidencia->getNIncidencia() ?></td>
+                        <td>PTDD<?php echo substr($incidencia->getYear(), 1) ?>-<?php echo $incidencia->getNIncidencia() ?></td>
                         <td><?php echo $incidencia->getMotivo() ?></td>
                         <td><?php echo $usuario["DNI"] ?></td>
                         <td><?php echo $usuario["nombre"] . " " . $usuario["apellidos"] ?></td>
@@ -145,7 +145,7 @@ require_once '../view/Templates/inicio.inc.php';
                             <td class="filas_reapertura">R-<?php echo $reapertura->getNreapertura() ?></td>
                             <td class="filas_reapertura"><?php echo $estado_reapertura ?></td>
                             <td class="filas_reapertura">
-                                <a href="../../src/controller/actions_tabla.php?class=solR&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i></a>Trabajar en Incidencia<br>
+                            <a href="../../src/controller/actions_tabla.php?class=solR&back=all&nIncidencia=<?php echo $incidencia->getNIncidencia() ?>&nReapertura=<?php echo $reapertura->getNreapertura() ?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-briefcase"></i>Trabajar en Reapertura</a><br>
                             </td>
                         </tr>
                     <?php
