@@ -303,7 +303,7 @@ require_once '../view/Templates/inicio.inc.php';
                     }, success: function(data){
                         if(data=="Todo correcto"){
                             $("#modal_firma").modal('hide');
-                            window.reload();
+                            location.reload();
                         }else{
                             console.log(data);
                         }
