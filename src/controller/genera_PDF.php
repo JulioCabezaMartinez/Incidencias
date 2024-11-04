@@ -12,8 +12,8 @@ require "../library/fpdi/src/autoload.php";
 use setasign\Fpdi\Fpdi;
 
 $incidencia=Incidencias::recogerIncidencia($connection, (int)$_GET["nIncidencia"]);
-$usuario_Empleado=Usuario::recogerDatosEmpleado($incidencia->getIdEmpleado(), $connection);
-$usuario_Cliente=Usuario::recogerDatosEmpleado($incidencia->getIdCliente(), $connection);
+$usuario_Empleado=Usuario::recogerUsuarioID($incidencia->getIdEmpleado(), $connection);
+$usuario_Cliente=Usuario::recogerUsuarioID($incidencia->getIdCliente(), $connection);
 
 $pdf= new FPDI();
 
@@ -50,7 +50,7 @@ $pdf->SetXY(17, 122);
 $pdf->MultiCell(176.2, 6, $incidencia->getSolucion());
 
 switch($incidencia->getEstado()){
-    case 3: 
+    case 3:
         //Situacion: En Seguimiento
         $pdf->SetFont('Arial', '', 10);
         $pdf->SetXY(97.5, 195.5);
@@ -123,17 +123,51 @@ $pdf->MultiCell(75, 6, $incidencia->getObservaciones());
 
 if(!is_bool($usuario_Empleado)){
     //Firma Técnico
-$pdf->SetFont('Arial', '', 12);
-$pdf->SetXY(94, 255.7);
-// $pdf->MultiCell(48, 5, "Holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"); Ejemplo
-$pdf->MultiCell(48, 5, $usuario_Empleado["nombre"]. " " .$usuario_Empleado["apellidos"]. " " .$usuario_Empleado["DNI"]. " " .$usuario_Empleado["telefono"]);
+    $pdf->SetFont('Arial', '', 12);
+    // $pdf->MultiCell(48, 5, "Holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"); Ejemplo
+    //$pdf->MultiCell(48, 5, $usuario_Empleado["nombre"]. " " .$usuario_Empleado["apellidos"]. " " .$usuario_Empleado["DNI"]. " " .$usuario_Empleado["telefono"]);
+    if($usuario_Empleado["firma"]!=null){
+        //Firma
+        $dataURI    = $usuario_Empleado["firma"];
+        $dataPieces = explode(',',$dataURI);
+        $encodedImg = $dataPieces[1];
+        $decodedImg = base64_decode($encodedImg);
+
+        //  Check if image was properly decoded
+        if( $decodedImg!==false ){
+            //  Save image to a temporary location
+            if( file_put_contents("firma_empleado.png",$decodedImg)!==false){
+                $pdf->Image("firma_empleado.png", 96, 255.7, 40, 25);
+
+                unlink("firma_empleado.png");
+            }
+        }
+    }
+    
 }
 
-// //Firma Cliente
+//Firma Cliente
 $pdf->SetFont('Arial', '', 12);
 $pdf->SetXY(144.5, 255.7);
 // $pdf->MultiCell(48, 5, "Holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"); Ejemplo
-$pdf->MultiCell(48, 5, $usuario_Cliente["nombre"]. "" .$usuario_Cliente["apellidos"]. " " .$usuario_Cliente["DNI"]. " " .$usuario_Cliente["telefono"]);
+if($usuario_Cliente['firma']!=null){
+    //Firma
+    $dataURI_cliente    = $usuario_Cliente["firma"];
+    $dataPieces_cliente = explode(',',$dataURI_cliente);
+    $encodedImg_cliente = $dataPieces_cliente[1];
+    $decodedImg_cliente = base64_decode($encodedImg_cliente);
+
+    //  Check if image was properly decoded
+    if( $decodedImg_cliente!==false ){
+        //  Save image to a temporary location
+        if( file_put_contents("firma_cliente.png",$decodedImg_cliente)!==false){
+            $pdf->Image("firma_cliente.png", 146.5, 255.7, 40, 25);
+
+            unlink("firma_cliente.png");
+        }
+    }
+}
+
 
 
 if($incidencia->getReabierto()){
@@ -171,7 +205,7 @@ if($incidencia->getReabierto()){
         $pdf->MultiCell(176.2, 6, $reapertura->getSolucion());
 
         switch($reapertura->getEstado()){
-            case 3: 
+            case 3:
                 //Situacion: En Seguimiento
                 $pdf->SetFont('Arial', '', 10);
                 $pdf->SetXY(97.5, 195.5);

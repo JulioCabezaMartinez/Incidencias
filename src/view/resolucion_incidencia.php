@@ -20,7 +20,7 @@ function recogeSegundos($incidencia)
 
     (int)$segundos = $hora_actual->getTimestamp() - $hora_inicio->getTimestamp();
 
-    return $segundos % 60;
+    return (int)$segundos % 60;
 }
 
 function recogeMinutos($incidencia)
@@ -32,7 +32,7 @@ function recogeMinutos($incidencia)
 
     (int)$minutos = $segundos / 60;
 
-    return $minutos % 60;
+    return (int)$minutos % 60;
 }
 
 function recogeHoras($incidencia)
@@ -526,6 +526,7 @@ require_once "../view/Templates/inicio.inc.php";
 
             $("#cerrar").click(function() {
                 $("#modal_estado_confirmacion").modal('hide');
+                window.location.href = "../../../src/controller/actions_tabla.php?class=empleados";
             })
 
             //Contador

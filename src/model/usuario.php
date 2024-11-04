@@ -83,6 +83,7 @@ class Usuario {
      */
     private String|null $fecha_readmision=null;
     private String $image="donDigital_default.png";
+    private String|null $firma=null;
 
     /**
      * Constructor de la incidencia. Los parametros que que tengan un valor por defecto deben de ser indicados obligatoriamente, el resto se le asiganará un valor por defecto al crearse el usuario.
@@ -101,7 +102,7 @@ class Usuario {
      * @param string|null $fecha_readmision
      * @param string $image
      */
-    public function __construct(String $correo, int $tipo, String $pass, String $nombre, String $apellidos, String $DNI, String $telefono, String $direccion, String $pais, String $ciudad, String $id=null, String|null $motivo_baja=null, String|null $motivo_readmision=null, String|null $fecha_baja=null, String|null $fecha_readmision=null, String $image=null,  String $nombre_empresa=null, String $nombre_comercial=null, String $CIF=null){
+    public function __construct(String $correo, int $tipo, String $pass, String $nombre, String $apellidos, String $DNI, String $telefono, String $direccion, String $pais, String $ciudad, String $id=null, String|null $motivo_baja=null, String|null $motivo_readmision=null, String|null $fecha_baja=null, String|null $fecha_readmision=null, String $image=null,  String $nombre_empresa=null, String $nombre_comercial=null, String $CIF=null, String $firma=null){
         if(!is_null($id)){
             $this->id=$id;
         }else $this->id=uniqid();
@@ -139,6 +140,9 @@ class Usuario {
         }
         if(!is_null($CIF)){
             $this->CIF=$CIF;
+        }
+        if(!is_null($firma)){
+           $this->firma; 
         }
     }
 
@@ -252,6 +256,10 @@ class Usuario {
 
     public function getImage(): string{
         return $this->image;
+    }
+
+    public function getFirma(): string|null{
+        return $this->firma;
     }
 
     //Setters
@@ -554,7 +562,7 @@ class Usuario {
             $linea=$result->fetch_object();
 
             while($linea!=null){
-                $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->pais, $linea->ciudad, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision, nombre_empresa:$linea->nombre_empresa);
+                $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->pais, $linea->ciudad, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision, nombre_empresa:$linea->nombre_empresa, nombre_comercial:$linea->nombre_comercial, CIF:$linea->CIF, firma:$linea->firma);
                 array_push($lista_empleados, $empleado);
 
                 $linea=$result->fetch_object();
@@ -574,7 +582,7 @@ class Usuario {
             $linea=$result->fetch_object();
 
             while($linea!=null){
-                $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->pais, $linea->ciudad, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision, nombre_empresa:$linea->nombre_empresa);
+                $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->pais, $linea->ciudad, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision, nombre_empresa:$linea->nombre_empresa, nombre_comercial:$linea->nombre_comercial, CIF:$linea->CIF, firma:$linea->firma);
                 array_push($lista_empleados, $empleado);
 
                 $linea=$result->fetch_object();
@@ -656,7 +664,7 @@ class Usuario {
         $linea=$result->fetch_object();
 
         if($linea!=null){
-            $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->pais, $linea->ciudad, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision, nombre_empresa:$linea->nombre_empresa);
+            $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->pais, $linea->ciudad, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision, nombre_empresa:$linea->nombre_empresa, nombre_comercial:$linea->nombre_comercial, CIF:$linea->CIF, firma:$linea->firma);
 
 
             return $empleado;
@@ -710,12 +718,12 @@ class Usuario {
     }
 
     public static function recogerUsuarioID($id, $connection){
-        $result=$connection->query("Select nombre, apellidos, DNI, telefono, id_usuario from usuarios where id_usuario= '". $id ."';");
+        $result=$connection->query("Select nombre, apellidos, DNI, telefono, id_usuario, firma from usuarios where id_usuario= '". $id ."';");
 
         $linea=$result->fetch_object();
 
         if($linea!=null){
-            $datos_usuario=["nombre"=>$linea->nombre, "apellidos"=>$linea->apellidos, "DNI"=>$linea->DNI, "telefono"=>$linea->telefono, "id"=>$linea->id_usuario];
+            $datos_usuario=["nombre"=>$linea->nombre, "apellidos"=>$linea->apellidos, "DNI"=>$linea->DNI, "telefono"=>$linea->telefono, "id"=>$linea->id_usuario, "firma"=>$linea->firma];
 
             return $datos_usuario;
 
@@ -807,6 +815,16 @@ class Usuario {
 
     public static function asignarMotivoReadmision($id, $motivo_readmision, mysqli $connection){
         $result=$connection->query('Update usuarios SET motivo_readmision = "'.$motivo_readmision.'" WHERE id_usuario="'.$id.'";');
+
+        if($result!=false){
+            return true;
+        }else{
+            return mysqli_error($connection);
+        }
+    }
+
+    public static function firmarCliente($id, $firma, mysqli $connection){
+        $result=$connection->query('Update usuarios SET firma = "'.$firma.'" WHERE id_usuario="'.$id.'";');
 
         if($result!=false){
             return true;

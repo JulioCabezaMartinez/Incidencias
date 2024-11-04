@@ -15,6 +15,43 @@ require_once '../view/Templates/inicio.inc.php';
 </head>
 
 <body>
+    <!-- Modal Firma -->
+    <div class="modal fade" id="modal_firma" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Firma Cliente</h5>
+                </div>
+                <div class="modal-body">
+                    <div id="contenedor_firma">
+
+                    <div class="col-md-12">
+
+                        <label class="" for="">Firma del Cliente:</label>
+
+                        <br />
+
+                        <div id="sig"></div>
+
+                        <br />
+
+                        <button id="clear">Borrar</button>
+
+                        <textarea id="signature64" name="signed" style="display: none"></textarea>
+
+                    </div>
+                    <br />
+                </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_firma_modal" type="button" class="btn btn-primary" data-dismiss="modal">Firmar</button>
+                    <button id="cerrar_firma" type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Firma -->
+
     <!-- Modal de confirmación -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
@@ -111,6 +148,15 @@ require_once '../view/Templates/inicio.inc.php';
                                 }
                             }
                             ?>
+
+                            <?php
+                            if($incidencia->getEstado()==4 && $incidencia->getIdCliente()==$_SESSION["id"] && $usuario['firma']==null){
+                            ?>
+                                <button id="btn_firmar-<?php echo $incidencia->getIdCliente() ?>" class="btn btn-small btn-warning my-1 btn_firmar"><i class="fa-solid fa-file-signature"></i>Firmar</button><br>
+                            <?php
+                            }
+                            ?>
+
                             <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-file-arrow-down me-2"></i>Descargar Incidencia</a><br>
 
 
@@ -232,7 +278,59 @@ require_once '../view/Templates/inicio.inc.php';
                         location.reload();
                     }
                 })
-            })
+            });
+
+            $("#cerrar").click(function(){
+                $("#exampleModalCenter").modal("hide");
+            });
+
+            //Modal Firma
+            let id_cliente_firma
+            $('.btn_firmar').click(function(){
+                id_cliente_firma=$(this).attr('id').split('-')[1];
+                $("#modal_firma").modal('show');
+            });
+
+            $("#btn_firma_modal").click(function(){
+                let firma= $("#signature64").val();
+                $.ajax({
+                    url: "AJAX.php",
+                    method: "POST",
+                    data:{
+                        mode: "firmar_cliente",
+                        id_cliente: id_cliente_firma,
+                        firma: firma
+                    }, success: function(data){
+                        if(data=="Todo correcto"){
+                            $("#modal_firma").modal('hide');
+                            window.reload();
+                        }else{
+                            console.log(data);
+                        }
+                        
+                    }
+                })
+            });
+            
+            $("#cerrar_firma").click(function(){
+                $("#modal_firma").modal("hide");
+            });
+
+            //Borrar Firma
+            var sig = $('#sig').signature({
+            syncField: '#signature64',
+            syncFormat: 'PNG'
+            });
+
+            $('#clear').click(function(e) {
+
+                e.preventDefault();
+
+                sig.signature('clear');
+
+                $("#signature64").val('');
+
+            });
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

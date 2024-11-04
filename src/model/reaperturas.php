@@ -310,12 +310,33 @@ class Reapertura{
         }else return mysqli_error($connection);
     }
 
-    public static function solucionarReapertura(int $estado, String $motivo_estado, String|null $resolucion, String|null $observaciones, int $nIncidencia, $nReapertura, String $horaApertura, String $horaCierre, float $totalTiempo, mysqli $connection){
+    public static function solucionarReapertura(int $estado, String $motivo_estado, String|null $resolucion, String|null $observaciones, int $nIncidencia, $nReapertura, String $horaApertura, String $horaCierre, float $totalTiempo, mysqli $connection, String|null $firma=null){
         $result=$connection->query("UPDATE reaperturas SET solucion = '".$resolucion."', estado=".$estado.", motivo_estado = '".$motivo_estado."', observaciones = '".$observaciones."', hora_apertura='".$horaApertura."', hora_cierre='".$horaCierre."', totalTiempo='".$totalTiempo."' WHERE (`incidencia_padre` = '".$nIncidencia."' AND nReapertura='".$nReapertura."');");
 
-        if($result!=false){
-            return true;
-        }else return false;
+        if($estado==4){
+            $busquedaCliente=$connection->query("SELECT id_cliente where numero_incidencia = ".$nIncidencia.";");
+            if($busquedaCliente!=false){
+                $cliente=$busquedaCliente->fetch_object();
+
+                $result2=$connection->query("UPDATE usuario SET firma = ".$firma." WHERE id_usuario = ".$cliente->id_cliente.";");
+
+                if($result!=false){
+                    if($result2!=false){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                    
+                }else return false;
+            }else{
+                return false;
+            }
+        }else{
+            if($result!=false){
+                return true;
+            }else return false;
+        }
+        
     }
     public static function compruebaEstadoUltimaReapertura($nIncidencia, mysqli $connection){
         $result=$connection->query('SELECT estado from reaperturas where incidencia_padre='.$nIncidencia.' order by nReapertura desc limit 1;');

@@ -399,7 +399,7 @@ class Incidencias{
      */
     public static function recogerTodasIncidenciasUsuario(mysqli $connection, String $id_User){
         $incidencias=[];
-        $result=$connection->query("Select * from incidencias where id_creador='". $id_User ."'");
+        $result=$connection->query("Select * from incidencias where id_cliente='". $id_User ."'");
 
         if($result!=false){
             $linea=$result->fetch_object();
@@ -649,18 +649,33 @@ class Incidencias{
      * @param mysqli $connection Conexión a la base de datos generada con anterioridad.
      * @return bool True en caso de que se hayan implementado los datos en la base de datos, false en caso contrario.
      */
-    public static function solucionarIncidencia(int $estado, String $motivo_estado, String|null $resolucion, String|null $observaciones, int $nIncidencia, String $horaApertura, String $horaCierre, float $totalTiempo, mysqli $connection){
+    public static function solucionarIncidencia(int $estado, String $motivo_estado, String|null $resolucion, String|null $observaciones, int $nIncidencia, String $horaApertura, String $horaCierre, float $totalTiempo, mysqli $connection, String|null $firma=null){
         $result=$connection->query("UPDATE incidencias SET solucion = '".$resolucion."', estado=".$estado.", motivo_estado = '".$motivo_estado."', observaciones = '".$observaciones."', hora_apertura='".$horaApertura."', hora_cierre='".$horaCierre."', totalTiempo='".$totalTiempo."' WHERE (`numero_incidencia` = '".$nIncidencia."');");
 
         if($estado>1 && $estado<5){
             $indicarReapertura=Incidencias::actualizarReabrirIncidencia($nIncidencia, $connection);
         }
 
+        if($estado==4){
+            $busquedaCliente=$connection->query("SELECT id_empleado from incidencias where numero_incidencia = ".$nIncidencia.";");
+            if($busquedaCliente!=false){
+                $cliente=$busquedaCliente->fetch_object();
+
+                $result2=$connection->query("UPDATE usuarios SET firma = '".$firma."' WHERE id_usuario = '".$cliente->id_empleado."';");
+
+                if($result!=false && $indicarReapertura!=false && $result2!=false){
+                    return $cliente->id_empleado;
+                }else return mysqli_error($connection);
+            }else{
+                return mysqli_error($connection);
+            }
+        }
+
         if($result!=false && $indicarReapertura!=false){
             return true;
-        }else return false;
+        }else return mysqli_error($connection);
     }
-
+ 
     public static function guardarHoraEntrada(String $hora_apertura, $nIncidencia, mysqli $connection){
         $result=$connection->query("UPDATE incidencias SET hora_apertura='".$hora_apertura."' WHERE (`numero_incidencia` = '".$nIncidencia."');");
 
