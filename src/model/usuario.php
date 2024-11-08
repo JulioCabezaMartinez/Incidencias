@@ -468,11 +468,11 @@ class Usuario {
                         }
                     }
                     if($tipo_registro==1){//Particular
-                        $result=$connection->query("Insert into usuarios values('". $usuario->getId() ."', '". $usuario->getCorreo() ."',". $usuario->getTipo() .", '". $usuario->getPass() ."', '". $usuario->getTelefono() ."', '". $usuario->getDireccion() ."', '".$usuario->getPais()."', '".$usuario->getCiudad()."', '', '". $usuario->getNombre() ."', '". $usuario->getApellidos() ."', '". $usuario->getDNI()."', '', '', '', '', '', '".$usuario->getImage()."')");
+                        $result=$connection->query("Insert into usuarios values('". $usuario->getId() ."', '". $usuario->getCorreo() ."',". $usuario->getTipo() .", '". $usuario->getPass() ."', '". $usuario->getTelefono() ."', '". $usuario->getDireccion() ."', '".$usuario->getPais()."', '".$usuario->getCiudad()."', '', '', '". $usuario->getNombre() ."', '". $usuario->getApellidos() ."', '". $usuario->getDNI()."', '', '', '', '', '', '".$usuario->getImage()."', '')");
                     }elseif($tipo_registro==2){//Empresa
-                        $result=$connection->query("Insert into usuarios values('". $usuario->getId() ."', '". $usuario->getCorreo() ."',". $usuario->getTipo() .", '". $usuario->getPass() ."', '". $usuario->getTelefono() ."', '". $usuario->getDireccion() ."', '".$usuario->getPais()."', '".$usuario->getCiudad()."', '".$usuario->getNombreEmpresa()."', '', '". $usuario->getNombre() ."', '". $usuario->getApellidos() ."', '". $usuario->getDNI()."', '".$usuario->getCIF()."', '', '', '', '', '".$usuario->getImage()."')");
+                        $result=$connection->query("Insert into usuarios values('". $usuario->getId() ."', '". $usuario->getCorreo() ."',". $usuario->getTipo() .", '". $usuario->getPass() ."', '". $usuario->getTelefono() ."', '". $usuario->getDireccion() ."', '".$usuario->getPais()."', '".$usuario->getCiudad()."', '".$usuario->getNombreEmpresa()."', '', '". $usuario->getNombre() ."', '". $usuario->getApellidos() ."', '". $usuario->getDNI()."', '".$usuario->getCIF()."', '', '', '', '', '".$usuario->getImage()."', '')");
                     }elseif($tipo_registro==3){//Autonomo
-                        $result=$connection->query("Insert into usuarios values('". $usuario->getId() ."', '". $usuario->getCorreo() ."',". $usuario->getTipo() .", '". $usuario->getPass() ."', '". $usuario->getTelefono() ."', '". $usuario->getDireccion() ."', '".$usuario->getPais()."', '".$usuario->getCiudad()."', '', '".$usuario->getNombreComercial()."', '". $usuario->getNombre() ."', '". $usuario->getApellidos() ."', '". $usuario->getDNI()."', '' ,'', '', '', '', '".$usuario->getImage()."')");
+                        $result=$connection->query("Insert into usuarios values('". $usuario->getId() ."', '". $usuario->getCorreo() ."',". $usuario->getTipo() .", '". $usuario->getPass() ."', '". $usuario->getTelefono() ."', '". $usuario->getDireccion() ."', '".$usuario->getPais()."', '".$usuario->getCiudad()."', '', '".$usuario->getNombreComercial()."', '". $usuario->getNombre() ."', '". $usuario->getApellidos() ."', '". $usuario->getDNI()."', '' ,'', '', '', '', '".$usuario->getImage()."', '')");
                     }
     
                     if(!$result){
@@ -562,7 +562,7 @@ class Usuario {
             $linea=$result->fetch_object();
 
             while($linea!=null){
-                $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->pais, $linea->ciudad, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision, nombre_empresa:$linea->nombre_empresa, nombre_comercial:$linea->nombre_comercial, CIF:$linea->CIF, firma:$linea->firma);
+                $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->pais, $linea->ciudad, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision, nombre_empresa:$linea->nombre_empresa, nombre_comercial:$linea->nombre_comercial, CIF:$linea->CIF_empresa, firma:$linea->firma);
                 array_push($lista_empleados, $empleado);
 
                 $linea=$result->fetch_object();
@@ -582,7 +582,7 @@ class Usuario {
             $linea=$result->fetch_object();
 
             while($linea!=null){
-                $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->pais, $linea->ciudad, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision, nombre_empresa:$linea->nombre_empresa, nombre_comercial:$linea->nombre_comercial, CIF:$linea->CIF, firma:$linea->firma);
+                $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->pais, $linea->ciudad, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision, nombre_empresa:$linea->nombre_empresa, nombre_comercial:$linea->nombre_comercial, CIF:$linea->CIF_empresa, firma:$linea->firma);
                 array_push($lista_empleados, $empleado);
 
                 $linea=$result->fetch_object();

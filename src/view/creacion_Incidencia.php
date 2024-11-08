@@ -28,13 +28,18 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-outline"> <!-- Falta darle estilos al register (Grid 2 columnas) -->
-                        <label for="tipo_registro">Indique si es un clinte particular o Empresa:</label><br>
+                    <label for="tipo_registro">Indique si es un cliente particular, una empresa o un autónomo:</label><br>
                         <input id="particular" type="radio" name="tipo_registro" value=1 checked><label>Particular</label>
                         <input id="empresa" type="radio" name="tipo_registro" value=2><label>Empresa</label>
+                        <input id="autonomo" type="radio" name="tipo_registro" value=3><label>Autónomo</label>
                         <br><br>
-                        <div id="div_nombreEmpresa" class="d-none">
-                        <label for="nombre_empresa">*Nombre de la Empresa:</label><br>
-                        <input id="nombre_empresa" class="form-control w-50" type="text" name="nombre_empresa" placeholder="Nombre de la Empresa">
+                        <div class="d-none empresa">
+                            <label for="nombre_empresa">*Nombre de la Empresa:</label><br>
+                            <input id="nombre_empresa_modal" class="form-control w-50" type="text" name="nombre_empresa_modal" placeholder="Nombre de la Empresa">
+                        </div>
+                        <div class="d-none autonomo">
+                            <label for="nombre_comercial">*Nombre Comercial:</label><br>
+                            <input id="nombre_comercial_modal" class="form-control w-50" type="text" name="nombre_comercial_modal" placeholder="Nombre Comercial">
                         </div>
                         <br>
                         <label for="nombre">*Nombre:</label><br>
@@ -55,6 +60,11 @@
                         <label for="DNI">*DNI:</label><br>
                         <input id="DNI_modal" class="form-control w-50" type="text" name="DNI_modal" placeholder="12345678A" maxlength="9" pattern="(\d{8})([A-Z]{1})" required> <!-- Poner para el NIE -->
                         <br><br>
+                        <div class="d-none empresa">
+                            <label for="nombre_empresa">*CIF de la Empresa:</label><br>
+                            <input id="CIF_modal" class="form-control w-50" type="text" name="CIF_modal" maxlength="9">
+                        </div>
+                        <br>
                         <label for="telefono">*Telefono:</label><br>
                         <input id="telefono_modal" class="form-control w-50" type="text" name="telefono_modal" required> <!-- Poner para el NIE -->
                         <br><br>
@@ -211,7 +221,6 @@
                         DNI: DNI
                     },
                     success:function(data){
-                        console.log(data);
                         datos=JSON.parse(data)
                     $("#nombreCliente").val(datos.nombre);
                     $("#apellidosCliente").val(datos.apellidos);
@@ -233,13 +242,15 @@
             //Conexión con AJAX para registrar cliente.
             $("#btn_registrar_modal").on("click", function(){
                 var tipo_registro=$("input[name='tipo_registro']:checked").val();
-                var nombre_empresa=$("#nombre_empresa").val();
+                var nombre_empresa=$("#nombre_empresa_modal").val();
+                var nombre_comercial=$("#nombre_comercial_modal").val() 
                 var nombre=$("#nombre_modal").val();
                 var apellidos=$("#apellidos_modal").val();
                 var correo=$("#correo_modal").val();
                 var pass=$("#pass_modal").val();
                 var confirm=$("#confirm_modal").val();
                 var DNI=$("#DNI_modal").val();
+                var CIF=$("#CIF_modal").val();
                 var telefono=$("#telefono_modal").val();
                 var direccion=$("#direccion_modal").val();
                 var pais=$("#pais").val();
@@ -252,12 +263,14 @@
                         mode: "registro",
                         tipo_registro: tipo_registro,
                         nombre_empresa: nombre_empresa,
+                        nombre_comercial: nombre_comercial,
                         nombre: nombre,
                         apellidos: apellidos,
                         correo: correo,
                         pass: pass,
                         confirm: confirm,
                         DNI: DNI,
+                        CIF: CIF,
                         telefono: telefono,
                         direccion: direccion,
                         pais: pais,
@@ -268,12 +281,10 @@
 
                         $('#modal_registro').modal('hide');
 
-                        console.log(data);
-
                         if(data=="Todo correcto"){
                             $('#confirmacion_registro').modal("show");
                         }else{
-                            console.log("data");
+                            
                             $('#confirmacion_header').text("Registro Fallido");
                             $('#confirmacion_body').text(data);
                             $('#confirmacion_registro').modal("show");
@@ -326,9 +337,17 @@
                 })
             });
 
-            $("input[name='tipo_registro']").change(function(){
-                $("#div_nombreEmpresa").toggleClass("d-none");
-                $("#nombre_empresa").prop("required", !$("#nombre_empresa").prop("required"));
+            $("input[type='radio'][name='tipo_registro']").change(function() {
+                if ($("input[type='radio']#empresa").is(":checked")) {
+                    $(".empresa").removeClass("d-none");
+                    $(".autonomo").addClass("d-none");
+                } else if($("input[type='radio']#autonomo").is(":checked")){
+                    $(".autonomo").removeClass("d-none");
+                    $(".empresa").addClass("d-none");
+                }else{
+                    $(".empresa").addClass("d-none");
+                    $(".autonomo").addClass("d-none");
+                }
             });
         });
     </script>

@@ -16,7 +16,18 @@
         if($_POST["mode"]=="registro"){
             if(!empty($_POST["nombre_empresa"])){
                 $resultado=Usuario::registrarUsuario(tipo_registro: (int)$_POST["tipo_registro"], correo: $_POST["correo"], tipo: $_POST["tipo"], pass: $_POST["pass"], confirmPass: $_POST["confirm"],
-                nombre: $_POST["nombre"], apellidos: $_POST["apellidos"], DNI: $_POST["DNI"], telefono: $_POST["telefono"], direccion: $_POST["direccion"], pais: $_POST["pais"], ciudad: $_POST["ciudad"], connection: $connection, nombre_empresa:$_POST["nombre_empresa"]);
+                nombre: $_POST["nombre"], apellidos: $_POST["apellidos"], DNI: $_POST["DNI"], telefono: $_POST["telefono"], direccion: $_POST["direccion"], pais: $_POST["pais"], ciudad: $_POST["ciudad"], connection: $connection, nombre_empresa:$_POST["nombre_empresa"], CIF:$_POST["nombre_empresa"]);
+
+                
+
+                if(is_string($resultado)){
+                    echo $resultado;
+                }else{
+                    echo "Todo correcto";
+                }
+            }elseif(!empty($_POST["nombre_comercial"])){
+                $resultado=Usuario::registrarUsuario(tipo_registro: (int)$_POST["tipo_registro"], correo: $_POST["correo"], tipo: $_POST["tipo"], pass: $_POST["pass"], confirmPass: $_POST["confirm"],
+                nombre: $_POST["nombre"], apellidos: $_POST["apellidos"], DNI: $_POST["DNI"], telefono: $_POST["telefono"], direccion: $_POST["direccion"], pais: $_POST["pais"], ciudad: $_POST["ciudad"], connection: $connection, nombre_comercial:$_POST["nombre_comercial"]);
 
                 
 
@@ -26,6 +37,7 @@
                     echo "Todo correcto";
                 }
             }else{
+                
                     $resultado=Usuario::registrarUsuario(tipo_registro: (int)$_POST["tipo_registro"], correo: $_POST["correo"], tipo: $_POST["tipo"], pass: $_POST["pass"], confirmPass: $_POST["confirm"],
                     nombre: $_POST["nombre"], apellidos: $_POST["apellidos"], DNI: $_POST["DNI"], telefono: $_POST["telefono"], direccion: $_POST["direccion"], pais: $_POST["pais"], ciudad: $_POST["ciudad"], connection: $connection);
 
