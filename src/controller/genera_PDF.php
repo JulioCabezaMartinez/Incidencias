@@ -296,4 +296,4 @@ if($incidencia->getReabierto()){
 }
 
 // $pdf->Output('D', "hola.pdf");
-$pdf->Output('D', $incidencia->getNIncidencia()."(Prueba).pdf");
+$pdf->Output('D', "PTDD". $anio ."-".$numero."_".$usuario_Cliente['nombre']."_". $usuario_Cliente['apellidos']);
