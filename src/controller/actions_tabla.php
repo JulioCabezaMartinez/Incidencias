@@ -95,6 +95,7 @@
                 $incidencia=Incidencias::recogerIncidencia($connection, $_GET["nIncidencia"]);
                 $reapertura=Reapertura::recogerReapertura($incidencia->getNIncidencia(), $_GET['nReapertura'], $connection);
                 if($reapertura->getHoraApertura()==''){
+                    date_default_timezone_set("Europe/Madrid");
                     $reapertura->setHoraApertura(date('Y-m-d\TH:i:s'));
                     Reapertura::guardarHoraEntrada($reapertura->getHoraApertura(), $reapertura->getNreapertura(), $incidencia->getNIncidencia(), $connection);
                 }

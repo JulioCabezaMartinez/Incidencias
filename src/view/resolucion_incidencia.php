@@ -179,7 +179,7 @@ require_once "../view/Templates/inicio.inc.php";
             <form>
                 <div class="mb-3 w-50">
                     <label for="motivo" class="form-label">Resolución de la Incidencia</label>
-                    <textarea id="resolucion_instancia" class="form-control w-75" rows="6"></textarea>
+                    <textarea id="resolucion_instancia" class="form-control w-75" rows="6" maxlength="500"></textarea>
                 </div>
                 <br>
                 <div class="mb-3 w-50">

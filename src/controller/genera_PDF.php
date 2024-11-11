@@ -23,10 +23,12 @@ $templateIDx= $pdf->importPage(1);
 $pdf->useTemplate($templateIDx);
 
 //Número Incidencia
-$pdf->SetFont('Arial', '', 12);
+$pdf->SetFont('Arial', 'b', 8);
 $pdf->SetXY(178, 22.9);
 // $pdf->Cell(16.5, 10, "N-1"); Ejemplo
-$pdf->Cell(16.5, 10, "N-". $incidencia->getNIncidencia());
+$anio=substr($incidencia->getYear(), 2);
+$numero=$incidencia->getNumeroYear($incidencia->getYear(), $incidencia->getNIncidencia(), $connection);
+$pdf->Cell(16.5, 10, "PTDD". $anio ."-".$numero);
 
 
 //Nombre Apellidos Cliente
@@ -44,10 +46,10 @@ $pdf->SetXY(17, 52);
 $pdf->MultiCell(176.2, 6, $incidencia->getMotivo());
 
 //Solución
-$pdf->SetFont('Arial', '', 12);
+$pdf->SetFont('Arial', '', 10);
 $pdf->SetXY(17, 122);
 // $pdf->MultiCell(176.2, 6, "Soy una solucion muy completa llena de datos en los que se detalla que el problema no era yo sino que era el servidor web que no funcionaba"); Ejemplo
-$pdf->MultiCell(176.2, 6, $incidencia->getSolucion());
+$pdf->MultiCell(176.2, 6, utf8_decode($incidencia->getSolucion()));
 
 switch($incidencia->getEstado()){
     case 3:
