@@ -34,10 +34,23 @@ $pdf->Cell(16.5, 10, "PTDD". $anio ."-".$numero);
 //Nombre Apellidos Cliente
 $pdf->SetFont('Arial', '', 12);
 $pdf->SetXY(80, 24);
-// $pdf->Cell(79, 6, "Hola"." Apellido 1 Apellido-Compuesto 2"); Ejemplo
-$pdf->Cell(79, 6, $usuario_Cliente['nombre']." ". $usuario_Cliente['apellidos']);
 
+$pdf->Cell(79, 6, utf8_decode($usuario_Cliente['nombre'])." ". utf8_decode($usuario_Cliente['apellidos']));
 
+//CIF/DNI
+$pdf->SetFont('Arial', '', 12);
+$pdf->SetXY(80, 28);
+
+if(empty($usuario_Cliente['CIF'])){
+    $pdf->Cell(79, 8, $usuario_Cliente['DNI']);
+}else{
+    $pdf->Cell(79, 8, $usuario_Cliente['DNI']);
+}
+
+//Direccion
+$pdf->SetFont('Arial', '', 12);
+$pdf->SetXY(80, 33);
+$pdf->Cell(79, 8, utf8_decode($usuario_Cliente['direccion']));
 
 //Motivo
 $pdf->SetFont('Arial', '', 12);

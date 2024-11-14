@@ -718,12 +718,12 @@ class Usuario {
     }
 
     public static function recogerUsuarioID($id, $connection){
-        $result=$connection->query("Select nombre, apellidos, DNI, telefono, id_usuario, firma from usuarios where id_usuario= '". $id ."';");
+        $result=$connection->query("Select nombre, apellidos, DNI, telefono, id_usuario, firma, CIF_empresa, direccion from usuarios where id_usuario= '". $id ."';");
 
         $linea=$result->fetch_object();
 
         if($linea!=null){
-            $datos_usuario=["nombre"=>$linea->nombre, "apellidos"=>$linea->apellidos, "DNI"=>$linea->DNI, "telefono"=>$linea->telefono, "id"=>$linea->id_usuario, "firma"=>$linea->firma];
+            $datos_usuario=["nombre"=>$linea->nombre, "apellidos"=>$linea->apellidos, "DNI"=>$linea->DNI, "telefono"=>$linea->telefono, "id"=>$linea->id_usuario, "firma"=>$linea->firma, "CIF"=>$linea->CIF_empresa, "direccion"=>$linea->direccion];
 
             return $datos_usuario;
 
