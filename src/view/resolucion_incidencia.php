@@ -55,6 +55,46 @@ require_once "../view/Templates/inicio.inc.php";
 
 <body>
 
+    <!-- Modal de salida -->
+    <div class="modal fade" id="modal_salida_confirmacion" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <?php
+                    if (!isset($reapertura)) {
+                    ?>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Salir Incidencia</h5>
+                    <?php
+                    } else {
+                    ?>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Salir Reapertura</h5>
+                    <?php
+                    }
+                    ?>
+
+                </div>
+                <div class="modal-body">
+                    <?php
+                    if (!isset($reapertura)) {
+                    ?>
+                        ¿Está seguro que quiere salir de la incidencia? Si sale el contador seguira corriendo.
+                    <?php
+                    } else {
+                    ?>
+                        ¿Está seguro que quiere salir de la reapertura? Si sale el contador seguira corriendo.
+                    <?php
+                    }
+                    ?>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_salirPage" type="button" class="btn btn-primary" data-dismiss="modal">Si, salir</button>
+                    <button id="cerrar_confirmacion_salir" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de salida -->
+
     <!-- Modal de Estado -->
     <div class="modal fade" id="modal_motivo_estado" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog d-flex justify-content-center">
@@ -159,11 +199,11 @@ require_once "../view/Templates/inicio.inc.php";
         <?php
         if ($_GET["back"] == "asig") { //Con esta variable podemos ver de donde viene el usuario para al darle atras pueda volver.
         ?>
-            <a href="../../../src/controller/actions_tabla.php?class=empleados" class="btn btn-secondary">← Atras</a>
+            <a href="../../../src/controller/actions_tabla.php?class=empleados" class="btn btn-secondary back">← Atras</a>
         <?php
         } elseif ($_GET["back"] == "all") {
         ?>
-            <a href="../../../src/controller/actions_tabla.php?class=all" class="btn btn-secondary">← Atras</a>
+            <a href="../../../src/controller/actions_tabla.php?class=all" class="btn btn-secondary back">← Atras</a>
         <?php
         }
         ?>
@@ -551,13 +591,31 @@ require_once "../view/Templates/inicio.inc.php";
             }, 1000);
 
             $("input[type='radio'][name='estado']").change(function() {
-        if ($("input[type='radio'].finalizado").is(":checked")) {
-            $("#contenedor_firma").removeClass("d-none");
-        } else {
-            $("#contenedor_firma").addClass("d-none");
-        }
-    });
+                if ($("input[type='radio'].finalizado").is(":checked")) {
+                    $("#contenedor_firma").removeClass("d-none");
+                } else {
+                    $("#contenedor_firma").addClass("d-none");
+                }
+            });
 
+            // $(window).on('beforeunload', function(){
+            //     
+            // });
+
+            var direccion;
+            $(".back").click(function(event){
+                event.preventDefault();
+                direccion=$(this).attr("href");
+                $("#modal_salida_confirmacion").modal("show");
+            });
+
+            $("#btn_salirPage").click(function(){
+                window.location.href = direccion;
+            });
+
+            $("#cerrar_confirmacion_salir").click(function(){
+                $("#modal_salida_confirmacion").modal("hide");
+            });
         });
     </script>
 
