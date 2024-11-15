@@ -55,6 +55,46 @@ require_once "../view/Templates/inicio.inc.php";
 
 <body>
 
+    <!-- Modal de finalizado -->
+    <div class="modal fade" id="modal_finalizado_confirmacion" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <?php
+                    if (!isset($reapertura)) {
+                    ?>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Terminar Incidencia</h5>
+                    <?php
+                    } else {
+                    ?>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Terminar Reapertura</h5>
+                    <?php
+                    }
+                    ?>
+
+                </div>
+                <div class="modal-body">
+                    <?php
+                    if (!isset($reapertura)) {
+                    ?>
+                        ¿Está seguro que quiere finalizar la incidencia? No podrá acceder a esta incidencia nuevamente.
+                    <?php
+                    } else {
+                    ?>
+                        ¿Está seguro que quiere finalizar la reapertura? No podrá acceder a esta reapertura nuevamente.
+                    <?php
+                    }
+                    ?>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_finalizado" type="button" class="btn btn-primary" data-dismiss="modal">Si, finalizar</button>
+                    <button id="cerrar_confirmacion_finalizar" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de finalizado -->
+
     <!-- Modal de salida -->
     <div class="modal fade" id="modal_salida_confirmacion" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
@@ -219,7 +259,8 @@ require_once "../view/Templates/inicio.inc.php";
             <form>
                 <div class="mb-3 w-50">
                     <label for="motivo" class="form-label">Resolución de la Incidencia</label>
-                    <textarea id="resolucion_instancia" class="form-control w-75" rows="6" maxlength="500"></textarea>
+                    <textarea id="resolucion_instancia" class="form-control w-75" rows="6" maxlength="500" required></textarea>
+                    <p id="error_resolucion" class="d-none" style="color: red;">Este campo debe de estar relleno</p>
                 </div>
                 <br>
                 <div class="mb-3 w-50">
@@ -424,10 +465,16 @@ require_once "../view/Templates/inicio.inc.php";
                 let horaCierre = conseguirFecha();
                 let totalTiempo = calcularTiempo(new Date(horaApertura).getTime(), new Date(horaCierre).getTime());
 
+                
 
-                if (estado != 1) {
+                if (estado == 4) {
+                    if(resolucion==""){
+                        $("#error_resolucion").removeClass("d-none");
+                    }else
+                    $("#modal_finalizado_confirmacion").modal('show');
+                } else if(estado != 1){
                     $("#modal_motivo_estado").modal("show");
-                } else {
+                }else{
                     $.ajax({
                         url: "AJAX.php",
                         method: "POST",
@@ -602,6 +649,7 @@ require_once "../view/Templates/inicio.inc.php";
             //     
             // });
 
+            //Volver
             var direccion;
             $(".back").click(function(event){
                 event.preventDefault();
@@ -615,6 +663,42 @@ require_once "../view/Templates/inicio.inc.php";
 
             $("#cerrar_confirmacion_salir").click(function(){
                 $("#modal_salida_confirmacion").modal("hide");
+            });
+
+            //Finalizado
+            $("#btn_finalizado").click(function(){
+                let estado = $('input[type="radio"]:checked').val();
+                let resolucion = $("#resolucion_instancia").val();
+                let observaciones = $("#observaciones_incidencia").val();
+                let nIncidencia = $("#hidden_nIncidencia").val();
+                let horaApertura = $("#hidden_hApertura").val();
+                let horaCierre = conseguirFecha();
+                let totalTiempo = calcularTiempo(new Date(horaApertura).getTime(), new Date(horaCierre).getTime());
+                let firma= $("#signature64").val();
+
+                $.ajax({
+                    url: "AJAX.php",
+                    method: "POST",
+                    data: {
+                        mode: "resolucion_Trabajando",
+                        estado: estado,
+                        resolucion: resolucion,
+                        observaciones: observaciones,
+                        nIncidencia: nIncidencia,
+                        horaApertura: horaApertura,
+                        horaCierre: horaCierre,
+                        totalTiempo: totalTiempo,
+                        firma: firma
+                    },
+                    success: function(data) {
+                        $("#modal_finalizado_confirmacion").modal('hide');
+                        $("#modal_estado_confirmacion").modal('show');
+                    }
+                });
+            });
+
+            $("#cerrar_confirmacion_finalizar").click(function(){
+                $("#modal_finalizado_confirmacion").modal("hide");
             });
         });
     </script>
