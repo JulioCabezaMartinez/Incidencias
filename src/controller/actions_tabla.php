@@ -112,5 +112,11 @@
 
                 include "../view/tabla_incidencias_no_asignadas.php";
                 break;
+            
+            case 'ver_inci':
+                $incidencia=Incidencias::recogerIncidencia($connection, $_GET["nIncidencia"]);
+
+                include "../view/vista_Incidencia.php";
+            break;
         }
     }

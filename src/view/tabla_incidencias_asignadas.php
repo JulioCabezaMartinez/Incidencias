@@ -121,6 +121,7 @@ require_once '../view/Templates/inicio.inc.php';
                             }
                             ?>
                             <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1 btn_descarga"><i class="fa-solid fa-file-arrow-down"></i> Descargar Incidencia</a><br>
+                            <a href="../../src/controller/actions_tabla.php?nIncidencia=<?php echo $incidencia->getNIncidencia() ?>&class=ver_inci&back=asig" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-file-arrow-down me-2"></i>Ver Incidencia</a><br>
                             <button id="incidencia_fisica/<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1 btn_subir_incidencia"><i class="fa-solid fa-upload me-2"></i>Subir incidencia</button>
                         </td>
                     </tr>

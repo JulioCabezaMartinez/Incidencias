@@ -158,7 +158,7 @@ require_once '../view/Templates/inicio.inc.php';
                             ?>
 
                             <a href="../../src/controller/genera_PDF.php?nIncidencia=<?php echo $incidencia->getNIncidencia() ?>" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-file-arrow-down me-2"></i>Descargar Incidencia</a><br>
-
+                            <a href="../../src/controller/actions_tabla.php?nIncidencia=<?php echo $incidencia->getNIncidencia() ?>&class=ver_inci&back=all" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-file-arrow-down me-2"></i>Ver Incidencia</a><br>
 
                             <?php
                             if ($_SESSION["tipo"] == 1) {
