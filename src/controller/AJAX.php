@@ -157,7 +157,11 @@
                     echo mysqli_error($connection);
                 }
             }else{
-                $resultado=Incidencias::solucionarIncidencia((int)$_POST["estado"], "", $_POST["resolucion"], $_POST["observaciones"], (int)$_POST["nIncidencia"], $_POST["horaApertura"], $_POST["horaCierre"], (float)$_POST["totalTiempo"], $connection);
+                if((int)$_POST["estado"]==4){
+                    $resultado=Incidencias::solucionarIncidencia((int)$_POST["estado"], "", $_POST["resolucion"], $_POST["observaciones"], (int)$_POST["nIncidencia"], $_POST["horaApertura"], $_POST["horaCierre"], (float)$_POST["totalTiempo"], $connection, $_POST["firma"]);
+                }else{
+                    $resultado=Incidencias::solucionarIncidencia((int)$_POST["estado"], "", $_POST["resolucion"], $_POST["observaciones"], (int)$_POST["nIncidencia"], $_POST["horaApertura"], $_POST["horaCierre"], (float)$_POST["totalTiempo"], $connection);
+                }
 
                 if($resultado){
                     echo "Todo correcto";
