@@ -242,7 +242,7 @@ class Incidencias{
      * Getter de la variable totalTiempo.
      * @return int|null
      */
-    public function getTotalTiempo(): int|null{
+    public function getTotalTiempo(): float|null{
         return $this->totalTiempo;
     }
     public function getYear(){

@@ -188,8 +188,8 @@
 
             <div class="col py-3 mx-4">
                 <div class="mb-3">
-                    <label for="motivo" class="form-label w-50">Motivo de la Incidencia</label>
-                    <input type="text" name="motivo" class="form-control w-50" id="motivoIncidencia" placeholder="Fallo en la instalacion de servicio" required>
+                    <label for="motivo" class="form-label w-50">Motivo de la Incidencia (Max. 150 caracteres):  <strong id="cuenta_caracteres" class="ms-5"></strong></label>
+                    <input type="text" name="motivo" class="form-control w-50" id="motivoIncidencia" placeholder="Fallo en la instalacion de servicio" maxlength="150" required>
                 </div>
             </div>
             <input class="btn btn-outline-danger mx-4" type="submit" name="crearIncidencia" value="Crear Incidencia">
@@ -197,6 +197,21 @@
     </div>
     
 </div> <!-- Div que cierra la barra lateral para que se mantenga en su lugar -->
+
+    <script>
+        //Cuenta de caracteres
+        $(document).ready(function() {
+            var text_max = 150;
+            $('#cuenta_caracteres').html('Quedan ' + text_max + ' caracteres');
+
+            $('#motivoIncidencia').keyup(function() {
+                var text_length = $('#motivoIncidencia').val().length;
+                var text_remaining = text_max - text_length;
+
+                $('#cuenta_caracteres').html('Quedan ' + text_remaining + ' caracteres');
+            });
+        });
+    </script>
 
     <script>
         $(document).ready(function(){

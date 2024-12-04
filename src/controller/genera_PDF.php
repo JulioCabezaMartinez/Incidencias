@@ -56,7 +56,7 @@ $pdf->Cell(79, 8, utf8_decode($usuario_Cliente['direccion']));
 $pdf->SetFont('Arial', '', 12);
 $pdf->SetXY(17, 52);
 // $pdf->MultiCell(176.2, 6, "Soy una solucion muy completa llena de datos en los que se detalla que el problema no era yo sino que era el servidor web que no funcionaba"); Ejemplo
-$pdf->MultiCell(176.2, 6, $incidencia->getMotivo());
+$pdf->MultiCell(176.2, 6, utf8_decode($incidencia->getMotivo()));
 
 //Solución
 $pdf->SetFont('Arial', '', 10);

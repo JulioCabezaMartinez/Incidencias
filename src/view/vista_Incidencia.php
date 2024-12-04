@@ -44,7 +44,7 @@
         <p class="display-6"><?php echo mb_convert_encoding($incidencia->getSolucion(), 'UTF-8', 'UTF-8'); ?></p>
         <br><br>
         <h2>Tiempo total empleado:</h2>
-        <p class="display-6"><?php echo $incidencia->getTotalTiempo()." min" ?></p>
+        <p class="display-6"><?php echo intval(round($incidencia->getTotalTiempo()))." min" ?></p>
     </div>
 </div> <!-- Div que cierra la barra lateral para que se mantenga en su lugar -->
 

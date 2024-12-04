@@ -258,7 +258,7 @@ require_once "../view/Templates/inicio.inc.php";
 
             <form>
                 <div class="mb-3 w-50">
-                    <label for="motivo" class="form-label">Resolución de la Incidencia</label>
+                    <label for="motivo" class="form-label">Resolución de la Incidencia (Max. 500 caracteres):  <strong id="cuenta_caracteres" class="ms-5"></strong></label>
                     <textarea id="resolucion_instancia" class="form-control w-75" rows="6" maxlength="500" required></textarea>
                     <p id="error_resolucion" class="d-none" style="color: red;">Este campo debe de estar relleno</p>
                 </div>
@@ -432,6 +432,21 @@ require_once "../view/Templates/inicio.inc.php";
         });
     </script>
     <!-- Firma -->
+
+    <script>
+        //Cuenta de caracteres
+        $(document).ready(function() {
+            var text_max = 500;
+            $('#cuenta_caracteres').html('Quedan ' + text_max + ' caracteres');
+
+            $('#resolucion_instancia').keyup(function() {
+                var text_length = $('#resolucion_instancia').val().length;
+                var text_remaining = text_max - text_length;
+
+                $('#cuenta_caracteres').html('Quedan ' + text_remaining + ' caracteres');
+            });
+        });
+    </script>
 
     <script>
         function conseguirFecha() {
