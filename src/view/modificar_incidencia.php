@@ -141,9 +141,9 @@ require_once "../view/Templates/inicio.inc.php";
                         <input type="text" name="id_cliente" class="form-control w-75" id="id_cliente" value="<?php echo $incidencia->getIdCliente() ?>" readonly>
                     </div>
                     <div class="w-25">
-                        <label for="id_creador" class="form-label w-50">DNI Cliente de Incidencia:</label>
+                        <label for="DNI_creador" class="form-label w-50">DNI Cliente de Incidencia:</label>
                         <div class="row">
-                            <select type="text" name="id_creador" class="form-control w-50" id="DNI_cliente">
+                            <select type="text" name="DNI_cliente" class="form-control w-50" id="DNI_cliente">
                             <?php
                                 $busqueda_DNI=Usuario::busquedaDNI($_POST["DNI"], $connection);
 
@@ -165,9 +165,9 @@ require_once "../view/Templates/inicio.inc.php";
                         <input type="text" name="id_empleado" class="form-control w-75" id="id_empleado" value="<?php echo $incidencia->getIdEmpleado() ?>" readonly>
                     </div>
                     <div class="w-25">
-                        <label for="id_creador" class="form-label w-50">DNI Empleado de Incidencia:</label>
+                        <label for="DNI_empleado" class="form-label w-50">DNI Empleado de Incidencia:</label>
                         <div class="row">
-                            <select type="text" name="id_creador" class="form-control w-50" id="DNI_empleado">
+                            <select type="text" name="DNI_empleado" class="form-control w-50" id="DNI_empleado">
                             <?php
                                 $busqueda_DNI=Usuario::busquedaDNI($_POST["DNI"], $connection);
 
@@ -196,7 +196,7 @@ require_once "../view/Templates/inicio.inc.php";
                     <label for="motivo" class="form-label">Reabierto: </label>
                     <?php
                     if ($incidencia->getReabierto()) {
-                        echo '<input type="checkbox" name="reabierto" checked>Reabierto';
+                        echo '<input type="checkbox" value=true name="reabierto" checked>Reabierto';
                     } else {
                         echo '<input type="checkbox" name="reabierto">Reabierto';
                     }

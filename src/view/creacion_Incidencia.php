@@ -122,7 +122,7 @@
         <h1>Creacion de Incidencias</h1>
             <div class="row w-75 py-3 container-fluid">
                 <div class="col-1 w-25">
-                <form action='../../src/controller/actions_incidencia.php' method="post">
+                <form action='../../src/controller/actions_incidencia.php' method="post" enctype="multipart/form-data">
                     <h2>Usuario Activo</h2>
                     <label for="nombre">Nombre:</label>
                     <input type="text" name="nombre" class="form-control w-100" id="nombre" value="<?php echo $usuario["nombre"] ?>" readonly>
@@ -192,6 +192,11 @@
                     <input type="text" name="motivo" class="form-control w-50" id="motivoIncidencia" placeholder="Fallo en la instalacion de servicio" maxlength="150" required>
                 </div>
             </div>
+            <div>
+                <label for="">Suba las imagenes asociadas a la incidencia (Máx. 5 imagenes): </label>
+                <input type="file" name="imagenes[]" id="imagenes" multiple>
+                <p id="error_Img" style="color: red;"></p>
+            </div>
             <input class="btn btn-outline-danger mx-4" type="submit" name="crearIncidencia" value="Crear Incidencia">
             </form>
     </div>
@@ -215,6 +220,20 @@
 
     <script>
         $(document).ready(function(){
+            // Es una restricción para que no se suban más de 5 archivos
+            const fileInput = document.getElementById('imagenes');
+            const errorMsg = document.getElementById('error_Img');
+            const maxFiles = 5; // Número máximo de archivos permitido
+
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > maxFiles) {
+                    errorMsg.textContent = `Solo puedes subir hasta ${maxFiles} archivos.`;
+                    fileInput.value = ''; // Limpia el input si supera el límite
+                } else {
+                    errorMsg.textContent = ''; // Limpia el mensaje de error
+                }
+            });
+
             //Script que copia los mismos datos de creación en cliente
             // $("#misma_persona").click(function(){
             //     var nombre=$("#nombre").val();

@@ -552,12 +552,79 @@ class Incidencias{
      * @param mysqli $connection Conexión a la base de datos generada con anterioridad.
      * @return bool|string Devuelve true si la insercción en la base de datos ha sido correcta o, en caso contrario, el mensaje de error de sql
      */
-    public static function creacionIncidencia($motivo, $id_creador, $id_cliente, $contacto, mysqli $connection){
+    public static function creacionIncidencia($motivo, $id_creador, $id_cliente, $contacto, mysqli $connection, $imagenes=null){
         $fecha=new DateTime();
         $year=$fecha->format('Y');
         $incidencia=new Incidencias($motivo, $id_creador, $id_cliente, $contacto, $year);
 
-        $result=$connection->query("INSERT INTO incidencias (motivo, estado, id_creador, id_cliente, persona_contacto, year) VALUES ('". $incidencia->getMotivo() ."', ". $incidencia->getEstado() ." ,'". $incidencia->getIdCreador() ."', '".$incidencia->getIdCliente()."', '".$incidencia->getContacto()."', ".$incidencia->getYear().");");
+        
+
+        if($imagenes!=null){
+            if(!empty($imagenes["imagenes"]["name"][0])){
+
+                $json_imagenes=[];
+
+                $error_extension=false;
+                $extensionesPermitidas = ['jpg', 'jpeg', 'png'];
+                foreach($imagenes["imagenes"]["name"] as $nombre_archivo){
+                    $extension=strtolower(pathinfo($nombre_archivo, PATHINFO_EXTENSION));
+
+                    if(!in_array($extension, $extensionesPermitidas)){
+                        $error_extension=true;
+                    }
+
+                }
+
+                $error_tamaño=false;
+                foreach($_FILES['imagenes']['size'] as $tamaño_archivo){
+                    if($tamaño_archivo>(12*1024*1204)){
+                        $error_tamaño=true;
+                    }
+                }
+
+                if($error_tamaño){ //Que el tamaño no sea mayor de 12 mb
+
+                    return "Imagen demasiado pesada";
+
+                }elseif($error_extension){
+
+                    return "El archivo tiene un tipo no permitido";
+
+                }else{
+                    $uploadDir="../../assets/IMG/PTDD".substr($incidencia->getYear(), 2)."/";
+                    if (!is_dir($uploadDir)) {
+                        // Si no existe, crearla
+                        if (!mkdir($uploadDir, 0777, true)) {
+                            die('Error: No se pudo crear la carpeta de destino.');
+                        }
+                    }else{
+                        echo "La carpeta ya existe: $uploadDir<br>";
+                    }
+
+                    for ($i = 0; $i < count($imagenes["imagenes"]["name"]); $i++) {
+                        $extension=strtolower(pathinfo($imagenes["imagenes"]["name"][$i], PATHINFO_EXTENSION));
+                        $fileName = basename($imagenes["imagenes"]["name"][$i]);
+                        $fileTmpPath = $imagenes["imagenes"]['tmp_name'][$i];
+                        $destinationPath = $uploadDir . $fileName;
+                
+                        // Mover el archivo a la carpeta de destino
+                        if (move_uploaded_file($fileTmpPath, $destinationPath)) {
+                            echo "El archivo $fileName se subió correctamente.<br>";
+                            array_push($json_imagenes, $imagenes["imagenes"]["name"][$i]);
+                        } else {
+                            echo "Error al subir el archivo $fileName.<br>";
+                        }
+                    }
+                }
+            }
+        }
+        
+        if(isset($json_imagenes)){
+            $string_imagenes=json_encode($json_imagenes);
+            $result=$connection->query("INSERT INTO incidencias (motivo, estado, id_creador, id_cliente, persona_contacto, year, imagenes) VALUES ('". $incidencia->getMotivo() ."', ". $incidencia->getEstado() ." ,'". $incidencia->getIdCreador() ."', '".$incidencia->getIdCliente()."', '".$incidencia->getContacto()."', ".$incidencia->getYear().", '".$string_imagenes."');");
+        }else{
+            $result=$connection->query("INSERT INTO incidencias (motivo, estado, id_creador, id_cliente, persona_contacto, year, imagenes) VALUES ('". $incidencia->getMotivo() ."', ". $incidencia->getEstado() ." ,'". $incidencia->getIdCreador() ."', '".$incidencia->getIdCliente()."', '".$incidencia->getContacto()."', ".$incidencia->getYear().", '');");
+        }
 
         $result_nIncidencia=$connection->query("SELECT numero_incidencia from incidencias ORDER BY numero_incidencia desc limit 1;");
 
@@ -714,8 +781,13 @@ class Incidencias{
      * @param mysqli $connection True en caso de que se hayan implementado los datos en la base de datos, false en caso contrario.
      * @return bool
      */
-    public static function actualizarIncidencia(int $estado, String $motivo, String $motivo_estado, String|null $resolucion, String|null $observaciones, int $nIncidencia, String $horaApertura, String $horaCierre, float $totalTiempo, mysqli $connection){
-        $result=$connection->query("UPDATE incidencias SET motivo='".$motivo."', solucion = '".$resolucion."', estado=".$estado.", motivo_estado = '".$motivo_estado."', observaciones = '".$observaciones."', hora_apertura='".$horaApertura."', hora_cierre='".$horaCierre."', totalTiempo='".$totalTiempo."' WHERE (`numero_incidencia` = '".$nIncidencia."');");
+    public static function actualizarIncidencia(int $estado, String $motivo, String $motivo_estado, String $id_creador, String $id_cliente, String $id_empleado, String $contacto, bool $reabierto, String|null $resolucion, String|null $observaciones, int $nIncidencia, String $horaApertura, String $horaCierre, float $totalTiempo, mysqli $connection){
+        if($reabierto){
+            $result=$connection->query("UPDATE incidencias SET motivo='".$motivo."', solucion = '".$resolucion."', estado=".$estado.", motivo_estado = '".$motivo_estado."', id_creador='".$id_creador."', id_cliente='".$id_cliente."', id_empleado='".$id_empleado."', persona_contacto='".$contacto."', reabierto=1, observaciones = '".$observaciones."', hora_apertura='".$horaApertura."', hora_cierre='".$horaCierre."', totalTiempo='".$totalTiempo."' WHERE (`numero_incidencia` = '".$nIncidencia."');");
+        }else{
+            $result=$connection->query("UPDATE incidencias SET motivo='".$motivo."', solucion = '".$resolucion."', estado=".$estado.", motivo_estado = '".$motivo_estado."', id_creador='".$id_creador."', id_cliente='".$id_cliente."', id_empleado='".$id_empleado."', persona_contacto='".$contacto."', reabierto=0, observaciones = '".$observaciones."', hora_apertura='".$horaApertura."', hora_cierre='".$horaCierre."', totalTiempo='".$totalTiempo."' WHERE (`numero_incidencia` = '".$nIncidencia."');");
+
+        }
 
         if($result!=false){
             return true;

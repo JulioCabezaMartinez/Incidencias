@@ -154,7 +154,7 @@ if(!is_bool($usuario_Empleado)){
             if( file_put_contents("firma_empleado.png",$decodedImg)!==false){
                 $pdf->Image("firma_empleado.png", 96, 255.7, 40, 25);
 
-                //unlink("firma_empleado.png");
+                unlink("firma_empleado.png");
             }
         }
     }

@@ -28,8 +28,7 @@
             $id_cliente=Usuario::recogerIDUsuarioDNI($_POST["DNICliente"], $connection);
         }
 
-        $resultado=Incidencias::creacionIncidencia($_POST["motivo"], $_SESSION["id"], $id_cliente, $_POST["nombre_contacto"], $connection);
-
+        $resultado=Incidencias::creacionIncidencia($_POST["motivo"], $_SESSION["id"], $id_cliente, $_POST["nombre_contacto"], $connection, $_FILES);
         if($resultado){
             if($_SESSION['tipo']==2){
                 header("Location: ../../../src/controller/actions_tabla.php?class=cliente&add=ok");
@@ -49,7 +48,12 @@
     }
 
     if(isset($_POST["modificar_incidencia"])){
-        $resultado=Incidencias::actualizarIncidencia($_POST["estado"], $_POST["motivo_estado"], $_POST["motivo_estado"], $_POST["resolucion"], $_POST["observaciones"], $_POST["nIncidencia"], $_POST["hora_apertura"], $_POST["hora_cierre"], $_POST["total_tiempo"], $connection);
+        if(isset($_POST["reabierto"])){
+            $resultado=Incidencias::actualizarIncidencia($_POST["estado"], $_POST["motivo"], $_POST["motivo_estado"], $_POST["id_creador"], $_POST["id_cliente"], $_POST["id_empleado"], $_POST['contacto'], true, $_POST["resolucion"], $_POST["observaciones"], $_POST["nIncidencia"], $_POST["hora_apertura"], $_POST["hora_cierre"], $_POST["total_tiempo"], $connection);
+        }else{
+            $resultado=Incidencias::actualizarIncidencia($_POST["estado"], $_POST["motivo"], $_POST["motivo_estado"], $_POST["id_creador"], $_POST["id_cliente"], $_POST["id_empleado"], $_POST['contacto'], false, $_POST["resolucion"], $_POST["observaciones"], $_POST["nIncidencia"], $_POST["hora_apertura"], $_POST["hora_cierre"], $_POST["total_tiempo"], $connection);
+
+        }
     
         if($resultado){
             header("Location: ../../src/controller/actions_tabla.php?class=all");
