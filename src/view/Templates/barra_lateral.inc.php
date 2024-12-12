@@ -81,6 +81,11 @@
                                 <span class="ms-1 d-none d-sm-inline">Todos los empleados</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="../../../src/controller/actions_tabla.php?class=all_cli" class="nav-link align-middle px-0">
+                                <span class="ms-1 d-none d-sm-inline">Todos los clientes</span>
+                                </a>
+                            </li>
                         
                         <?php
                         }

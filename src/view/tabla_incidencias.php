@@ -79,7 +79,7 @@ require_once '../view/Templates/inicio.inc.php';
 
         <h1>Tabla de Incidencias</h1><br>
         <label for="buscador">Busqueda por DNI:</label>
-        <input type="text" id="busqueda_DNI_incidencia" style="width: 10%;" maxlength="9" placeholder="12345678A">
+        <input type="text" id="busqueda_DNI_incidencia" class="form-control" style="width: 10%;" maxlength="9" placeholder="12345678A">
         <table style="width: 85%;" class="table table-striped">
             <thead>
                 <tr>

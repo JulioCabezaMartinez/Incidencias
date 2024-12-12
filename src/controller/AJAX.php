@@ -141,6 +141,45 @@
                 }      
             }
         }
+        if($_POST["mode"]=="busqueda_DNI_usuario"){
+            $lista_usuario=Usuario::recogerUsuarioDNITipo($_POST["DNI"], $_POST["tipo_usuario"], $connection);
+
+            foreach($lista_usuario as $empleado){
+                $tipo=match($empleado->getTipo()){
+                    1=>"Admin",
+                    2=>"Cliente",
+                    3=>"Empleado",
+                    4=>"Empleado Jefe",
+                    5=>"Empleado en espera",
+                    6=>"Empleado denegando",
+                    7=>"Empleado de baja",
+                    8=>"Cliente de baja"
+                };
+                echo '<tr>
+                <td>'. $empleado->getId() .'</td>
+                    <td>'. $empleado->getCorreo() .'</td>
+                    <td>'. $empleado->getNombre() .'</td>
+                    <td>'. $empleado->getApellidos() .'</td>
+                    <td>'. $empleado->getDNI() .'</td>
+                    <td>'. $tipo .'</td>
+                    <td>';
+                    if($empleado->getTipo()!=2 && $empleado->getTipo()!=7 && $empleado->getTipo()!=8){
+                        echo '<button id="baja-'.$empleado->getId().'-'.$empleado->getTipo().'" class="btn btn-small btn-danger btn_baja"><i class="fa-solid fa-handshake-simple-slash"></i>Baja Empleado</button>';
+                    }elseif($empleado->getTipo()==2){
+                        echo '<button id="baja-'.$empleado->getId().'-'.$empleado->getTipo().'" class="btn btn-small btn-danger btn_baja"><i class="fa-solid fa-user-slash"></i>Baja Cliente</button>';
+                    }elseif($empleado->getTipo()==8){
+                        echo '<button id="readmision-'.$empleado->getId().'-'.$empleado->getTipo().'" class="btn btn-small btn-success btn_readmision"><i class="fa-solid fa-handshake-simple"></i>Readmision Cliente</button>';
+                    }elseif($empleado->getTipo()==7){
+                        echo '<button id="readmision-'.$empleado->getId().'-'.$empleado->getTipo().'" class="btn btn-small btn-success btn_readmision"><i class="fa-solid fa-user-plus"></i>Readmision Empleado</button>';
+                    }
+                    echo '<br>
+                    <a href="../../../src/controller/actions_usuario.php?action=modificar&id='.$empleado->getId().'" class="btn btn-small btn-primary my-1"><i class="fa-solid fa-user-pen"></i>Modificar Usuario</a>';
+                    echo '<br>
+                                <button id="btn_' . $empleado->getId() . '" class=" btn_cambiaPass btn btn-small btn-warning my-1">Cambiar Contraseña</button>';
+                    echo '</td>
+                    </tr>';
+            }
+        }
 
         if($_POST["mode"]=="resolucion_Trabajando"){
             if(isset($_POST["motivo"])){
@@ -304,6 +343,16 @@
                 echo "Correo no valido";
             }
             
+        }
+
+        if($_POST["mode"]=="cambia_pass_admin"){
+            $update=Usuario::cambiar_pass_admin($_POST["nueva_pass"], $_POST["nueva_confirm"], $_POST["id_usuario"], $connection);
+
+            if($update){
+                echo "Todo Correcto";
+            }else{
+                echo "Fallo";
+            }
         }
 
         if($_POST["mode"]=="comprobar_codigo_cambio_pass"){

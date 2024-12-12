@@ -556,7 +556,27 @@ class Usuario {
      */
     public static function verAllEmpleados(mysqli $connection){
         $lista_empleados=[];
-        $result=$connection->query("Select * from usuarios;");
+        $result=$connection->query("SELECT * from usuarios where tipo>2 AND tipo<8;");
+
+        if($result!=false){
+            $linea=$result->fetch_object();
+
+            while($linea!=null){
+                $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->pais, $linea->ciudad, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision, nombre_empresa:$linea->nombre_empresa, nombre_comercial:$linea->nombre_comercial, CIF:$linea->CIF_empresa, firma:$linea->firma);
+                array_push($lista_empleados, $empleado);
+
+                $linea=$result->fetch_object();
+            }
+            
+            return $lista_empleados;
+        }else{
+            return mysqli_error($connection);
+        }
+    }
+
+    public static function verAllClientes(mysqli $connection){
+        $lista_empleados=[];
+        $result=$connection->query("SELECT * from usuarios where (tipo > 1 AND tipo < 3) OR tipo = 8;");
 
         if($result!=false){
             $linea=$result->fetch_object();
@@ -664,7 +684,7 @@ class Usuario {
         $linea=$result->fetch_object();
 
         if($linea!=null){
-            $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->pais, $linea->ciudad, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision, nombre_empresa:$linea->nombre_empresa, nombre_comercial:$linea->nombre_comercial, CIF:$linea->CIF, firma:$linea->firma);
+            $empleado=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->pais, $linea->ciudad, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision, nombre_empresa:$linea->nombre_empresa, nombre_comercial:$linea->nombre_comercial, CIF:$linea->CIF_empresa, firma:$linea->firma);
 
 
             return $empleado;
@@ -715,6 +735,33 @@ class Usuario {
             return $datos_usuario;
 
         };
+    }
+
+    public static function recogerUsuarioDNITipo($DNI, $tipo_usuario, $connection){
+        $lista_usuarios=[];
+        $query="";
+        switch($tipo_usuario){
+            case "Clientes":
+                $query="SELECT * from usuarios where DNI LIKE '$DNI%' AND ((tipo > 1 AND tipo < 3) OR tipo = 8);";
+            break;
+
+            case "Empleados":
+                $query="SELECT * from usuarios where DNI LIKE '$DNI%' AND (tipo>2 AND tipo<8);";
+            break;
+        }
+        $result=$connection->query($query);
+
+        $linea=$result->fetch_object();
+
+        while($linea!=null){
+            $usuario=new Usuario($linea->correo, $linea->tipo, "", $linea->nombre, $linea->apellidos, $linea->DNI, $linea->telefono, $linea->direccion, $linea->pais, $linea->ciudad, $linea->id_usuario, $linea->motivo_denegacion_baja, $linea->motivo_readmision, $linea->fecha_denegacion_baja, $linea->fecha_readmision, nombre_empresa:$linea->nombre_empresa, nombre_comercial:$linea->nombre_comercial, CIF:$linea->CIF_empresa, firma:$linea->firma);
+
+            array_push($lista_usuarios, $usuario);
+
+            $linea=$result->fetch_object();
+        };
+
+        return $lista_usuarios;
     }
 
     public static function recogerUsuarioID($id, $connection){
@@ -775,6 +822,21 @@ class Usuario {
                 }
             }
         }
+    }
+
+    public static function cambiar_pass_admin($pass, $confirm, $id, mysqli $connection){
+        if($pass==$confirm){
+            $result=$connection->query("UPDATE usuarios SET password='".password_hash($pass, PASSWORD_DEFAULT)."' where id_usuario = '".$id."';");
+
+            if($result!=false){
+                return true;
+            }else{
+                return mysqli_error($connection);
+            }
+        }else{
+            return false;
+        }
+        
     }
 
     public static function resetPass($correo, $new_pass, $confirm, mysqli $connection){

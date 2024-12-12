@@ -22,6 +22,8 @@
 <link rel="stylesheet" type="text/css" href="../library/signature-pad/css/jquery.signature.css">
 
 
+<!-- SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
 

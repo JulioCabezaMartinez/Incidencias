@@ -104,9 +104,18 @@
             
             case 'all_em':
                 $lista_empleados=Usuario::verAllEmpleados($connection);
+
+                $tipoUsuario="Empleados";
                
                 include "../view/tabla_Empleados_admin.php";
                 break;
+            case "all_cli":
+
+                $tipoUsuario="Clientes";
+                $lista_empleados=Usuario::verAllClientes($connection);
+
+                include "../view/tabla_Empleados_admin.php";
+            break;
             case 'no_asig':
                 $lista_incidencias=Incidencias::recogerTodasIncidenciasNoAsignadas($connection);
 
